@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RentPlay – Rent Anything Near You</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #13131a; --card: #1a1a26; --border: #2a2a3d;
+    --accent: #f0e040; --accent2: #4ef0a0; --accent3: #f04e7a;
+    --text: #f0f0f8; --muted: #888899; --radius: 16px; --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; font-size: 14px; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 30px;
+    background: rgba(10,10,15,0.88); backdrop-filter: blur(16px);
+    border-bottom: none;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.03em; cursor:pointer; }
+  .logo span { color: var(--accent); }
+  .nav-right { display: flex; gap: 10px; align-items: center; }
+  .btn { padding: 8px 18px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; cursor: pointer; border: none; transition: all .2s; }
+  .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #0a0a0f; }
+  .btn-primary:hover { background: #ffe800; transform: scale(1.04); }
+
+  /* signed-in nav */
+  .nav-user { display: none; align-items: center; gap: 10px; }
+  .nav-user.show { display: flex; }
+  .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: #0a0a0f; }
+  .nav-name { font-size: 0.85rem; font-weight: 600; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-signout { background: transparent; border: 1.5px solid var(--accent3); color: var(--accent3); padding: 8px 16px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: all .2s; }
+  .btn-signout:hover { background: var(--accent3); color: #fff; }
+
+  /* HAMBURGER */
+  .hamburger {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer;
+    transition: background .2s;
+    flex-shrink: 0;
+  }
+  .hamburger:hover { background: rgba(240,224,64,0.07); }
+  .hamburger span {
+    display: block; width: 18px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: background .2s, transform .3s, opacity .3s;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .hamburger.open span { background: var(--accent); }
+
+  /* HERO-LEVEL NAV DRAWER */
+  .hero-nav-drawer {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .38s cubic-bezier(.4,0,.2,1), opacity .28s ease;
+    margin-bottom: 0;
+  }
+  .hero-nav-drawer.open {
+    max-height: 320px;
+    opacity: 1;
+    margin-bottom: 0;
+  }
+  .hero-nav-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 0 20px 0;
+  }
+  .hero-nav-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .2s cubic-bezier(.34,1.56,.64,1);
+    white-space: nowrap;
+  }
+  .hero-nav-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(240,224,64,0.07);
+    transform: translateY(-2px);
+  }
+  .link-icon { font-size: 0.95rem; }
+
+  /* Thin accent line separator shown when drawer is open */
+  .drawer-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    border-radius: 2px;
+    margin-bottom: 18px;
+    width: 0;
+    transition: width .4s ease;
+  }
+  .drawer-divider.show { width: 60px; }
+
+  /* HERO */
+  .hero { position: relative; padding: 70px 30px 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .hero-left { min-width: 0; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(17,102,135,0.12); border: 1px solid rgba(240,224,64,0.3); color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; padding: 5px 12px; border-radius: 50px; margin-bottom: 18px; animation: fadeUp .6s ease both; }
+  .dot-live { width: 7px; height: 7px; background: var(--accent2); border-radius: 50%; animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem,3.5vw,3.2rem); line-height: 1.08; letter-spacing: -0.04em; animation: fadeUp .7s .1s ease both; }
+  .hero-sub { margin-top: 16px; color: var(--muted); font-size: 0.95rem; line-height: 1.6; max-width: 400px; animation: fadeUp .7s .2s ease both; }
+  .hero-actions { display: flex; gap: 12px; margin-top: 28px; animation: fadeUp .7s .3s ease both; }
+  .hero-stats { display: flex; gap: 28px; margin-top: 36px; animation: fadeUp .7s .4s ease both; }
+  .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--accent2); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* HERO MAP */
+  .hero-visual { position: relative; display: flex; justify-content: center; animation: fadeUp .8s .2s ease both; }
+  .map-blob { width: 360px; height: 310px; background: radial-gradient(ellipse at 40% 50%, rgba(78,240,160,0.12) 0%, rgba(240,78,122,0.06) 50%, transparent 70%); border: 1px solid var(--border); border-radius: 24px; position: relative; overflow: hidden; }
+  .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+  .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; animation: pinBounce 2s ease infinite; }
+  @keyframes pinBounce { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-6px)} }
+  .map-pin .pin-icon { width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .map-pin .pin-label { margin-top: 6px; font-size: 0.72rem; font-weight: 600; background: var(--card); border: 1px solid var(--border); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+  .pin-user { top:50%; left:45%; } .pin-user .pin-icon { background: var(--accent); }
+  .pin-item1 { top:25%; left:25%; animation-delay:.3s; } .pin-item1 .pin-icon { background: var(--accent3); }
+  .pin-item2 { top:60%; left:68%; animation-delay:.6s; } .pin-item2 .pin-icon { background: var(--accent2); }
+  .pin-delivery { top:38%; left:62%; animation-delay:.9s; } .pin-delivery .pin-icon { background: #8a6fff; }
+  .route-line { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+  .distance-badge { position: absolute; top:14px; right:14px; background: rgba(78,240,160,0.15); border: 1px solid rgba(78,240,160,0.4); color: var(--accent2); font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 50px; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* COMING SOON BANNER */
+  .coming-soon-banner {
+    display: block; margin-top: 18px; padding: 14px 32px;
+    background: rgba(240,224,64,0.10); border: 0.5px solid rgba(200,20,128,0.35);
+    border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1rem; color: var(--accent); letter-spacing: 0.04em;
+    opacity: 0; transform: translateY(10px) scale(0.96); pointer-events: none;
+    transition: opacity .35s cubic-bezier(.34,1.56,.64,1), transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .coming-soon-banner.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+  /* DOWNLOAD */
+  .download-strip { max-width:800px; margin:0 auto; padding:0 30px 50px; text-align:center; }
+  .dl-btn { display:inline-flex; align-items:center; gap:10px; padding:15px 40px; background:var(--accent); color:#0a0a0f; border:none; border-radius:50px; font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; cursor:pointer; transition:all .25s; }
+  .dl-btn:hover { background:#e2c417; transform:scale(1.05); box-shadow:0 0 40px rgba(240,224,64,0.25); }
+  .dl-sub { color:var(--muted); font-size:0.75rem; margin-top:10px; }
+
+  /* AUTH MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:500; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .3s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:32px; max-width:420px; width:90%; position:relative; transform:translateY(24px) scale(0.97); transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
+  .modal-overlay.open .modal { transform:translateY(0) scale(1); }
+  .modal-eyebrow { font-size:0.72rem; font-weight:700; letter-spacing:0.12em; margin-bottom:8px; }
+  .modal-eyebrow.green { color:var(--accent2); } .modal-eyebrow.yellow { color:var(--accent); }
+  .modal-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.5rem; letter-spacing:-0.03em; margin-bottom:6px; }
+  .modal-sub { color:var(--muted); font-size:0.82rem; margin-bottom:26px; line-height:1.5; }
+  .form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; position:relative; }
+  .form-group label { font-size:0.74rem; font-weight:700; color:var(--muted); letter-spacing:0.06em; }
+  .form-group input { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:13px 16px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.92rem; outline:none; transition:border-color .2s; }
+  .form-group input:focus { border-color:var(--accent2); }
+  .signin-modal .form-group input:focus { border-color:var(--accent); }
+  .form-group input.input-error { border-color:var(--accent3) !important; }
+  .form-group input.input-ok { border-color:var(--accent2) !important; }
+  .field-msg { font-size:0.74rem; font-weight:600; margin-top:4px; display:none; align-items:center; gap:5px; }
+  .field-msg.show { display:flex; } .field-msg.err { color:var(--accent3); } .field-msg.ok { color:var(--accent2); }
+  .modal-submit { width:100%; padding:15px; border-radius:var(--radius-sm); font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; cursor:pointer; border:none; transition:all .2s; margin-top:4px; }
+  .submit-green { background:var(--accent2); color:#0a0a0f; }
+  .submit-green:hover { background:#3de090; transform:translateY(-2px); }
+  .submit-yellow { background:var(--accent); color:#0a0a0f; }
+  .submit-yellow:hover { background:#ffe800; transform:translateY(-2px); }
+  .modal-note { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:14px; }
+  .modal-note a { color:var(--accent); cursor:pointer; text-decoration:none; }
+  .modal-close { position:absolute; top:16px; right:16px; background:var(--surface); border:1px solid var(--border); color:var(--muted); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .modal-close:hover { border-color:var(--accent3); color:var(--accent3); }
+  .existing-bar { display:none; background:rgba(78,240,160,0.08); border:1px solid rgba(78,240,160,0.25); border-radius:var(--radius-sm); padding:10px 14px; font-size:0.8rem; color:var(--accent2); margin-bottom:16px; align-items:center; gap:8px; }
+  .existing-bar.show { display:flex; }
+  .existing-bar a { color:var(--accent); font-weight:700; cursor:pointer; }
+
+  /* REDIRECT OVERLAY */
+  .redirect-overlay { display:none; position:fixed; inset:0; background:rgba(10,10,15,0.96); z-index:1000; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
+  .redirect-overlay.show { display:flex; }
+  .redirect-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:2rem; color:var(--text); }
+  .redirect-logo span { color:var(--accent); }
+  .redirect-msg { color:var(--muted); font-size:1rem; }
+  .redirect-spinner { width:48px; height:48px; border:3px solid var(--border); border-top-color:var(--accent2); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .redirect-bar-track { width:240px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+  .redirect-bar-fill { height:100%; background:var(--accent2); border-radius:2px; width:0; }
+  @keyframes fillBar { to { width:100%; } }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--surface); border:1px solid var(--accent2); border-radius:50px; padding:14px 28px; font-weight:600; font-size:0.9rem; color:var(--accent2); z-index:600; transition:transform .4s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.warn { border-color:var(--accent3); color:var(--accent3); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 12px 40px; display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:0.75rem; }
+
+  @media(max-width:900px){
+    .hero { grid-template-columns:1fr; padding:40px 20px 30px; }
+    .hero-visual { display:none; }
+    nav { padding:12px 20px; }
+    .download-strip { padding-left:20px; padding-right:20px; }
+    footer { flex-direction:column; gap:12px; text-align:center; padding:20px; }
+    .modal { padding:24px 20px; }
+  }
+  @media(max-width:480px){
+    body { font-size: 13px; }
+    h1 { font-size: 1.6rem !important; }
+    .hero-sub { font-size: 0.88rem; margin-top: 12px; }
+    .hero-actions { flex-direction: column; gap: 10px; }
+    .hero-actions .btn { width: 100%; text-align: center; }
+    .hero-stats { gap: 16px; flex-wrap: wrap; }
+    .stat-num { font-size: 1.3rem; }
+    .logo { font-size: 1.1rem; }
+    .btn { padding: 8px 14px; font-size: 0.75rem; }
+    .hero-nav-link { font-size: 0.75rem; padding: 8px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- REDIRECT OVERLAY -->
+<div class="redirect-overlay" id="redirectOverlay">
+  <div class="redirect-logo">Rent<span>Play</span></div>
+  <div class="redirect-spinner"></div>
+  <div class="redirect-msg">Sign in successful — loading Search page…</div>
+  <div class="redirect-bar-track"><div class="redirect-bar-fill" id="redirectBar"></div></div>
+</div>
+<nav>
+  <div class="logo" onclick="window.location.href='index.html'">Rent<span>Play</span></div>
+  <div class="nav-right">
+    <div id="navAuthBtns" style="display:flex;gap:12px;align-items:center;">
+      <button class="btn btn-ghost" onclick="openSignin()">Sign In</button>
+      <button class="btn btn-primary" onclick="openSignup()">Create AC</button>
+    </div>
+    <!-- ☰ Hamburger -->
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+
+    <!-- Collapsible nav drawer — sits above "Live near you" badge -->
+    <div class="hero-nav-drawer" id="heroNavDrawer">
+      <div class="hero-nav-inner">
+        <a class="hero-nav-link" onclick="window.location.href='index.html'"><span class="link-icon"></span> Home</a>
+        <a class="hero-nav-link" onclick="window.location.href='Gaming information page.html'"><span class="link-icon"></span> Gaming</a>
+        <a class="hero-nav-link" onclick="window.location.href='Reviewpage.html'"><span class="link-icon"></span> Reviews</a>
+        <a class="hero-nav-link" onclick="window.location.href='Dashboard.html'"><span class="link-icon"></span> Dashboard</a>
+        <a class="hero-nav-link" onclick="window.location.href='Delivery boy registation form.html'"><span class="link-icon"></span> Delivery Boy Register</a>
+        
+    
+      </div>
+    </div>
+    <div class="drawer-divider" id="drawerDivider"></div>
+
+    <!-- Badge -->
+    <div class="hero-badge"><span class="dot-live"></span> Live near you</div>
+
+    <h2>Rent <span style="color:red">anything</span> within minutes.</h2>
+    <p class="hero-sub">Sports gear, games, bikes, camping kits — borrow from neighbours. A delivery boy picks it up and drops it at your door.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="heroGetStarted" onclick="openSignin()">Get Started</button>
+      <button class="btn btn-ghost" onclick="showComingSoon('heroBanner')">Download App</button>
+    </div>
+    <div class="coming-soon-banner" id="heroBanner">🚀 Coming Soon!</div>
+    <div class="hero-stats">
+      <div><div class="stat-num" id="ctr-items">3K</div><div class="stat-label">Items nearby</div></div>
+      <div><div class="stat-num" id="ctr-riders">3</div><div class="stat-label">Delivery boys</div></div>
+      <div><div class="stat-num" id="ctr-time">0</div><div class="stat-label">Avg mins delivery</div></div>
+    </div>
+
+    <!-- Map moved below stats per request -->
+    <div class="map-blob" style="margin-top: 30px; width: 100%; max-width: 400px; height: 320px;">
+      <div class="map-grid"></div>
+      <svg class="route-line" viewBox="0 0 420 360">
+        <path d="M130 100 Q200 140 210 190" stroke="rgba(240,78,122,0.4)" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+        <path d="M280 230 Q250 210 210 190" stroke="rgba(78,240,160,0.5)" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+        <path d="M265 155 Q240 170 210 190" stroke="rgba(138,111,255,0.4)" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+      </svg>
+      <div class="map-pin pin-user"><div class="pin-icon">🏠</div><div class="pin-label">You</div></div>
+      <div class="map-pin pin-item1"><div class="pin-icon">⚽</div><div class="pin-label">0.4 km</div></div>
+      <div class="map-pin pin-item2"><div class="pin-icon">🎮</div><div class="pin-label">1.1 km</div></div>
+      <div class="map-pin pin-delivery"><div class="pin-icon">🛵</div><div class="pin-label">Raju · En Route</div></div>
+      <div class="distance-badge">⚡ Nearest: 15-20 km</div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- Visual slot moved or could hold a different asset later -->
+  </div>
+</section>
+<br>
+<br>
+<!-- DOWNLOAD STRIP -->
+<section class="download-strip">
+  <div class="dl-sub">iOS &amp; Android · Free to download · Available soon</div>
+</section>
+<br>
+<br>
+<!-- FOOTER -->
+<footer>
+  <div class="logo" style="font-size:1.1rem">Rent<span style="color:var(--accent)">Play</span></div>
+  <div style="display:flex;gap:18px">
+    <a href="Terms&conditions.html" style="color:var(--muted);text-decoration:none">T&amp;C</a>
+    <a href="Privacy.html" style="color:var(--muted);text-decoration:none">Privacy</a>
+    <a href="Support.html" style="color:var(--muted);text-decoration:none">Support</a>
+  </div>
+    <div>@ 2026 RentPlay · Rent smart, play more.</div>
+</footer>
+
+<!-- SIGNUP MODAL -->
+<div class="modal-overlay" id="signupOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSignup()">✕</button>
+    <div class="modal-eyebrow green">✦ STEP 1 — START HERE</div>
+    <div class="modal-title">Create Account</div>
+    <div class="modal-sub">Sign up to unlock rentals, track deliveries, and list your own items on RentPlay.</div>
+    <div class="existing-bar" id="existingBar">
+      ✅ You already have an account! <a onclick="closeSignup();setTimeout(openSignin,220)">Sign In instead →</a>
+    </div>
+    <div class="form-group"><label>FULL NAME</label><input type="text" id="su-name" placeholder="Arjun Reddy"/></div>
+    <div class="form-group"><label>PHONE NUMBER</label><input type="tel" id="su-phone" placeholder="+91 9999 000000"/></div>
+    <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" id="su-email" placeholder="arjun@example.com"/></div>
+    <div class="form-group"><label>CREATE PASSWORD</label><input type="password" id="su-pass" placeholder="Min. 6 characters"/></div>
+    <button class="modal-submit submit-green" onclick="handleSignup()">Create My Account 🚀</button>
+    <div class="modal-note">Already have an account? <a onclick="switchToSignin()">Sign In →</a></div>
+  </div>
+</div>
+
+<!-- SIGNIN MODAL -->
+<div class="modal-overlay" id="signinOverlay">
+  <div class="modal signin-modal">
+    <button class="modal-close" onclick="closeSignin()">✕</button>
+    <div class="modal-eyebrow yellow">✦ WELCOME BACK</div>
+    <div class="modal-title">Sign In</div>
+    <div class="modal-sub">Access your rentals, live delivery tracking and saved items.</div>
+    <div class="form-group">
+      <label>EMAIL ADDRESS</label>
+      <input type="email" id="si-email" placeholder="arjun@example.com" oninput="clearFieldState('si-email','si-email-msg')"/>
+      <div class="field-msg" id="si-email-msg"></div>
+    </div>
+    <div class="form-group">
+      <label>PASSWORD</label>
+      <input type="password" id="si-pass" placeholder="Enter your password" oninput="clearFieldState('si-pass','si-pass-msg')"/>
+      <div class="field-msg" id="si-pass-msg"></div>
+    </div>
+    <button class="modal-submit submit-yellow" onclick="handleSignin()">Sign In to RentPlay →</button>
+    <div class="modal-note">No account yet? <a onclick="switchToSignup()">Create one →</a></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORE_KEY = 'rentplay_account';
+  function getAccount()     { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || null; } catch(e) { return null; } }
+  function saveAccount(obj) { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); }
+
+  // HAMBURGER TOGGLE
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById('hamburgerBtn').classList.toggle('open', menuOpen);
+    document.getElementById('heroNavDrawer').classList.toggle('open', menuOpen);
+    document.getElementById('drawerDivider').classList.toggle('show', menuOpen);
+  }
+  // Close when clicking outside drawer/hamburger
+  document.addEventListener('click', function(e) {
+    if (menuOpen && !e.target.closest('.hamburger') && !e.target.closest('.hero-nav-drawer')) {
+      menuOpen = false;
+      document.getElementById('hamburgerBtn').classList.remove('open');
+      document.getElementById('heroNavDrawer').classList.remove('open');
+      document.getElementById('drawerDivider').classList.remove('show');
+    }
+  });
+
+  // COMING SOON
+  let bannerTimer = null;
+  function showComingSoon(bannerId) {
+    document.querySelectorAll('.coming-soon-banner').forEach(b => b.classList.remove('show'));
+    clearTimeout(bannerTimer);
+    document.getElementById(bannerId).classList.add('show');
+    bannerTimer = setTimeout(() => document.getElementById(bannerId).classList.remove('show'), 2000);
+  }
+
+
+  // COUNTER
+  function animateCounter(el, target, suffix, dur) {
+    let v = 0; const step = target / (dur / 16);
+    const t = setInterval(() => {
+      v = Math.min(v + step, target);
+      el.textContent = Math.floor(v) + suffix;
+      if (v >= target) clearInterval(t);
+    }, 16);
+  }
+
+  // NAV STATE
+  function updateNav() {
+    const acc = getAccount();
+    const btn = document.getElementById('heroGetStarted');
+    if (acc && btn) {
+      btn.textContent = '🛵 Browse Rentals'; 
+      btn.onclick = () => window.location.href = 'Search page.html';
+    } else if (btn) {
+      btn.textContent = 'Get Started 📍'; 
+      btn.onclick = openSignup;
+    }
+  }
+
+  // AUTH MODALS
+  function openSignup() {
+    document.getElementById('existingBar').classList.toggle('show', !!getAccount());
+    document.getElementById('signupOverlay').classList.add('open');
+  }
+  function closeSignup() { document.getElementById('signupOverlay').classList.remove('open'); }
+
+  function openSignin() {
+    const acc = getAccount();
+    if (!acc) { showToast('⚠️ Page not found .', true); return; }
+    document.getElementById('si-email').value = acc.email;
+    document.getElementById('si-pass').value  = '';
+    clearFieldState('si-email','si-email-msg');
+    clearFieldState('si-pass','si-pass-msg');
+    document.getElementById('signinOverlay').classList.add('open');
+  }
+  function closeSignin() { document.getElementById('signinOverlay').classList.remove('open'); }
+
+  function switchToSignin() { closeSignup(); setTimeout(openSignin, 220); }
+  function switchToSignup() { closeSignin(); setTimeout(openSignup, 220); }
+
+  document.getElementById('signupOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signupOverlay')) closeSignup(); });
+  document.getElementById('signinOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signinOverlay')) closeSignin(); });
+
+  function setFieldState(inputId, msgId, type, message) {
+    const inp = document.getElementById(inputId), msg = document.getElementById(msgId);
+    inp.classList.remove('input-error','input-ok');
+    msg.classList.remove('show','err','ok');
+    if (type === 'error') { inp.classList.add('input-error'); msg.textContent = '✖ '+message; msg.classList.add('show','err'); }
+    else if (type === 'ok') { inp.classList.add('input-ok'); if(message){msg.textContent='✔ '+message; msg.classList.add('show','ok');} }
+  }
+  function clearFieldState(inputId, msgId) {
+    document.getElementById(inputId).classList.remove('input-error','input-ok');
+    document.getElementById(msgId).classList.remove('show','err','ok');
+  }
+
+  function handleSignup() {
+    const n  = document.getElementById('su-name').value.trim();
+    const ph = document.getElementById('su-phone').value.trim();
+    const e  = document.getElementById('su-email').value.trim();
+    const pw = document.getElementById('su-pass').value.trim();
+    if (!n||!ph||!e||!pw) { showToast('⚠️ Please fill in all fields', true); return; }
+    if (pw.length < 6)    { showToast('⚠️ Password must be at least 6 characters', true); return; }
+    saveAccount({ name: n, phone: ph, email: e, password: pw });
+    closeSignup();
+    ['su-name','su-phone','su-email','su-pass'].forEach(id => document.getElementById(id).value = '');
+    showToast('✅ Account created! Opening Sign In…');
+    setTimeout(openSignin, 1000);
+  }
+
+  function handleSignin() {
+    const e  = document.getElementById('si-email').value.trim();
+    const pw = document.getElementById('si-pass').value.trim();
+    clearFieldState('si-email','si-email-msg');
+    clearFieldState('si-pass','si-pass-msg');
+    if (!e && !pw) { showToast('⚠️ Enter your email and password', true); return; }
+    const acc = getAccount();
+    if (!acc) { showToast('⚠️ Page not found .', true); return; }
+    const emailOk = (e === acc.email);
+    const passOk  = (pw === acc.password);
+    if (!emailOk && !passOk && e && pw) {
+      setFieldState('si-email','si-email-msg','error','Email address not found');
+      setFieldState('si-pass','si-pass-msg','error','Password is incorrect');
+      showToast('❌ Email and password do not match', true); return;
+    }
+    if (!emailOk && e) {
+      setFieldState('si-email','si-email-msg','error','Email address not found');
+      showToast('❌ Wrong email — check and try again', true); return;
+    }
+    if (!passOk && pw) {
+      setFieldState('si-email','si-email-msg','ok','Email looks good ✓');
+      setFieldState('si-pass','si-pass-msg','error','Wrong password — try again');
+      showToast('❌ Incorrect password', true); return;
+    }
+    if (emailOk && passOk) {
+      closeSignin();
+      const overlay = document.getElementById('redirectOverlay');
+      overlay.classList.add('show');
+      const bar = document.getElementById('redirectBar');
+      bar.style.animation = 'none'; bar.offsetHeight;
+      bar.style.animation = 'fillBar 1.6s ease forwards';
+      setTimeout(() => { window.location.href = 'Search page.html'; }, 1800);
+    }
+  }
+
+  function showToast(msg, warn) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (warn ? ' warn' : '');
+    t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), 3400);
+  }
+</script>
+</body>
+</html>
