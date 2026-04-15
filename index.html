@@ -36,31 +36,16 @@
   .btn-primary { background: var(--accent); color: #0a0a0f; }
   .btn-primary:hover { background: #ffe800; transform: scale(1.04); }
 
-  /* signed-in nav */
-  .nav-user { display: none; align-items: center; gap: 10px; }
-  .nav-user.show { display: flex; }
-  .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: #0a0a0f; }
-  .nav-name { font-size: 0.85rem; font-weight: 600; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .btn-signout { background: transparent; border: 1.5px solid var(--accent3); color: var(--accent3); padding: 8px 16px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: all .2s; }
-  .btn-signout:hover { background: var(--accent3); color: #fff; }
-
   /* HAMBURGER */
   .hamburger {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--surface);
-    border: none;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-    cursor: pointer;
-    transition: background .2s;
-    flex-shrink: 0;
+    width: 38px; height: 38px; border-radius: 10px; background: var(--surface);
+    border: none; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 5px; cursor: pointer; transition: background .2s; flex-shrink: 0;
   }
   .hamburger:hover { background: rgba(240,224,64,0.07); }
   .hamburger span {
-    display: block; width: 18px; height: 2px;
-    background: var(--text); border-radius: 2px;
-    transition: background .2s, transform .3s, opacity .3s;
-    transform-origin: center;
+    display: block; width: 18px; height: 2px; background: var(--text);
+    border-radius: 2px; transition: background .2s, transform .3s, opacity .3s; transform-origin: center;
   }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -68,56 +53,18 @@
   .hamburger.open span { background: var(--accent); }
 
   /* HERO-LEVEL NAV DRAWER */
-  .hero-nav-drawer {
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transition: max-height .38s cubic-bezier(.4,0,.2,1), opacity .28s ease;
-    margin-bottom: 0;
-  }
-  .hero-nav-drawer.open {
-    max-height: 320px;
-    opacity: 1;
-    margin-bottom: 0;
-  }
-  .hero-nav-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 0 0 20px 0;
-  }
+  .hero-nav-drawer { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .38s cubic-bezier(.4,0,.2,1), opacity .28s ease; margin-bottom: 0; }
+  .hero-nav-drawer.open { max-height: 320px; opacity: 1; margin-bottom: 0; }
+  .hero-nav-inner { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 0 20px 0; }
   .hero-nav-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 50px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    color: var(--muted);
-    cursor: pointer;
-    text-decoration: none;
-    transition: all .2s cubic-bezier(.34,1.56,.64,1);
-    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 50px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; color: var(--muted);
+    cursor: pointer; text-decoration: none; transition: all .2s cubic-bezier(.34,1.56,.64,1); white-space: nowrap;
   }
-  .hero-nav-link:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(240,224,64,0.07);
-    transform: translateY(-2px);
-  }
+  .hero-nav-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,224,64,0.07); transform: translateY(-2px); }
   .link-icon { font-size: 0.95rem; }
-
-  /* Thin accent line separator shown when drawer is open */
-  .drawer-divider {
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
-    border-radius: 2px;
-    margin-bottom: 18px;
-    width: 0;
-    transition: width .4s ease;
-  }
+  .drawer-divider { height: 2px; background: linear-gradient(90deg, var(--accent) 0%, transparent 100%); border-radius: 2px; margin-bottom: 18px; width: 0; transition: width .4s ease; }
   .drawer-divider.show { width: 60px; }
 
   /* HERO */
@@ -133,7 +80,7 @@
   .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--accent2); }
   .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
 
-  /* HERO MAP */
+  /* MAP */
   .hero-visual { position: relative; display: flex; justify-content: center; animation: fadeUp .8s .2s ease both; }
   .map-blob { width: 360px; height: 310px; background: radial-gradient(ellipse at 40% 50%, rgba(78,240,160,0.12) 0%, rgba(240,78,122,0.06) 50%, transparent 70%); border: 1px solid var(--border); border-radius: 24px; position: relative; overflow: hidden; }
   .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 40px 40px; }
@@ -150,20 +97,11 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
   /* COMING SOON BANNER */
-  .coming-soon-banner {
-    display: block; margin-top: 18px; padding: 14px 32px;
-    background: rgba(240,224,64,0.10); border: 0.5px solid rgba(200,20,128,0.35);
-    border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 1rem; color: var(--accent); letter-spacing: 0.04em;
-    opacity: 0; transform: translateY(10px) scale(0.96); pointer-events: none;
-    transition: opacity .35s cubic-bezier(.34,1.56,.64,1), transform .35s cubic-bezier(.34,1.56,.64,1);
-  }
+  .coming-soon-banner { display: block; margin-top: 18px; padding: 14px 32px; background: rgba(240,224,64,0.10); border: 0.5px solid rgba(200,20,128,0.35); border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: var(--accent); letter-spacing: 0.04em; opacity: 0; transform: translateY(10px) scale(0.96); pointer-events: none; transition: opacity .35s cubic-bezier(.34,1.56,.64,1), transform .35s cubic-bezier(.34,1.56,.64,1); }
   .coming-soon-banner.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
 
   /* DOWNLOAD */
   .download-strip { max-width:800px; margin:0 auto; padding:0 30px 50px; text-align:center; }
-  .dl-btn { display:inline-flex; align-items:center; gap:10px; padding:15px 40px; background:var(--accent); color:#0a0a0f; border:none; border-radius:50px; font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; cursor:pointer; transition:all .25s; }
-  .dl-btn:hover { background:#e2c417; transform:scale(1.05); box-shadow:0 0 40px rgba(240,224,64,0.25); }
   .dl-sub { color:var(--muted); font-size:0.75rem; margin-top:10px; }
 
   /* AUTH MODAL */
@@ -172,7 +110,7 @@
   .modal { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:32px; max-width:420px; width:90%; position:relative; transform:translateY(24px) scale(0.97); transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
   .modal-overlay.open .modal { transform:translateY(0) scale(1); }
   .modal-eyebrow { font-size:0.72rem; font-weight:700; letter-spacing:0.12em; margin-bottom:8px; }
-  .modal-eyebrow.green { color:var(--accent2); } .modal-eyebrow.yellow { color:var(--accent); }
+  .modal-eyebrow.green { color:var(--accent2); } .modal-eyebrow.yellow { color:var(--accent); } .modal-eyebrow.pink { color:var(--accent3); } .modal-eyebrow.purple { color:#8a6fff; }
   .modal-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.5rem; letter-spacing:-0.03em; margin-bottom:6px; }
   .modal-sub { color:var(--muted); font-size:0.82rem; margin-bottom:26px; line-height:1.5; }
   .form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; position:relative; }
@@ -180,6 +118,8 @@
   .form-group input { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:13px 16px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.92rem; outline:none; transition:border-color .2s; }
   .form-group input:focus { border-color:var(--accent2); }
   .signin-modal .form-group input:focus { border-color:var(--accent); }
+  .forgot-modal .form-group input:focus { border-color:var(--accent3); }
+  .reset-modal .form-group input:focus { border-color:#8a6fff; }
   .form-group input.input-error { border-color:var(--accent3) !important; }
   .form-group input.input-ok { border-color:var(--accent2) !important; }
   .field-msg { font-size:0.74rem; font-weight:600; margin-top:4px; display:none; align-items:center; gap:5px; }
@@ -189,6 +129,10 @@
   .submit-green:hover { background:#3de090; transform:translateY(-2px); }
   .submit-yellow { background:var(--accent); color:#0a0a0f; }
   .submit-yellow:hover { background:#ffe800; transform:translateY(-2px); }
+  .submit-pink { background:var(--accent3); color:#fff; }
+  .submit-pink:hover { background:#e03060; transform:translateY(-2px); }
+  .submit-purple { background:#8a6fff; color:#fff; }
+  .submit-purple:hover { background:#7a5fee; transform:translateY(-2px); }
   .modal-note { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:14px; }
   .modal-note a { color:var(--accent); cursor:pointer; text-decoration:none; }
   .modal-close { position:absolute; top:16px; right:16px; background:var(--surface); border:1px solid var(--border); color:var(--muted); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all .2s; }
@@ -196,6 +140,18 @@
   .existing-bar { display:none; background:rgba(78,240,160,0.08); border:1px solid rgba(78,240,160,0.25); border-radius:var(--radius-sm); padding:10px 14px; font-size:0.8rem; color:var(--accent2); margin-bottom:16px; align-items:center; gap:8px; }
   .existing-bar.show { display:flex; }
   .existing-bar a { color:var(--accent); font-weight:700; cursor:pointer; }
+
+  /* FORGOT / RESET PASSWORD info box */
+  .info-box { border-radius:var(--radius-sm); padding:12px 14px; font-size:0.8rem; margin-bottom:18px; line-height:1.55; }
+  .info-box.blue { background:rgba(138,111,255,0.1); border:1px solid rgba(138,111,255,0.3); color:#b0a0ff; }
+  .info-box.pink { background:rgba(240,78,122,0.08); border:1px solid rgba(240,78,122,0.3); color:#f08098; }
+
+  /* simulated email preview */
+  .email-preview { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:18px; font-size:0.82rem; line-height:1.6; }
+  .email-preview .ep-label { font-size:0.7rem; font-weight:700; letter-spacing:0.1em; color:var(--muted); margin-bottom:6px; }
+  .ep-subject { font-weight:700; color:var(--text); margin-bottom:4px; }
+  .ep-body { color:var(--muted); }
+  .ep-token { display:inline-block; background:rgba(138,111,255,0.18); border:1px solid rgba(138,111,255,0.4); color:#b0a0ff; font-weight:800; font-family:'Syne',sans-serif; letter-spacing:0.14em; padding:3px 12px; border-radius:6px; margin-top:4px; font-size:0.95rem; }
 
   /* REDIRECT OVERLAY */
   .redirect-overlay { display:none; position:fixed; inset:0; background:rgba(10,10,15,0.96); z-index:1000; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
@@ -216,6 +172,14 @@
 
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 12px 40px; display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:0.75rem; }
+
+  /* forgot link in sign-in */
+  .forgot-link { font-size:0.78rem; color:var(--accent3); cursor:pointer; text-align:right; margin-top:-8px; margin-bottom:6px; display:block; font-weight:600; text-decoration:none; transition:opacity .2s; }
+  .forgot-link:hover { opacity:0.75; }
+
+  /* password strength bar */
+  .strength-bar { height:4px; border-radius:2px; margin-top:6px; background:var(--border); overflow:hidden; }
+  .strength-fill { height:100%; border-radius:2px; width:0; transition:width .3s, background .3s; }
 
   @media(max-width:900px){
     .hero { grid-template-columns:1fr; padding:40px 20px 30px; }
@@ -248,6 +212,7 @@
   <div class="redirect-msg">Sign in successful — loading Search page…</div>
   <div class="redirect-bar-track"><div class="redirect-bar-fill" id="redirectBar"></div></div>
 </div>
+
 <nav>
   <div class="logo" onclick="window.location.href='index.html'">Rent<span>Play</span></div>
   <div class="nav-right">
@@ -255,7 +220,6 @@
       <button class="btn btn-ghost" onclick="openSignin()">Sign In</button>
       <button class="btn btn-primary" onclick="openSignup()">Create AC</button>
     </div>
-    <!-- ☰ Hamburger -->
     <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Open navigation menu">
       <span></span><span></span><span></span>
     </button>
@@ -265,28 +229,22 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-
-    <!-- Collapsible nav drawer — sits above "Live near you" badge -->
     <div class="hero-nav-drawer" id="heroNavDrawer">
       <div class="hero-nav-inner">
-        <a class="hero-nav-link" onclick="window.location.href='index.html'"><span class="link-icon"></span> Home</a>
-        <a class="hero-nav-link" onclick="window.location.href='Gaming information page.html'"><span class="link-icon"></span> Gaming</a>
-        <a class="hero-nav-link" onclick="window.location.href='Reviewpage.html'"><span class="link-icon"></span> Reviews</a>
-        <a class="hero-nav-link" onclick="window.location.href='Dashboard.html'"><span class="link-icon"></span> Dashboard</a>
-        <a class="hero-nav-link" onclick="window.location.href='Delivery boy registation form.html'"><span class="link-icon"></span> Delivery Boy Register</a>
-        
-    
+        <a class="hero-nav-link" onclick="window.location.href='index.html'"><span class="link-icon">🏠</span> Home</a>
+        <a class="hero-nav-link" onclick="window.location.href='Gaming information page.html'"><span class="link-icon">🎮</span> Gaming</a>
+        <a class="hero-nav-link" onclick="window.location.href='Reviewpage.html'"><span class="link-icon">⭐</span> Reviews</a>
+        <a class="hero-nav-link" onclick="window.location.href='Dashboard.html'"><span class="link-icon">📊</span> Dashboard</a>
+        <a class="hero-nav-link" onclick="window.location.href='Delivery boy registation form.html'"><span class="link-icon">🛵</span> Delivery Boy Register</a>
       </div>
     </div>
     <div class="drawer-divider" id="drawerDivider"></div>
 
-    <!-- Badge -->
     <div class="hero-badge"><span class="dot-live"></span> Live near you</div>
-
     <h2>Rent <span style="color:red">anything</span> within minutes.</h2>
     <p class="hero-sub">Sports gear, games, bikes, camping kits — borrow from neighbours. A delivery boy picks it up and drops it at your door.</p>
     <div class="hero-actions">
-      <button class="btn btn-primary" id="heroGetStarted" onclick="openSignin()">Get Started</button>
+      <button class="btn btn-primary" id="heroGetStarted" onclick="openSignup()">Get Started</button>
       <button class="btn btn-ghost" onclick="showComingSoon('heroBanner')">Download App</button>
     </div>
     <div class="coming-soon-banner" id="heroBanner">🚀 Coming Soon!</div>
@@ -296,7 +254,6 @@
       <div><div class="stat-num" id="ctr-time">0</div><div class="stat-label">Avg mins delivery</div></div>
     </div>
 
-    <!-- Map moved below stats per request -->
     <div class="map-blob" style="margin-top: 30px; width: 100%; max-width: 400px; height: 320px;">
       <div class="map-grid"></div>
       <svg class="route-line" viewBox="0 0 420 360">
@@ -311,20 +268,15 @@
       <div class="distance-badge">⚡ Nearest: 15-20 km</div>
     </div>
   </div>
-
-  <div class="hero-visual">
-    <!-- Visual slot moved or could hold a different asset later -->
-  </div>
+  <div class="hero-visual"></div>
 </section>
-<br>
-<br>
-<!-- DOWNLOAD STRIP -->
+<br><br>
+
 <section class="download-strip">
   <div class="dl-sub">iOS &amp; Android · Free to download · Available soon</div>
 </section>
-<br>
-<br>
-<!-- FOOTER -->
+<br><br>
+
 <footer>
   <div class="logo" style="font-size:1.1rem">Rent<span style="color:var(--accent)">Play</span></div>
   <div style="display:flex;gap:18px">
@@ -332,29 +284,48 @@
     <a href="Privacy.html" style="color:var(--muted);text-decoration:none">Privacy</a>
     <a href="Support.html" style="color:var(--muted);text-decoration:none">Support</a>
   </div>
-    <div>@ 2026 RentPlay · Rent smart, play more.</div>
+  <div>@ 2026 RentPlay · Rent smart, play more.</div>
 </footer>
 
-<!-- SIGNUP MODAL -->
+<!-- ══════════════════════════════════════
+     SIGNUP MODAL
+════════════════════════════════════════ -->
 <div class="modal-overlay" id="signupOverlay">
   <div class="modal">
     <button class="modal-close" onclick="closeSignup()">✕</button>
     <div class="modal-eyebrow green">✦ STEP 1 — START HERE</div>
     <div class="modal-title">Create Account</div>
     <div class="modal-sub">Sign up to unlock rentals, track deliveries, and list your own items on RentPlay.</div>
+    <!-- shown if email already used -->
     <div class="existing-bar" id="existingBar">
-      ✅ You already have an account! <a onclick="closeSignup();setTimeout(openSignin,220)">Sign In instead →</a>
+      ✅ This email already has an account. <a onclick="closeSignup();setTimeout(openSignin,220)">Sign In instead →</a>
     </div>
-    <div class="form-group"><label>FULL NAME</label><input type="text" id="su-name" placeholder="Arjun Reddy"/></div>
-    <div class="form-group"><label>PHONE NUMBER</label><input type="tel" id="su-phone" placeholder="+91 9999 000000"/></div>
-    <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" id="su-email" placeholder="arjun@example.com"/></div>
-    <div class="form-group"><label>CREATE PASSWORD</label><input type="password" id="su-pass" placeholder="Min. 6 characters"/></div>
-    <button class="modal-submit submit-green" onclick="handleSignup()">Create My Account 🚀</button>
+    <div class="form-group">
+      <label>FULL NAME</label>
+      <input type="text" id="su-name" placeholder="Arjun Reddy"/>
+    </div>
+    <div class="form-group">
+      <label>PHONE NUMBER</label>
+      <input type="tel" id="su-phone" placeholder="+91 9999 000000"/>
+    </div>
+    <div class="form-group">
+      <label>EMAIL ADDRESS</label>
+      <input type="email" id="su-email" placeholder="arjun@example.com" oninput="checkEmailDuplicate()"/>
+      <div class="field-msg" id="su-email-msg"></div>
+    </div>
+    <div class="form-group">
+      <label>CREATE PASSWORD</label>
+      <input type="password" id="su-pass" placeholder="Min. 6 characters" oninput="updateStrength()"/>
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+    </div>
+    <button class="modal-submit submit-green" id="signupSubmitBtn" onclick="handleSignup()">Create My Account 🚀</button>
     <div class="modal-note">Already have an account? <a onclick="switchToSignin()">Sign In →</a></div>
   </div>
 </div>
 
-<!-- SIGNIN MODAL -->
+<!-- ══════════════════════════════════════
+     SIGNIN MODAL
+════════════════════════════════════════ -->
 <div class="modal-overlay" id="signinOverlay">
   <div class="modal signin-modal">
     <button class="modal-close" onclick="closeSignin()">✕</button>
@@ -371,8 +342,80 @@
       <input type="password" id="si-pass" placeholder="Enter your password" oninput="clearFieldState('si-pass','si-pass-msg')"/>
       <div class="field-msg" id="si-pass-msg"></div>
     </div>
+    <a class="forgot-link" onclick="openForgot()">Forgot password?</a>
     <button class="modal-submit submit-yellow" onclick="handleSignin()">Sign In to RentPlay →</button>
     <div class="modal-note">No account yet? <a onclick="switchToSignup()">Create one →</a></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FORGOT PASSWORD MODAL  (Step 1 — enter email)
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="forgotOverlay">
+  <div class="modal forgot-modal">
+    <button class="modal-close" onclick="closeForgot()">✕</button>
+    <div class="modal-eyebrow pink">🔑 FORGOT PASSWORD</div>
+    <div class="modal-title">Reset Password</div>
+    <div class="modal-sub">Enter the email linked to your account. We'll show you a reset code (simulated — no real email sent).</div>
+    <div class="form-group">
+      <label>YOUR REGISTERED EMAIL</label>
+      <input type="email" id="fp-email" placeholder="arjun@example.com" oninput="clearFieldState('fp-email','fp-email-msg')"/>
+      <div class="field-msg" id="fp-email-msg"></div>
+    </div>
+    <button class="modal-submit submit-pink" onclick="handleForgotSend()">Send Reset Code 📧</button>
+    <div class="modal-note"><a onclick="closeForgot();setTimeout(openSignin,220)">← Back to Sign In</a></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     RESET CODE MODAL  (Step 2 — show simulated email + enter code)
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="resetCodeOverlay">
+  <div class="modal forgot-modal">
+    <button class="modal-close" onclick="closeResetCode()">✕</button>
+    <div class="modal-eyebrow pink">📧 CHECK YOUR EMAIL</div>
+    <div class="modal-title">Enter Reset Code</div>
+    <div class="modal-sub">A reset code has been sent to <strong id="resetEmailDisplay"></strong>. Enter it below.</div>
+
+    <!-- Simulated email preview -->
+    <div class="email-preview">
+      <div class="ep-label">📬 SIMULATED EMAIL PREVIEW</div>
+      <div class="ep-subject">RentPlay – Your Password Reset Code</div>
+      <div class="ep-body">Hi there! Use the code below to reset your RentPlay password. It expires in 10 minutes.</div>
+      <div class="ep-token" id="shownToken">——</div>
+    </div>
+
+    <div class="form-group">
+      <label>ENTER THE 6-DIGIT CODE</label>
+      <input type="text" id="rc-code" placeholder="e.g. 847291" maxlength="6" oninput="clearFieldState('rc-code','rc-code-msg')"/>
+      <div class="field-msg" id="rc-code-msg"></div>
+    </div>
+    <button class="modal-submit submit-pink" onclick="handleVerifyCode()">Verify Code →</button>
+    <div class="modal-note"><a onclick="closeResetCode();setTimeout(openForgot,220)">← Re-enter email</a></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     NEW PASSWORD MODAL  (Step 3 — set new password)
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="newPassOverlay">
+  <div class="modal reset-modal">
+    <button class="modal-close" onclick="closeNewPass()">✕</button>
+    <div class="modal-eyebrow purple">🔒 SET NEW PASSWORD</div>
+    <div class="modal-title">New Password</div>
+    <div class="modal-sub">Choose a strong new password for your RentPlay account.</div>
+    <div class="info-box blue">✅ Code verified! You can now set a new password.</div>
+    <div class="form-group">
+      <label>NEW PASSWORD</label>
+      <input type="password" id="np-pass" placeholder="Min. 6 characters" oninput="updateNewStrength()"/>
+      <div class="strength-bar"><div class="strength-fill" id="newStrengthFill"></div></div>
+    </div>
+    <div class="form-group">
+      <label>CONFIRM NEW PASSWORD</label>
+      <input type="password" id="np-confirm" placeholder="Re-enter password" oninput="clearFieldState('np-confirm','np-confirm-msg')"/>
+      <div class="field-msg" id="np-confirm-msg"></div>
+    </div>
+    <button class="modal-submit submit-purple" onclick="handleResetPassword()">Save New Password 🔐</button>
   </div>
 </div>
 
@@ -380,154 +423,326 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const STORE_KEY = 'rentplay_account';
-  function getAccount()     { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || null; } catch(e) { return null; } }
-  function saveAccount(obj) { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); }
+/* ─────────────────────────────────────────────────
+   STORAGE — supports multiple accounts by email
+───────────────────────────────────────────────── */
+const STORE_KEY = 'rentplay_accounts_v2';
 
-  // HAMBURGER TOGGLE
-  let menuOpen = false;
-  function toggleMenu() {
-    menuOpen = !menuOpen;
-    document.getElementById('hamburgerBtn').classList.toggle('open', menuOpen);
-    document.getElementById('heroNavDrawer').classList.toggle('open', menuOpen);
-    document.getElementById('drawerDivider').classList.toggle('show', menuOpen);
+function getAllAccounts() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveAllAccounts(obj) {
+  localStorage.setItem(STORE_KEY, JSON.stringify(obj));
+}
+function getAccountByEmail(email) {
+  return getAllAccounts()[email.toLowerCase()] || null;
+}
+function saveAccount(acc) {
+  const all = getAllAccounts();
+  all[acc.email.toLowerCase()] = acc;
+  saveAllAccounts(all);
+}
+function updatePassword(email, newPass) {
+  const all = getAllAccounts();
+  if (all[email.toLowerCase()]) {
+    all[email.toLowerCase()].password = newPass;
+    saveAllAccounts(all);
+    return true;
   }
-  // Close when clicking outside drawer/hamburger
-  document.addEventListener('click', function(e) {
-    if (menuOpen && !e.target.closest('.hamburger') && !e.target.closest('.hero-nav-drawer')) {
-      menuOpen = false;
-      document.getElementById('hamburgerBtn').classList.remove('open');
-      document.getElementById('heroNavDrawer').classList.remove('open');
-      document.getElementById('drawerDivider').classList.remove('show');
-    }
+  return false;
+}
+
+/* ─── forgot-password state ─── */
+let fpEmail = '';
+let fpToken = '';
+
+/* ─────────────────────────────────────────────────
+   HAMBURGER
+───────────────────────────────────────────────── */
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('hamburgerBtn').classList.toggle('open', menuOpen);
+  document.getElementById('heroNavDrawer').classList.toggle('open', menuOpen);
+  document.getElementById('drawerDivider').classList.toggle('show', menuOpen);
+}
+document.addEventListener('click', function(e) {
+  if (menuOpen && !e.target.closest('.hamburger') && !e.target.closest('.hero-nav-drawer')) {
+    menuOpen = false;
+    document.getElementById('hamburgerBtn').classList.remove('open');
+    document.getElementById('heroNavDrawer').classList.remove('open');
+    document.getElementById('drawerDivider').classList.remove('show');
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   COMING SOON
+───────────────────────────────────────────────── */
+let bannerTimer = null;
+function showComingSoon(id) {
+  document.querySelectorAll('.coming-soon-banner').forEach(b => b.classList.remove('show'));
+  clearTimeout(bannerTimer);
+  document.getElementById(id).classList.add('show');
+  bannerTimer = setTimeout(() => document.getElementById(id).classList.remove('show'), 2000);
+}
+
+/* ─────────────────────────────────────────────────
+   FIELD HELPERS
+───────────────────────────────────────────────── */
+function setFieldState(inputId, msgId, type, message) {
+  const inp = document.getElementById(inputId), msg = document.getElementById(msgId);
+  if (!inp || !msg) return;
+  inp.classList.remove('input-error','input-ok');
+  msg.classList.remove('show','err','ok');
+  if (type === 'error') { inp.classList.add('input-error'); msg.textContent = '✖ '+message; msg.classList.add('show','err'); }
+  else if (type === 'ok') { inp.classList.add('input-ok'); if(message){msg.textContent='✔ '+message; msg.classList.add('show','ok');} }
+}
+function clearFieldState(inputId, msgId) {
+  const inp = document.getElementById(inputId), msg = document.getElementById(msgId);
+  if (inp) inp.classList.remove('input-error','input-ok');
+  if (msg) msg.classList.remove('show','err','ok');
+}
+
+/* ─────────────────────────────────────────────────
+   PASSWORD STRENGTH
+───────────────────────────────────────────────── */
+function calcStrength(pw) {
+  let s = 0;
+  if (pw.length >= 6) s++;
+  if (pw.length >= 10) s++;
+  if (/[A-Z]/.test(pw)) s++;
+  if (/[0-9]/.test(pw)) s++;
+  if (/[^A-Za-z0-9]/.test(pw)) s++;
+  return s;
+}
+function applyStrength(fillId, pw) {
+  const s = calcStrength(pw);
+  const fill = document.getElementById(fillId);
+  if (!fill) return;
+  const pct = [0,20,40,60,80,100][s];
+  const clr = ['','#f04e7a','#f0a040','#f0e040','#4ef0a0','#4ef0a0'][s];
+  fill.style.width = pct+'%'; fill.style.background = clr;
+}
+function updateStrength()    { applyStrength('strengthFill',    document.getElementById('su-pass').value); }
+function updateNewStrength() { applyStrength('newStrengthFill', document.getElementById('np-pass').value); }
+
+/* ─────────────────────────────────────────────────
+   DUPLICATE EMAIL CHECK (live, in signup)
+───────────────────────────────────────────────── */
+function checkEmailDuplicate() {
+  const e = document.getElementById('su-email').value.trim().toLowerCase();
+  const existingBar = document.getElementById('existingBar');
+  const btn = document.getElementById('signupSubmitBtn');
+  clearFieldState('su-email','su-email-msg');
+  existingBar.classList.remove('show');
+  if (!e) { btn.disabled = false; return; }
+  if (getAccountByEmail(e)) {
+    setFieldState('su-email','su-email-msg','error','This email is already registered');
+    existingBar.classList.add('show');
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  } else {
+    setFieldState('su-email','su-email-msg','ok','Email available ✓');
+    btn.disabled = false;
+    btn.style.opacity = '';
+    btn.style.cursor = '';
+  }
+}
+
+/* ─────────────────────────────────────────────────
+   SIGNUP MODAL
+───────────────────────────────────────────────── */
+function openSignup() {
+  // reset form
+  ['su-name','su-phone','su-email','su-pass'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
   });
+  clearFieldState('su-email','su-email-msg');
+  document.getElementById('existingBar').classList.remove('show');
+  const btn = document.getElementById('signupSubmitBtn');
+  btn.disabled = false; btn.style.opacity = ''; btn.style.cursor = '';
+  document.getElementById('strengthFill').style.width = '0';
+  document.getElementById('signupOverlay').classList.add('open');
+}
+function closeSignup() { document.getElementById('signupOverlay').classList.remove('open'); }
 
-  // COMING SOON
-  let bannerTimer = null;
-  function showComingSoon(bannerId) {
-    document.querySelectorAll('.coming-soon-banner').forEach(b => b.classList.remove('show'));
-    clearTimeout(bannerTimer);
-    document.getElementById(bannerId).classList.add('show');
-    bannerTimer = setTimeout(() => document.getElementById(bannerId).classList.remove('show'), 2000);
+function handleSignup() {
+  const n  = document.getElementById('su-name').value.trim();
+  const ph = document.getElementById('su-phone').value.trim();
+  const e  = document.getElementById('su-email').value.trim();
+  const pw = document.getElementById('su-pass').value.trim();
+
+  if (!n||!ph||!e||!pw) { showToast('⚠️ Please fill in all fields', true); return; }
+  if (pw.length < 6)    { showToast('⚠️ Password must be at least 6 characters', true); return; }
+
+  // ── BLOCK duplicate email ──
+  if (getAccountByEmail(e)) {
+    setFieldState('su-email','su-email-msg','error','This email is already registered');
+    document.getElementById('existingBar').classList.add('show');
+    showToast('⚠️ An account with this email already exists', true);
+    return;
   }
 
+  saveAccount({ name: n, phone: ph, email: e.toLowerCase(), password: pw });
+  closeSignup();
+  showToast('✅ Account created! Please Sign In.');
+  setTimeout(openSignin, 1000);
+}
 
-  // COUNTER
-  function animateCounter(el, target, suffix, dur) {
-    let v = 0; const step = target / (dur / 16);
-    const t = setInterval(() => {
-      v = Math.min(v + step, target);
-      el.textContent = Math.floor(v) + suffix;
-      if (v >= target) clearInterval(t);
-    }, 16);
+/* ─────────────────────────────────────────────────
+   SIGNIN MODAL
+───────────────────────────────────────────────── */
+function openSignin() {
+  document.getElementById('si-email').value = '';
+  document.getElementById('si-pass').value  = '';
+  clearFieldState('si-email','si-email-msg');
+  clearFieldState('si-pass','si-pass-msg');
+  document.getElementById('signinOverlay').classList.add('open');
+}
+function closeSignin() { document.getElementById('signinOverlay').classList.remove('open'); }
+function switchToSignin() { closeSignup(); setTimeout(openSignin, 220); }
+function switchToSignup() { closeSignin(); setTimeout(openSignup, 220); }
+
+document.getElementById('signupOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signupOverlay')) closeSignup(); });
+document.getElementById('signinOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signinOverlay')) closeSignin(); });
+
+function handleSignin() {
+  const e  = document.getElementById('si-email').value.trim();
+  const pw = document.getElementById('si-pass').value;
+  clearFieldState('si-email','si-email-msg');
+  clearFieldState('si-pass','si-pass-msg');
+
+  if (!e || !pw) { showToast('⚠️ Enter your email and password', true); return; }
+
+  const acc = getAccountByEmail(e);
+  if (!acc) {
+    setFieldState('si-email','si-email-msg','error','No account found with this email');
+    showToast('❌ Email not registered', true); return;
+  }
+  if (pw !== acc.password) {
+    setFieldState('si-email','si-email-msg','ok','Email looks good ✓');
+    setFieldState('si-pass','si-pass-msg','error','Wrong password — try again');
+    showToast('❌ Incorrect password', true); return;
   }
 
-  // NAV STATE
-  function updateNav() {
-    const acc = getAccount();
-    const btn = document.getElementById('heroGetStarted');
-    if (acc && btn) {
-      btn.textContent = '🛵 Browse Rentals'; 
-      btn.onclick = () => window.location.href = 'Search page.html';
-    } else if (btn) {
-      btn.textContent = 'Get Started 📍'; 
-      btn.onclick = openSignup;
-    }
+  // success
+  closeSignin();
+  const overlay = document.getElementById('redirectOverlay');
+  overlay.classList.add('show');
+  const bar = document.getElementById('redirectBar');
+  bar.style.animation = 'none'; bar.offsetHeight;
+  bar.style.animation = 'fillBar 1.6s ease forwards';
+  setTimeout(() => { window.location.href = 'Search page.html'; }, 1800);
+}
+
+/* ─────────────────────────────────────────────────
+   FORGOT PASSWORD — Step 1: Enter email
+───────────────────────────────────────────────── */
+function openForgot() {
+  closeSignin();
+  document.getElementById('fp-email').value = '';
+  clearFieldState('fp-email','fp-email-msg');
+  document.getElementById('forgotOverlay').classList.add('open');
+}
+function closeForgot() { document.getElementById('forgotOverlay').classList.remove('open'); }
+
+document.getElementById('forgotOverlay').addEventListener('click', e => {
+  if(e.target===document.getElementById('forgotOverlay')) closeForgot();
+});
+
+function handleForgotSend() {
+  const e = document.getElementById('fp-email').value.trim();
+  clearFieldState('fp-email','fp-email-msg');
+  if (!e) { showToast('⚠️ Enter your registered email', true); return; }
+
+  const acc = getAccountByEmail(e);
+  if (!acc) {
+    setFieldState('fp-email','fp-email-msg','error','No account found with this email');
+    showToast('❌ Email not registered on RentPlay', true); return;
   }
 
-  // AUTH MODALS
-  function openSignup() {
-    document.getElementById('existingBar').classList.toggle('show', !!getAccount());
-    document.getElementById('signupOverlay').classList.add('open');
+  // generate 6-digit token
+  fpEmail = e.toLowerCase();
+  fpToken = String(Math.floor(100000 + Math.random() * 900000));
+
+  closeForgot();
+  // show reset-code modal with the simulated email
+  document.getElementById('resetEmailDisplay').textContent = e;
+  document.getElementById('shownToken').textContent = fpToken;
+  document.getElementById('rc-code').value = '';
+  clearFieldState('rc-code','rc-code-msg');
+  document.getElementById('resetCodeOverlay').classList.add('open');
+}
+
+/* ─────────────────────────────────────────────────
+   FORGOT PASSWORD — Step 2: Verify code
+───────────────────────────────────────────────── */
+function closeResetCode() { document.getElementById('resetCodeOverlay').classList.remove('open'); }
+
+document.getElementById('resetCodeOverlay').addEventListener('click', e => {
+  if(e.target===document.getElementById('resetCodeOverlay')) closeResetCode();
+});
+
+function handleVerifyCode() {
+  const entered = document.getElementById('rc-code').value.trim();
+  clearFieldState('rc-code','rc-code-msg');
+  if (!entered) { showToast('⚠️ Enter the 6-digit code', true); return; }
+  if (entered !== fpToken) {
+    setFieldState('rc-code','rc-code-msg','error','Incorrect code — check the preview above');
+    showToast('❌ Wrong code', true); return;
   }
-  function closeSignup() { document.getElementById('signupOverlay').classList.remove('open'); }
+  // code correct → open new-password modal
+  closeResetCode();
+  document.getElementById('np-pass').value = '';
+  document.getElementById('np-confirm').value = '';
+  document.getElementById('newStrengthFill').style.width = '0';
+  clearFieldState('np-confirm','np-confirm-msg');
+  document.getElementById('newPassOverlay').classList.add('open');
+}
 
-  function openSignin() {
-    const acc = getAccount();
-    if (!acc) { showToast('⚠️ Page not found .', true); return; }
-    document.getElementById('si-email').value = acc.email;
-    document.getElementById('si-pass').value  = '';
-    clearFieldState('si-email','si-email-msg');
-    clearFieldState('si-pass','si-pass-msg');
-    document.getElementById('signinOverlay').classList.add('open');
-  }
-  function closeSignin() { document.getElementById('signinOverlay').classList.remove('open'); }
+/* ─────────────────────────────────────────────────
+   FORGOT PASSWORD — Step 3: Save new password
+───────────────────────────────────────────────── */
+function closeNewPass() { document.getElementById('newPassOverlay').classList.remove('open'); }
 
-  function switchToSignin() { closeSignup(); setTimeout(openSignin, 220); }
-  function switchToSignup() { closeSignin(); setTimeout(openSignup, 220); }
+document.getElementById('newPassOverlay').addEventListener('click', e => {
+  if(e.target===document.getElementById('newPassOverlay')) closeNewPass();
+});
 
-  document.getElementById('signupOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signupOverlay')) closeSignup(); });
-  document.getElementById('signinOverlay').addEventListener('click', e => { if(e.target===document.getElementById('signinOverlay')) closeSignin(); });
+function handleResetPassword() {
+  const p1 = document.getElementById('np-pass').value;
+  const p2 = document.getElementById('np-confirm').value;
+  clearFieldState('np-confirm','np-confirm-msg');
 
-  function setFieldState(inputId, msgId, type, message) {
-    const inp = document.getElementById(inputId), msg = document.getElementById(msgId);
-    inp.classList.remove('input-error','input-ok');
-    msg.classList.remove('show','err','ok');
-    if (type === 'error') { inp.classList.add('input-error'); msg.textContent = '✖ '+message; msg.classList.add('show','err'); }
-    else if (type === 'ok') { inp.classList.add('input-ok'); if(message){msg.textContent='✔ '+message; msg.classList.add('show','ok');} }
-  }
-  function clearFieldState(inputId, msgId) {
-    document.getElementById(inputId).classList.remove('input-error','input-ok');
-    document.getElementById(msgId).classList.remove('show','err','ok');
-  }
-
-  function handleSignup() {
-    const n  = document.getElementById('su-name').value.trim();
-    const ph = document.getElementById('su-phone').value.trim();
-    const e  = document.getElementById('su-email').value.trim();
-    const pw = document.getElementById('su-pass').value.trim();
-    if (!n||!ph||!e||!pw) { showToast('⚠️ Please fill in all fields', true); return; }
-    if (pw.length < 6)    { showToast('⚠️ Password must be at least 6 characters', true); return; }
-    saveAccount({ name: n, phone: ph, email: e, password: pw });
-    closeSignup();
-    ['su-name','su-phone','su-email','su-pass'].forEach(id => document.getElementById(id).value = '');
-    showToast('✅ Account created! Opening Sign In…');
-    setTimeout(openSignin, 1000);
-  }
-
-  function handleSignin() {
-    const e  = document.getElementById('si-email').value.trim();
-    const pw = document.getElementById('si-pass').value.trim();
-    clearFieldState('si-email','si-email-msg');
-    clearFieldState('si-pass','si-pass-msg');
-    if (!e && !pw) { showToast('⚠️ Enter your email and password', true); return; }
-    const acc = getAccount();
-    if (!acc) { showToast('⚠️ Page not found .', true); return; }
-    const emailOk = (e === acc.email);
-    const passOk  = (pw === acc.password);
-    if (!emailOk && !passOk && e && pw) {
-      setFieldState('si-email','si-email-msg','error','Email address not found');
-      setFieldState('si-pass','si-pass-msg','error','Password is incorrect');
-      showToast('❌ Email and password do not match', true); return;
-    }
-    if (!emailOk && e) {
-      setFieldState('si-email','si-email-msg','error','Email address not found');
-      showToast('❌ Wrong email — check and try again', true); return;
-    }
-    if (!passOk && pw) {
-      setFieldState('si-email','si-email-msg','ok','Email looks good ✓');
-      setFieldState('si-pass','si-pass-msg','error','Wrong password — try again');
-      showToast('❌ Incorrect password', true); return;
-    }
-    if (emailOk && passOk) {
-      closeSignin();
-      const overlay = document.getElementById('redirectOverlay');
-      overlay.classList.add('show');
-      const bar = document.getElementById('redirectBar');
-      bar.style.animation = 'none'; bar.offsetHeight;
-      bar.style.animation = 'fillBar 1.6s ease forwards';
-      setTimeout(() => { window.location.href = 'Search page.html'; }, 1800);
-    }
+  if (!p1 || !p2) { showToast('⚠️ Fill in both password fields', true); return; }
+  if (p1.length < 6) { showToast('⚠️ Password must be at least 6 characters', true); return; }
+  if (p1 !== p2) {
+    setFieldState('np-confirm','np-confirm-msg','error','Passwords do not match');
+    showToast('❌ Passwords do not match', true); return;
   }
 
-  function showToast(msg, warn) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast' + (warn ? ' warn' : '');
-    t.classList.add('show');
-    clearTimeout(t._t);
-    t._t = setTimeout(() => t.classList.remove('show'), 3400);
-  }
+  updatePassword(fpEmail, p1);
+  fpToken = '';   // invalidate token
+  fpEmail = '';
+
+  closeNewPass();
+  showToast('✅ Password reset! You can now sign in.');
+  setTimeout(openSignin, 1000);
+}
+
+/* ─────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────── */
+function showToast(msg, warn) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (warn ? ' warn' : '');
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3400);
+}
 </script>
 </body>
 </html>
