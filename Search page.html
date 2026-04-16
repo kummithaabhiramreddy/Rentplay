@@ -1495,7 +1495,7 @@
       padding: 30px 24px;
       border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
+      align-items: left;
       gap: 15px;
     }
 
@@ -1518,7 +1518,8 @@
 
     .sidebar-link {
       display: flex;
-      align-items: center;
+      align-items: left;
+      justify-content: flex-start;
       gap: 15px;
       padding: 16px 24px;
       color: var(--text);
@@ -1528,24 +1529,43 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       transition: all 0.2s;
-      border-left: 4px solid transparent;
     }
 
     .sidebar-link i {
       font-size: 1.4rem;
       width: 24px;
-      text-align: center;
+      text-align: left;
       color: var(--muted);
     }
 
     .sidebar-link:hover {
       background: rgba(245, 166, 35, 0.05);
       color: var(--accent);
-      border-left-color: var(--accent);
+      border-radius: 8px;
+      margin: 0 8px;
     }
 
     .sidebar-link:hover i {
       color: var(--accent);
+    }
+
+    .sidebar-profile-summary {
+      padding: 16px 24px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-profile-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-profile-phone {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.4;
     }
 
     .sidebar-close {
@@ -1560,6 +1580,61 @@
       transition: color 0.2s;
     }
 
+    .edit-profile-field {
+      margin-bottom: 18px;
+    }
+
+    .edit-profile-field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .edit-profile-field input,
+    .edit-profile-field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .edit-profile-field textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .edit-profile-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .edit-profile-actions button {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .edit-profile-actions .save-btn {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .edit-profile-actions .cancel-btn {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
     .sidebar-close:hover {
       color: var(--accent);
     }
@@ -1569,7 +1644,7 @@
 <body>
 
   <!-- SIDEBAR NAVIGATION -->
-  <button class="menu-btn" onclick="toggleSidebar()" title="Account">
+  <button class="menu-btn" onclick="toggleSidebar()" title="Open Menu">
     <div style="display:flex; flex-direction:column; align-items:center; line-height:1;">
       <span style="font-size:10px; font-weight:800; color:var(--text); margin-bottom:-2px;">RP</span>
       <span style="font-size:16px;">☰</span>
@@ -1584,6 +1659,10 @@
       <div class="sidebar-logo" onclick="openLanguage()" style="cursor: pointer;">RENT<span>PLAY</span></div>
     </div>
     <div class="sidebar-body" style="overflow-y: auto; flex: 1;">
+      <div class="sidebar-profile-summary" id="sidebarProfileSummary">
+        <div class="sidebar-profile-name" id="sidebarProfileName">Guest User</div>
+        <div class="sidebar-profile-phone" id="sidebarProfilePhone">+91 00000 00000</div>
+      </div>
       <a href="javascript:void(0)" class="sidebar-link" onclick="openProfile()" data-t="sidebar_profile">
         <i>👤</i> Profile
       </a>
@@ -1591,19 +1670,19 @@
         <i>📦</i> My Order
       </a>
       <div style="height: 1px; background: var(--border); margin: 10px 24px; opacity: 0.5;"></div>
-      <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_edit">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openEditProfile()" data-t="sidebar_edit">
         <i>📝</i> Edit Profile
       </a>
       <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_cards">
         <i>💳</i> Save Cards & Gifts
       </a>
-      <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_address">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openSavedAddresses()" data-t="sidebar_address">
         <i>📍</i> Saved Addresses
       </a>
       <a href="javascript:void(0)" class="sidebar-link" onclick="openLanguage()" data-t="sidebar_lang">
         <i>🌐</i> Select Language
       </a>
-      <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_notif">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openNotificationSettings()" data-t="sidebar_notif">
         <i>🔔</i> Notification Settings
       </a>
       <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_privacy">
@@ -1615,7 +1694,7 @@
       </a>
     </div>
     <div style="padding: 20px 24px; border-top: 1px solid var(--border);">
-      <p style="font-size: 11px; color: var(--muted);">@ 2026 RentPlay Premium</p>
+      <p style="font-size: 11px; color: var(--muted);">© 2026 RentPlay Premium</p>
     </div>
   </div>
 
@@ -1643,8 +1722,8 @@
 
 
   <!-- LANGUAGE SELECTION (BLACK SCREEN LEFT DRAWER) -->
-  <div class="modal-overlay" id="langOverlay" onclick="if(event.target===this)closeLanguage()" style="padding: 0; align-items: flex-start; z-index: 9999; background: #000;">
-    <div class="modal" id="langModal" style="max-width: 85%; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+  <div class="modal-overlay modal-overlay-left" id="langOverlay" onclick="if(event.target===this)closeLanguage()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="langModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
       <div
         style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
         <button onclick="closeLanguage()"
@@ -1750,6 +1829,172 @@
     </div>
   </div>
 
+  <!-- NOTIFICATION SETTINGS (BLACK SCREEN LEFT DRAWER) -->
+  <div class="modal-overlay modal-overlay-left" id="notifOverlay" onclick="if(event.target===this)closeNotificationSettings()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="notifModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+      <div
+        style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
+        <button onclick="closeNotificationSettings()"
+          style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; margin-right:15px;">←</button>
+        <h2 style="margin:0; font-size:18px; font-weight:500;" data-t="notif_title">Notification Settings</h2>
+      </div>
+
+      <div id="notifList" style="flex: 1; overflow-y: auto;">
+        <style>
+          .notif-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #111;
+            color: #fff;
+          }
+
+          .notif-label {
+            font-size: 16px;
+            font-weight: 500;
+          }
+
+          .notif-desc {
+            font-size: 13px;
+            color: #aaa;
+            margin-top: 2px;
+          }
+
+          .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #333;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+          }
+
+          .toggle-switch.active {
+            background: var(--accent);
+          }
+
+          .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+          }
+
+          .toggle-switch.active::after {
+            transform: translateX(26px);
+          }
+        </style>
+
+        <div class="notif-item">
+          <div>
+            <div class="notif-label" data-t="notif_email">Email Notifications</div>
+            <div class="notif-desc" data-t="notif_email_desc">Receive order updates via email</div>
+          </div>
+          <div class="toggle-switch" id="emailToggle" onclick="toggleNotification('email')"></div>
+        </div>
+        <div class="notif-item">
+          <div>
+            <div class="notif-label" data-t="notif_sms">SMS Notifications</div>
+            <div class="notif-desc" data-t="notif_sms_desc">Receive alerts via SMS</div>
+          </div>
+          <div class="toggle-switch" id="smsToggle" onclick="toggleNotification('sms')"></div>
+        </div>
+        <div class="notif-item">
+          <div>
+            <div class="notif-label" data-t="notif_promo">Promotional Emails</div>
+            <div class="notif-desc" data-t="notif_promo_desc">Get offers and new game updates</div>
+          </div>
+          <div class="toggle-switch" id="promoToggle" onclick="toggleNotification('promo')"></div>
+        </div>
+        <div class="notif-item">
+          <div>
+            <div class="notif-label" data-t="notif_push">Push Notifications</div>
+            <div class="notif-desc" data-t="notif_push_desc">Browser notifications for important updates</div>
+          </div>
+          <div class="toggle-switch" id="pushToggle" onclick="toggleNotification('push')"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVED ADDRESSES (BLACK SCREEN LEFT DRAWER) -->
+  <div class="modal-overlay modal-overlay-left" id="addressOverlay" onclick="if(event.target===this)closeSavedAddresses()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="addressModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+      <div
+        style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
+        <button onclick="closeSavedAddresses()"
+          style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; margin-right:15px;">←</button>
+        <h2 style="margin:0; font-size:18px; font-weight:500;" data-t="address_title">Saved Addresses</h2>
+      </div>
+
+      <div id="addressList" style="flex: 1; overflow-y: auto;">
+        <style>
+          .address-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid #111;
+            color: #fff;
+            cursor: pointer;
+          }
+
+          .address-item:hover {
+            background: #111;
+          }
+
+          .address-content {
+            flex: 1;
+          }
+
+          .address-text {
+            font-size: 14px;
+            line-height: 1.4;
+          }
+
+          .address-date {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+          }
+
+          .address-actions {
+            display: flex;
+            gap: 8px;
+          }
+
+          .address-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+          }
+
+          .address-btn:hover {
+            color: var(--accent);
+          }
+
+          .no-addresses {
+            padding: 40px 24px;
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+          }
+        </style>
+        <!-- Addresses loaded by JS -->
+      </div>
+    </div>
+  </div>
+
   <div class="hero">
     <div class="hero-badge" data-t="hero_badge">🎮 Premium Game Rentals</div>
     <h1 data-t="hero_title">RENT ANY GAME<br>ANYTIME</h1>
@@ -1757,7 +2002,7 @@
     </p>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search games items..." oninput="filterGames()"
+      <input type="text" id="searchInput" placeholder="Search games, kits, equipment..." oninput="filterGames()"
         autocomplete="off" />
       <div class="search-actions">
         <button class="search-btn" type="button" title="Use camera" onclick="startScanner()">📷</button>
@@ -3148,9 +3393,13 @@
           const data = await res.json();
           if (data && data.display_name) {
             addrInput.value = data.display_name;
+            // Save to saved addresses
+            saveAddress(data.display_name, latitude, longitude);
             btn.textContent = "✅ Location Found";
           } else {
             addrInput.value = `${latitude}, ${longitude}`;
+            // Save lat/lng as address
+            saveAddress(`${latitude}, ${longitude}`, latitude, longitude);
             btn.textContent = "📍 Lat/Long Set";
           }
         } catch (err) {
@@ -3168,6 +3417,18 @@
         addrInput.placeholder = "Permission denied. Please type address.";
         setTimeout(() => { btn.innerHTML = "📍 Use Live Location"; }, 3000);
       }, { enableHighAccuracy: true });
+    }
+
+    function saveAddress(address, lat, lng) {
+      const saved = localStorage.getItem('savedAddresses');
+      let addresses = saved ? JSON.parse(saved) : [];
+      // Check if address already exists
+      const exists = addresses.some(addr => addr.address === address);
+      if (!exists) {
+        addresses.push({ address, lat, lng, timestamp: Date.now() });
+        localStorage.setItem('savedAddresses', JSON.stringify(addresses));
+        console.log('Address saved:', address);
+      }
     }
 
     function changeHours(delta) {
@@ -3330,16 +3591,20 @@
 
 
 
+    function applyProfileData(data) {
+      document.getElementById('profNameTitle').textContent = data.name || 'Set Your Name';
+      document.getElementById('profPhoneSub').textContent = data.phone || '+91 00000 00000';
+      document.getElementById('profEmailVal').textContent = data.email || 'Not Provided';
+      document.getElementById('profPhoneVal').textContent = data.phone || 'Not Provided';
+      document.getElementById('profAddressVal').textContent = data.address || 'Not Provided';
+    }
+
     function openProfile() {
       toggleSidebar();
-      const saved = localStorage.getItem('acctSession');
+      const saved = localStorage.getItem('currentUser');
       if (saved) {
         try {
-          const data = JSON.parse(saved);
-          document.getElementById('profNameTitle').textContent = data.name || 'Set Your Name';
-          document.getElementById('profPhoneSub').textContent = data.phone || '+91 00000 00000';
-          document.getElementById('profEmailVal').textContent = data.email || 'Not Provided';
-          document.getElementById('profAddressVal').textContent = data.address || 'Not Provided';
+          applyProfileData(JSON.parse(saved));
         } catch (e) { }
       }
       document.getElementById('profileOverlay').classList.add('show');
@@ -3347,6 +3612,68 @@
 
     function closeProfile() {
       document.getElementById('profileOverlay').classList.remove('show');
+    }
+
+    function openEditProfile() {
+      toggleSidebar();
+      const saved = localStorage.getItem('currentUser');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          document.getElementById('editName').value = data.name || '';
+          document.getElementById('editPhone').value = data.phone || '';
+          document.getElementById('editEmail').value = data.email || '';
+          document.getElementById('editAddress').value = data.address || '';
+        } catch (e) {
+          console.warn('Failed to load edit profile data', e);
+        }
+      }
+      document.getElementById('editProfileOverlay').classList.add('show');
+    }
+
+    function closeEditProfile() {
+      document.getElementById('editProfileOverlay').classList.remove('show');
+    }
+
+    function saveProfileChanges() {
+      const name = document.getElementById('editName').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const email = document.getElementById('editEmail').value.trim().toLowerCase();
+      const address = document.getElementById('editAddress').value.trim();
+
+      if (!name || !phone || !email) {
+        alert('Please fill in name, phone, and email.');
+        return;
+      }
+
+      const updatedUser = { name, phone, email, address };
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+      const sessionData = localStorage.getItem('acctSession');
+      if (sessionData) {
+        try {
+          const session = JSON.parse(sessionData);
+          session.name = name;
+          session.phone = phone;
+          session.email = email;
+          session.address = address;
+          localStorage.setItem('acctSession', JSON.stringify(session));
+        } catch (e) {
+          console.warn('Failed to update acctSession after profile edit', e);
+        }
+      }
+
+      loadSidebarProfile();
+      if (document.getElementById('profileOverlay').classList.contains('show')) {
+        const saved = localStorage.getItem('currentUser');
+        if (saved) {
+          try {
+            applyProfileData(JSON.parse(saved));
+          } catch (e) { }
+        }
+      }
+      closeEditProfile();
+      alert('Profile saved successfully.');
     }
 
     // ── MULTI-LANGUAGE SYSTEM ──
@@ -3489,12 +3816,144 @@
       }, 400);
     }
 
+    function openNotificationSettings() {
+      // Close sidebar first without animation conflict
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.remove('show');
+      sidebarOverlay.classList.remove('show');
+
+      const overlay = document.getElementById('notifOverlay');
+      const modal = document.getElementById('notifModal');
+      // Reset to start position (off-screen left)
+      modal.style.transition = 'none';
+      modal.style.transform = 'translateX(-100%)';
+      overlay.classList.add('show');
+      // Trigger slide-in from left
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modal.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+          modal.style.transform = 'translateX(0)';
+        });
+      });
+      loadNotificationSettings();
+    }
+
+    function closeNotificationSettings() {
+      const modal = document.getElementById('notifModal');
+      const overlay = document.getElementById('notifOverlay');
+      modal.style.transform = 'translateX(-100%)';
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 400);
+    }
+
+    function loadNotificationSettings() {
+      const settings = JSON.parse(localStorage.getItem('rpNotifications') || '{}');
+      document.getElementById('emailToggle').classList.toggle('active', settings.email !== false);
+      document.getElementById('smsToggle').classList.toggle('active', settings.sms !== false);
+      document.getElementById('promoToggle').classList.toggle('active', settings.promo !== false);
+      document.getElementById('pushToggle').classList.toggle('active', settings.push !== false);
+    }
+
+    function toggleNotification(type) {
+      const toggle = document.getElementById(type + 'Toggle');
+      const settings = JSON.parse(localStorage.getItem('rpNotifications') || '{}');
+      settings[type] = !toggle.classList.contains('active');
+      localStorage.setItem('rpNotifications', JSON.stringify(settings));
+      toggle.classList.toggle('active');
+    }
+
+    function openSavedAddresses() {
+      // Close sidebar first without animation conflict
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.remove('show');
+      sidebarOverlay.classList.remove('show');
+
+      const overlay = document.getElementById('addressOverlay');
+      const modal = document.getElementById('addressModal');
+      // Reset to start position (off-screen left)
+      modal.style.transition = 'none';
+      modal.style.transform = 'translateX(-100%)';
+      overlay.classList.add('show');
+      // Trigger slide-in from left
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modal.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+          modal.style.transform = 'translateX(0)';
+        });
+      });
+      loadSavedAddresses();
+    }
+
+    function closeSavedAddresses() {
+      const modal = document.getElementById('addressModal');
+      const overlay = document.getElementById('addressOverlay');
+      modal.style.transform = 'translateX(-100%)';
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 400);
+    }
+
+    function loadSavedAddresses() {
+      const addressList = document.getElementById('addressList');
+      const saved = localStorage.getItem('savedAddresses');
+      const addresses = saved ? JSON.parse(saved) : [];
+
+      if (addresses.length === 0) {
+        addressList.innerHTML = '<div class="no-addresses" data-t="address_no_saved">No saved addresses yet.<br>Use "📍 Use Live Location" in booking form to save addresses.</div>';
+        return;
+      }
+
+      addressList.innerHTML = addresses.map((addr, index) => `
+        <div class="address-item">
+          <div class="address-content" onclick="selectAddress('${addr.address.replace(/'/g, "\\'")}')">
+            <div class="address-text">${addr.address}</div>
+            <div class="address-date">${new Date(addr.timestamp).toLocaleDateString()}</div>
+          </div>
+          <div class="address-actions">
+            <button class="address-btn" onclick="deleteAddress(${index})" title="Delete">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectAddress(address) {
+      // Set the address in the booking form if it's open
+      const addrInput = document.getElementById('mAddress');
+      if (addrInput) {
+        addrInput.value = address;
+      }
+      closeSavedAddresses();
+    }
+
+    function deleteAddress(index) {
+      const saved = localStorage.getItem('savedAddresses');
+      let addresses = saved ? JSON.parse(saved) : [];
+      addresses.splice(index, 1);
+      localStorage.setItem('savedAddresses', JSON.stringify(addresses));
+      loadSavedAddresses();
+    }
+
     function changeLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('rpLang', lang);
       applyTranslations();
       updateLangUISelection();
       setTimeout(closeLanguage, 300);
+    }
+
+    function loadSidebarProfile() {
+      const saved = localStorage.getItem('currentUser');
+      if (!saved) return;
+      try {
+        const user = JSON.parse(saved);
+        document.getElementById('sidebarProfileName').textContent = user.name || 'Guest User';
+        document.getElementById('sidebarProfilePhone').textContent = user.phone || '+91 00000 00000';
+      } catch (e) {
+        console.warn('Failed to parse currentUser', e);
+      }
     }
 
     function applyTranslations() {
@@ -3556,12 +4015,91 @@
     // Initial translation apply on page load
     window.addEventListener('DOMContentLoaded', () => {
       applyTranslations();
+      loadSidebarProfile();
     });
 
     function closeOrders() {
       document.getElementById('ordersOverlay').classList.remove('show');
     }
   </script>
+
+  <!-- PROFILE PAGE (FULL SCREEN OVERLAY) -->
+  <div class="modal-overlay" id="profileOverlay" style="padding: 0; align-items: flex-start; background: #000;">
+    <div class="modal"
+      style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; color: #fff;">
+      <div
+        style="padding: 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10;">
+        <h2 style="margin:0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color: #fff;">👤 My Profile</h2>
+        <button class="modal-close" onclick="closeProfile()" style="position:static; font-size:24px; color:#fff;">✕</button>
+      </div>
+
+      <div id="profileContent" style="flex: 1; overflow-y: auto; padding: 24px;">
+        <div style="max-width: 600px; margin: 0 auto;">
+          <div style="margin-bottom: 24px;">
+            <div style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;" id="profNameTitle">Set Your Name</div>
+            <div style="font-size: 14px; color: #bbb;" id="profPhoneSub">+91 00000 00000</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Email Address</div>
+              <div id="profEmailVal" style="font-size: 16px; color: #fff;">Not Provided</div>
+            </div>
+            <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Phone Number</div>
+              <div id="profPhoneVal" style="font-size: 16px; color: #fff;">Not Provided</div>
+            </div>
+            <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Address</div>
+              <div id="profAddressVal" style="font-size: 16px; color: #fff; line-height: 1.6;">Not Provided</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 16px; text-align: center; background: #000; border-top: 1px solid rgba(255,255,255,0.08);">
+        <p style="font-size: 12px; color: #888;">Account information is managed securely. <a href="mailto:support@rentplay.com" style="color:#fff; text-decoration:underline;">Contact Support</a> for changes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE OVERLAY -->
+  <div class="modal-overlay" id="editProfileOverlay" style="padding: 0; align-items: flex-start; background: rgba(0,0,0,0.85);">
+    <div class="modal" style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; color: #fff;">
+      <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10;">
+        <h2 style="margin: 0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color:#fff;">Edit Profile</h2>
+        <button class="modal-close" onclick="closeEditProfile()" style="position:static; font-size:24px; color:#fff;">✕</button>
+      </div>
+
+      <div style="flex: 1; overflow-y: auto; padding: 24px;">
+        <div style="max-width: 600px; margin: 0 auto;">
+          <div style="display:flex; flex-direction:column; gap: 18px;">
+            <div class="edit-profile-field">
+              <label for="editName">Full Name</label>
+              <input id="editName" type="text" placeholder="Your full name" />
+            </div>
+            <div class="edit-profile-field">
+              <label for="editPhone">Phone Number</label>
+              <input id="editPhone" type="tel" placeholder="+91 99999 99999" />
+            </div>
+            <div class="edit-profile-field">
+              <label for="editEmail">Email Address</label>
+              <input id="editEmail" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="edit-profile-field">
+              <label for="editAddress">Address</label>
+              <textarea id="editAddress" placeholder="Your delivery address"></textarea>
+            </div>
+            <div class="edit-profile-actions">
+              <button class="cancel-btn" onclick="closeEditProfile()">Cancel</button>
+              <button class="save-btn" onclick="saveProfileChanges()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
