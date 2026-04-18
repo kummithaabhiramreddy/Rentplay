@@ -52,19 +52,8 @@
     .field select { cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a82a0' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px }
     .field select option { background:#1b1f2b }
     .field textarea { resize:vertical; min-height:80px; line-height:1.5 }
-    /* Searchable Datalist Styling */
-    .field input[list]::-webkit-calendar-picker-indicator {
-      display: none !important;
-    }
-    .field .search-ico {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 14px;
-      color: var(--muted);
-      pointer-events: none;
-    }
+    .field input[list]::-webkit-calendar-picker-indicator { display: none !important; }
+    .field .search-ico { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--muted); pointer-events: none; }
     .input-icon { position:relative }
     .input-icon input { padding-left:38px }
     .input-icon .ico { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:15px; pointer-events:none }
@@ -87,9 +76,11 @@
     .doc-card.uploaded h4 { color:var(--green) }
     .doc-card.rejected { border-color:rgba(255,92,92,.5); background:rgba(255,92,92,.06) }
     .doc-card.rejected h4 { color:var(--red) }
+    .doc-card.rejected { border-color: #ff6b6b !important; background: rgba(255, 107, 43, 0.08) !important; box-shadow: inset 0 0 0 1px rgba(255, 92, 92, 0.2); }
     .doc-card.verifying { border-color:rgba(255,107,43,.5); background:var(--orange-glow); pointer-events:none }
     .doc-status { font-size:11px; margin-top:6px; font-weight:600; min-height:16px; line-height:1.3 }
     .doc-status.ok { color:var(--green) } .doc-status.err { color:var(--red) } .doc-status.checking { color:var(--orange-light) }
+    .doc-status.err { color: #ff6b6b; white-space: pre-wrap; font-size: 11px; line-height: 1.4; text-align: left; padding: 4px 2px; }
     .spin-sm { display:inline-block; width:11px; height:11px; border:2px solid rgba(255,107,43,.3); border-top-color:var(--orange); border-radius:50%; animation:spin .8s linear infinite; vertical-align:middle; margin-right:4px }
     @keyframes spin { to { transform:rotate(360deg) } }
     .radio-group,.check-group { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2px }
@@ -121,6 +112,7 @@
     .ai-verify-panel.show { display:block }
     .ai-panel-title { font-size:12px; font-weight:700; color:var(--orange-light); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.75rem; display:flex; align-items:center; gap:6px }
     .ai-result-row { display:flex; align-items:flex-start; gap:8px; font-size:12.5px; margin-top:.45rem; line-height:1.4 }
+    .ai-result-row { background: rgba(0, 0, 0, 0.2); padding: 0.6rem; border-radius: 6px; margin: 0.5rem 0; }
     .tag { font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; flex-shrink:0; margin-top:2px }
     .tag-ok { background:rgba(34,217,138,.15); color:var(--green) }
     .tag-err { background:rgba(255,92,92,.15); color:var(--red) }
@@ -140,10 +132,16 @@
     .success-icon { font-size:60px; margin-bottom:20px; display:block }
     .success-title { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; color:var(--green); margin-bottom:15px }
     .success-id { font-size:18px; color:var(--muted); margin-bottom:30px }
+    /* Store zone badge styling */
+    .store-zone-tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; background:rgba(255,107,43,.15); color:var(--orange-light); margin-left:6px; vertical-align:middle; }
     @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+  </script>
 </head>
 <body>
 
@@ -200,14 +198,290 @@
         <label>Assigned Work Store <span class="req">*</span></label>
         <div class="input-icon">
           <span class="ico">🏪</span>
-          <input type="text" id="assignedStore" list="storeOptions" placeholder="Search Store Hub..." />
+          <input type="text" id="assignedStore" list="storeOptions" placeholder="Search City / Area / Store Hub (TS & AP)..." />
           <span class="search-ico">🔍</span>
+
+          <!-- ══════════════════════════════════════════════════
+               VIJAYAWADA STORES — Main Centers within 20 km
+               HYDERABAD STORES   — Main Centers within 20 km
+               All on major roads / junctions, no inner lanes
+          ══════════════════════════════════════════════════ -->
           <datalist id="storeOptions">
-            <option value="Bhimavaram Central-Zone (HQ)">
-            <option value="Palakollu South-East Hub">
-            <option value="Tanuku North Hub">
-            <option value="Akividu West Store">
-            <option value="Undi Service Point">
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- ▌ VIJAYAWADA STORES                        ▐ -->
+            <!-- ════════════════════════════════════════════ -->
+
+            <!-- ── CORE CITY (0–5 km) ─────────────────────── -->
+            <option value="Benz Circle Hub — MG Road, Vijayawada">
+            <option value="Governorpet Central Hub — Eluru Road, Vijayawada">
+            <option value="One Town Hub — Bandar Road (NH-16), Vijayawada">
+            <option value="Besant Road Hub — Besant Road, Vijayawada">
+            <option value="Suryaraopet Hub — Suryaraopet Main Road, Vijayawada">
+            <option value="Labbipet Hub — Labbipet Main Road, Vijayawada">
+            <option value="Moghalrajpuram Hub — Moghalrajpuram Main Road, Vijayawada">
+            <option value="Patamata Hub — Patamata Main Road, Vijayawada">
+            <option value="Siddhartha Nagar Hub — Ring Road, Vijayawada">
+            <option value="Auto Nagar Hub — Auto Nagar Main Road, Vijayawada">
+
+            <!-- ── EAST / RIVER BELT (5–10 km) ───────────── -->
+            <option value="Gunadala Hub — Gunadala Hill Road, Vijayawada">
+            <option value="Krishna Lanka Hub — Krishna Lanka Main Road, Vijayawada">
+            <option value="Bhavanipuram Hub — Bhavanipuram Main Road, Vijayawada">
+            <option value="Ajit Singh Nagar Hub — Rajiv Gandhi Road, Vijayawada">
+
+            <!-- ── NORTH / BYPASS BELT (8–14 km) ─────────── -->
+            <option value="Kanuru Hub — Kanuru Junction, NH-16, Vijayawada">
+            <option value="Kankipadu Junction Hub — NH-65, Kankipadu (12 km)">
+            <option value="Penamaluru Hub — Penamaluru Main Road (10 km)">
+            <option value="Vambay Colony Hub — Ring Road North, Vijayawada">
+
+            <!-- ── WEST CORRIDOR (10–18 km) ───────────────── -->
+            <option value="Kondapalli Hub — Kondapalli Main Road (15 km)">
+            <option value="Ibrahimpatnam Hub — NH-65, Ibrahimpatnam (18 km)">
+
+            <!-- ── EAST / GANNAVARAM CORRIDOR (10–16 km) ─── -->
+            <option value="Gannavaram Hub — Airport Road, Gannavaram (13 km)">
+            <option value="Nunna Hub — Nunna Main Road (15 km)">
+            <option value="Kothapet Hub — Kothapet Junction, Vijayawada">
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- ▌ HYDERABAD STORES                         ▐ -->
+            <!-- ════════════════════════════════════════════ -->
+
+            <!-- ── CORE CITY / OLD CITY (0–5 km) ─────────── -->
+            <option value="Abids Hub — Abids Main Road, Hyderabad">
+            <option value="Nampally Hub — Nampally Station Road, Hyderabad">
+            <option value="Koti Hub — Koti Main Road, Hyderabad">
+            <option value="Charminar Hub — Charminar Road, Hyderabad">
+            <option value="Malakpet Hub — Malakpet Main Road, Hyderabad">
+            <option value="Somajiguda Hub — Somajiguda Circle, Hyderabad">
+            <option value="Panjagutta Hub — Panjagutta Junction, Hyderabad">
+
+            <!-- ── WEST / CENTRAL BELT (5–10 km) ─────────── -->
+            <option value="Ameerpet Hub — Ameerpet Junction, Hyderabad">
+            <option value="SR Nagar Hub — SR Nagar Main Road, Hyderabad">
+            <option value="Begumpet Hub — Begumpet Main Road, Hyderabad">
+            <option value="Secunderabad Hub — MG Road, Secunderabad">
+            <option value="Banjara Hills Hub — Road No.12, Banjara Hills, Hyderabad">
+            <option value="Jubilee Hills Hub — Road No.36, Jubilee Hills, Hyderabad">
+            <option value="Mehdipatnam Hub — Mehdipatnam Main Road, Hyderabad">
+            <option value="Tolichowki Hub — Tolichowki Main Road, Hyderabad">
+            <option value="Attapur Hub — Attapur Ring Road Junction, Hyderabad">
+
+            <!-- ── NORTH CORRIDOR (8–15 km) ──────────────── -->
+            <option value="ECIL Hub — ECIL X Roads, Hyderabad">
+            <option value="Kompally Hub — Kompally Main Road (14 km), Hyderabad">
+            <option value="Bowenpally Hub — Bowenpally Main Road, Secunderabad">
+            <option value="Balanagar Hub — Balanagar Main Road, Hyderabad">
+            <option value="Kukatpally Hub — KPHB Main Road, Kukatpally, Hyderabad">
+            <option value="Miyapur Hub — Miyapur Junction (15 km), Hyderabad">
+
+            <!-- ── EAST CORRIDOR (8–18 km) ────────────────── -->
+            <option value="Uppal Hub — Uppal Main Road, Hyderabad">
+            <option value="Nagole Hub — Nagole Junction, Hyderabad">
+            <option value="Vanasthalipuram Hub — Vanasthalipuram Main Road (14 km), Hyderabad">
+            <option value="LB Nagar Hub — LB Nagar Junction, Hyderabad">
+            <option value="Dilsukhnagar Hub — Dilsukhnagar Main Road, Hyderabad">
+
+            <!-- ── WEST TECH CORRIDOR (12–20 km) ─────────── -->
+            <option value="Hitech City Hub — Hitech City Main Road, Hyderabad">
+            <option value="Madhapur Hub — Madhapur Main Road, Hyderabad">
+            <option value="Gachibowli Hub — Gachibowli Junction, Hyderabad">
+            <option value="Kondapur Hub — Kondapur Main Road (16 km), Hyderabad">
+            <option value="Patancheru Hub — Patancheru Junction, NH-65 (20 km), Hyderabad">
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- ▌ AMARAVATHI STORES                        ▐ -->
+            <!-- ════════════════════════════════════════════ -->
+
+            <!-- ── CAPITAL CORE (0–5 km) ──────────────────── -->
+            <option value="Amaravathi Town Hub — Amaravathi Main Road, Amaravathi">
+            <option value="Velagapudi Hub — Secretariat Road, Velagapudi, Amaravathi">
+            <option value="Thullur Hub — Thullur Main Road, Amaravathi">
+            <option value="Mandadam Hub — Mandadam Junction, Amaravathi">
+            <option value="Uddandarayunipalem Hub — Capital Region Main Road, Amaravathi">
+
+            <!-- ── TADEPALLE / UNDAVALLI BELT (5–10 km) ───── -->
+            <option value="Tadepalle Hub — Tadepalle Main Road (NH-16), Tadepalle">
+            <option value="Undavalli Hub — Undavalli Main Road, Undavalli">
+            <option value="Nidamanuru Hub — Nidamanuru Junction, Vijayawada Rural">
+            <option value="Krishnayapalem Hub — Krishnayapalem Main Road, Amaravathi">
+
+            <!-- ── MANGALAGIRI CORRIDOR (8–14 km) ─────────── -->
+            <option value="Mangalagiri Hub — NH-16 Main Road, Mangalagiri">
+            <option value="Nallapadu Hub — Nallapadu Junction, Guntur Road, Mangalagiri">
+            <option value="Pedakakani Hub — Pedakakani Main Road (15 km), Guntur Dist">
+            <option value="Phirangipuram Hub — Phirangipuram Junction (16 km), Guntur Road">
+
+            <!-- ── OUTER RING / SATELLITE TOWNS (14–20 km) ── -->
+            <option value="Duggirala Hub — Duggirala Main Road (17 km), Guntur Dist">
+            <option value="Tadikonda Hub — Tadikonda Main Road (18 km), Guntur Dist">
+            <option value="Venkatapalem Hub — Venkatapalem Junction (12 km), Amaravathi">
+            <option value="Nelapadu Hub — Nelapadu Main Road, Amaravathi Capital Region">
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- ▌ BHIMAVARAM STORES                        ▐ -->
+            <!-- ════════════════════════════════════════════ -->
+
+            <!-- ── CORE TOWN (0–5 km) ─────────────────────── -->
+            <option value="Bhimavaram Central Hub — NH-214 Main Road, Bhimavaram">
+            <option value="RTC Bus Stand Hub — Bus Stand Road, Bhimavaram">
+            <option value="Rajamandri Road Hub — Rajamandri Road Junction, Bhimavaram">
+            <option value="Bhimavaram Railway Station Hub — Station Road, Bhimavaram">
+            <option value="Kota Road Hub — Kota Junction Main Road, Bhimavaram">
+            <option value="Naidupeta Road Hub — Naidupeta Main Road, Bhimavaram">
+
+            <!-- ── INNER RING (5–10 km) ───────────────────── -->
+            <option value="Undi Road Hub — Undi Main Road (6 km), Bhimavaram">
+            <option value="Mogaltur Hub — Mogaltur Main Road (7 km), West Godavari">
+            <option value="Kalla Hub — Kalla Junction (8 km), West Godavari">
+            <option value="Iragavaram Hub — Iragavaram Main Road (9 km), West Godavari">
+
+            <!-- ── OUTER BELT (10–18 km) ──────────────────── -->
+            <option value="Palakoderu Hub — Palakoderu Junction (12 km), West Godavari">
+            <option value="Palakollu Hub — Palakollu Main Road (NH-214, 15 km), West Godavari">
+            <option value="Achanta Hub — Achanta Main Road (14 km), West Godavari">
+            <option value="Narsapur Road Hub — Narsapur NH Junction (16 km), West Godavari">
+            <option value="Tanuku Hub — Tanuku Main Road (18 km), West Godavari">
+
+            <!-- ════════════════════════════════════════════════════ -->
+            <!-- ▌ TELANGANA — STATE-WIDE MAIN CENTER HUBS          ▐ -->
+            <!-- ════════════════════════════════════════════════════ -->
+
+            <!-- ── WARANGAL DISTRICT ──────────────────────────── -->
+            <option value="Warangal Central Hub — Hanamkonda Main Road, Warangal">
+            <option value="Hanamkonda Hub — Warangal-Hanamkonda Road, Warangal">
+            <option value="Kazipet Hub — Kazipet Railway Road, Warangal">
+            <option value="Narsampet Hub — Narsampet Main Road, Warangal Dist">
+
+            <!-- ── KARIMNAGAR DISTRICT ────────────────────────── -->
+            <option value="Karimnagar Central Hub — Karimnagar Main Road, Karimnagar">
+            <option value="Ramagundam Hub — Ramagundam Main Road, Peddapalli Dist">
+            <option value="Mancherial Hub — Mancherial Main Road, Mancherial Dist">
+            <option value="Jagtial Hub — Jagtial Main Road, Jagtial Dist">
+
+            <!-- ── NIZAMABAD DISTRICT ─────────────────────────── -->
+            <option value="Nizamabad Central Hub — Station Road, Nizamabad">
+            <option value="Bodhan Hub — Bodhan Main Road, Nizamabad Dist">
+            <option value="Armoor Hub — Armoor Junction, Nizamabad Dist">
+
+            <!-- ── ADILABAD DISTRICT ──────────────────────────── -->
+            <option value="Adilabad Central Hub — Adilabad Main Road, Adilabad">
+            <option value="Nirmal Hub — Nirmal Main Road, Nirmal Dist">
+            <option value="Bhainsa Hub — Bhainsa Main Road, Nirmal Dist">
+
+            <!-- ── KHAMMAM DISTRICT ───────────────────────────── -->
+            <option value="Khammam Central Hub — Khammam Main Road, Khammam">
+            <option value="Kothagudem Hub — Kothagudem Main Road, Bhadradri Dist">
+            <option value="Bhadrachalam Hub — Bhadrachalam Main Road, Bhadradri Dist">
+
+            <!-- ── NALGONDA DISTRICT ──────────────────────────── -->
+            <option value="Nalgonda Central Hub — Nalgonda Main Road, Nalgonda">
+            <option value="Suryapet Hub — Suryapet Main Road, Suryapet Dist">
+            <option value="Miryalaguda Hub — Miryalaguda Main Road, Nalgonda Dist">
+            <option value="Bhongir Hub — Bhongir Main Road, Yadadri Dist">
+
+            <!-- ── MAHBUBNAGAR / WANAPARTHY ───────────────────── -->
+            <option value="Mahabubnagar Central Hub — MBN Main Road, Mahabubnagar">
+            <option value="Wanaparthy Hub — Wanaparthy Main Road, Wanaparthy Dist">
+            <option value="Gadwal Hub — Gadwal Main Road, Jogulamba Dist">
+            <option value="Nagarkurnool Hub — Nagarkurnool Main Road, Nagarkurnool Dist">
+
+            <!-- ── SANGAREDDY / MEDAK ─────────────────────────── -->
+            <option value="Sangareddy Hub — Sangareddy Main Road, Sangareddy Dist">
+            <option value="Medak Hub — Medak Main Road, Medak Dist">
+            <option value="Siddipet Hub — Siddipet Main Road, Siddipet Dist">
+            <option value="Zaheerabad Hub — Zaheerabad Junction, Sangareddy Dist">
+
+            <!-- ── RANGA REDDY / MEDCHAL (HYD OUTSKIRTS) ─────── -->
+            <option value="Medchal Hub — Medchal Main Road, Medchal Dist">
+            <option value="Shamshabad Hub — Shamshabad NH-44, Ranga Reddy Dist">
+            <option value="Shadnagar Hub — Shadnagar Main Road, Ranga Reddy Dist">
+            <option value="Tandur Hub — Tandur Main Road, Vikarabad Dist">
+
+
+            <!-- ════════════════════════════════════════════════════ -->
+            <!-- ▌ ANDHRA PRADESH — STATE-WIDE MAIN CENTER HUBS     ▐ -->
+            <!-- ════════════════════════════════════════════════════ -->
+
+            <!-- ── VISAKHAPATNAM (VIZAG) ──────────────────────── -->
+            <option value="Vizag MVP Colony Hub — MVP Colony Main Road, Visakhapatnam">
+            <option value="Vizag Dwaraka Nagar Hub — Dwaraka Nagar Main Road, Visakhapatnam">
+            <option value="Vizag Gajuwaka Hub — Gajuwaka Main Road (NH-16), Visakhapatnam">
+            <option value="Vizag NAD Junction Hub — NAD Junction, Visakhapatnam">
+            <option value="Vizag Maddilapalem Hub — Maddilapalem Main Road, Visakhapatnam">
+            <option value="Vizag Steel Plant Hub — Steel Plant Main Road, Visakhapatnam">
+
+            <!-- ── VIZIANAGARAM & SRIKAKULAM ──────────────────── -->
+            <option value="Vizianagaram Central Hub — Vizianagaram Main Road, Vizianagaram">
+            <option value="Srikakulam Central Hub — Srikakulam Main Road, Srikakulam">
+            <option value="Narasannapeta Hub — Narasannapeta Main Road, Srikakulam Dist">
+
+            <!-- ── EAST GODAVARI ──────────────────────────────── -->
+            <option value="Kakinada Central Hub — Kakinada Main Road, Kakinada">
+            <option value="Kakinada Jagannaickpur Hub — Jagannaickpur Road, Kakinada">
+            <option value="Rajahmundry Central Hub — Innespeta Main Road, Rajahmundry">
+            <option value="Rajahmundry Morampudi Hub — Morampudi Junction, Rajahmundry">
+            <option value="Amalapuram Hub — Amalapuram Main Road, East Godavari">
+            <option value="Mandapeta Hub — Mandapeta Main Road, East Godavari">
+
+            <!-- ── WEST GODAVARI (beyond Bhimavaram coverage) ── -->
+            <option value="Eluru Central Hub — Eluru Main Road, Eluru">
+            <option value="Eluru Ring Road Hub — Eluru Ring Road Junction, Eluru">
+
+            <!-- ── KRISHNA DISTRICT ───────────────────────────── -->
+            <option value="Machilipatnam Central Hub — Machilipatnam Main Road, Krishna Dist">
+            <option value="Gudivada Hub — Gudivada Main Road, Krishna Dist">
+            <option value="Nandigama Hub — Nandigama Main Road, NTR Dist">
+
+            <!-- ── GUNTUR DISTRICT ────────────────────────────── -->
+            <option value="Guntur Brodipet Hub — Brodipet Main Road, Guntur">
+            <option value="Guntur Arundelpet Hub — Arundelpet Main Road, Guntur">
+            <option value="Guntur Kothapet Hub — Kothapet Junction, Guntur">
+            <option value="Tenali Hub — Tenali Main Road, Guntur Dist">
+            <option value="Narasaraopet Hub — Narasaraopet Main Road, Palnadu Dist">
+            <option value="Vinukonda Hub — Vinukonda Main Road, Palnadu Dist">
+
+            <!-- ── PRAKASAM DISTRICT ──────────────────────────── -->
+            <option value="Ongole Central Hub — Ongole Main Road (NH-16), Prakasam">
+            <option value="Ongole Kurnool Road Hub — Kurnool Road Junction, Ongole">
+            <option value="Markapur Hub — Markapur Main Road, Prakasam Dist">
+            <option value="Chirala Hub — Chirala Main Road, Bapatla Dist">
+
+            <!-- ── NELLORE DISTRICT ───────────────────────────── -->
+            <option value="Nellore Central Hub — Nellore Main Road (NH-16), Nellore">
+            <option value="Nellore Pogathota Hub — Pogathota Main Road, Nellore">
+            <option value="Kavali Hub — Kavali Main Road, Nellore Dist">
+            <option value="Gudur Hub — Gudur Junction (NH-16), Nellore Dist">
+
+            <!-- ── CHITTOOR DISTRICT ──────────────────────────── -->
+            <option value="Tirupati Central Hub — TP Area Main Road, Tirupati">
+            <option value="Tirupati Renigunta Hub — Renigunta Road, Tirupati">
+            <option value="Chittoor Central Hub — Chittoor Main Road, Chittoor">
+            <option value="Hindupur Hub — Hindupur Main Road, Sri Sathya Sai Dist">
+            <option value="Madanapalle Hub — Madanapalle Main Road, Chittoor Dist">
+
+            <!-- ── YSR KADAPA DISTRICT ────────────────────────── -->
+            <option value="Kadapa Central Hub — Kadapa Main Road, YSR Kadapa">
+            <option value="Proddatur Hub — Proddatur Main Road, YSR Kadapa Dist">
+            <option value="Mydukur Hub — Mydukur Main Road, YSR Kadapa Dist">
+            <option value="Badvel Hub — Badvel Main Road, YSR Kadapa Dist">
+
+            <!-- ── KURNOOL DISTRICT ───────────────────────────── -->
+            <option value="Kurnool Central Hub — Kurnool Main Road, Kurnool">
+            <option value="Kurnool Railway Station Hub — Station Road, Kurnool">
+            <option value="Nandyal Hub — Nandyal Main Road, Nandyal Dist">
+            <option value="Atmakur Hub — Atmakur Junction, Nandyal Dist">
+            <option value="Adoni Hub — Adoni Main Road, Kurnool Dist">
+
+            <!-- ── ANANTAPUR / SRI SATHYA SAI ────────────────── -->
+            <option value="Anantapur Central Hub — Anantapur Main Road, Anantapur">
+            <option value="Anantapur Railway Road Hub — Railway Road Junction, Anantapur">
+            <option value="Guntakal Hub — Guntakal Main Road, Anantapur Dist">
+            <option value="Tadipatri Hub — Tadipatri Main Road, Anantapur Dist">
+            <option value="Dharmavaram Hub — Dharmavaram Main Road, Sri Sathya Sai Dist">
+
           </datalist>
         </div>
       </div>
@@ -261,7 +535,7 @@
         <label>Current Address <span class="req">*</span></label>
         <textarea id="address" placeholder="House No., Street, Area, Landmark…"></textarea>
       </div>
-      <div class="field"><label>City <span class="req">*</span></label><input type="text" id="city" placeholder="e.g. Hyderabad" /></div>
+      <div class="field"><label>City <span class="req">*</span></label><input type="text" id="city" placeholder="e.g. Vijayawada" /></div>
       <div class="field" id="fld-state">
         <label>State <span class="req">*</span></label>
         <div class="input-icon">
@@ -275,7 +549,7 @@
           </datalist>
         </div>
       </div>
-      <div class="field"><label>PIN Code <span class="req">*</span></label><input type="text" id="pincode" placeholder="500001" maxlength="6" /></div>
+      <div class="field"><label>PIN Code <span class="req">*</span></label><input type="text" id="pincode" placeholder="520001" maxlength="6" /></div>
       <div class="field"><label>Landmark</label><input type="text" id="landmark" placeholder="Near bus stop, temple…" /></div>
     </div>
     <div class="nav-btns">
@@ -302,7 +576,7 @@
       </div>
       <div class="field"><label>Vehicle Brand <span class="req">*</span></label><input type="text" id="vehicleBrand" placeholder="e.g. Honda, Bajaj, TVS" /></div>
       <div class="field"><label>Vehicle Model <span class="req">*</span></label><input type="text" id="vehicleModel" placeholder="e.g. Activa, Pulsar 150" /></div>
-      <div class="field"><label>Registration Number <span class="req">*</span></label><input type="text" id="regNumber" placeholder="TS 09 AB 1234" style="text-transform:uppercase" /></div>
+      <div class="field"><label>Registration Number <span class="req">*</span></label><input type="text" id="regNumber" placeholder="AP 16 AB 1234" style="text-transform:uppercase" /></div>
       <div class="field">
         <label>Year of Manufacture</label>
         <div class="input-icon">
@@ -390,18 +664,19 @@
     </div>
   </div>
 
-  <!-- Step 3: Documents with AI verification (NO name/DOB check) -->
+  <!-- Step 3: Documents -->
   <div class="section" id="card3">
     <div class="section-head">
       <div class="section-icon">📄</div>
       <div><div class="section-title">Documents Upload</div><div class="section-sub">AI verifies document type only — at least 1 must be verified</div></div>
     </div>
-
     <div class="doc-req-note">
       ✅ <strong>Upload at least 1 document</strong> from any of the options below (Aadhaar, PAN, Driving Licence, RC Book, Insurance, or Bank Passbook).
-      You may upload more for faster approval. AI will verify the document type to ensure the correct document is uploaded in the correct slot.
+      AI will verify:<br/>
+      1️⃣ Document type matches the slot<br/>
+      2️⃣ Your name is clearly visible on the document<br/>
+      You may upload more for faster approval.
     </div>
-
     <div class="doc-grid" style="margin-top:1.1rem">
       <div class="doc-card" id="doc1">
         <input type="file" accept="image/*,application/pdf" onchange="handleDocUpload(event,'doc1','Aadhaar Card')" />
@@ -446,21 +721,15 @@
         <div class="doc-status" id="doc6-status"></div>
       </div>
     </div>
-
-    <!-- Doc count progress indicator -->
     <div class="doc-progress" id="docProgress">
       <div class="doc-progress-label" id="docProgressLabel">✅ 0 document verified</div>
       <div class="doc-progress-bar"><div class="doc-progress-fill" id="docProgressFill" style="width:0%"></div></div>
     </div>
-
-    <!-- AI Results Panel -->
     <div class="ai-verify-panel" id="aiPanel">
       <div class="ai-panel-title">🤖 AI Verification Results</div>
       <div id="aiPanelContent"></div>
     </div>
-
     <div id="docErrorBox"></div>
-
     <div class="nav-btns">
       <button class="btn-back" onclick="nextStep(2)">← Back</button>
       <button class="btn-next" onclick="validateDocStep()">Next: Bank &amp; Emergency →</button>
@@ -516,301 +785,236 @@
 </div>
 
 <script>
-// ─── State ───────────────────────────────────────────────────────────────────
 const docMeta = {
-  doc1: { required:false, label:'Aadhaar Card',   verified:false, rejected:false },
-  doc2: { required:false, label:'PAN Card',        verified:false, rejected:false },
-  doc3: { required:false, label:'Driving Licence', verified:false, rejected:false },
-  doc4: { required:false, label:'RC Book',         verified:false, rejected:false },
-  doc5: { required:false, label:'Insurance Copy',  verified:false, rejected:false },
-  doc6: { required:false, label:'Bank Passbook',   verified:false, rejected:false },
+  doc1:{required:false,label:'Aadhaar Card',verified:false,rejected:false},
+  doc2:{required:false,label:'PAN Card',verified:false,rejected:false},
+  doc3:{required:false,label:'Driving Licence',verified:false,rejected:false},
+  doc4:{required:false,label:'RC Book',verified:false,rejected:false},
+  doc5:{required:false,label:'Insurance Copy',verified:false,rejected:false},
+  doc6:{required:false,label:'Bank Passbook',verified:false,rejected:false},
 };
 const aiResults = {};
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
-function triggerPhoto() { document.getElementById('photoInput').click() }
-function previewPhoto(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const img = document.getElementById('photoImg');
-  img.src = URL.createObjectURL(file); img.style.display='block';
+function triggerPhoto(){document.getElementById('photoInput').click()}
+function previewPhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const img=document.getElementById('photoImg');
+  img.src=URL.createObjectURL(file);img.style.display='block';
   document.getElementById('photoIcon').style.display='none';
 }
-function clearErr(id) {
-  const f = document.getElementById(id); if (!f) return;
+function clearErr(id){
+  const f=document.getElementById(id);if(!f)return;
   f.classList.remove('field-error');
-  const m = f.querySelector('.field-error-msg'); if (m) m.remove();
+  const m=f.querySelector('.field-error-msg');if(m)m.remove();
 }
-function markErr(id, msg) {
-  const f = document.getElementById(id); if (!f) return;
+function markErr(id,msg){
+  const f=document.getElementById(id);if(!f)return;
   f.classList.add('field-error');
-  if (!f.querySelector('.field-error-msg')) {
-    const d = document.createElement('div'); d.className='field-error-msg'; d.textContent=msg; f.appendChild(d);
+  if(!f.querySelector('.field-error-msg')){
+    const d=document.createElement('div');d.className='field-error-msg';d.textContent=msg;f.appendChild(d);
   }
 }
-function nextStep(step) {
+function nextStep(step){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('card'+step).classList.add('active');
-  for (let i=1;i<=4;i++) {
-    const s=document.getElementById('s'+i), l=document.getElementById('l'+i);
-    if (i<step) { s.className='step done'; s.querySelector('.step-dot').textContent='✓'; if(l) l.className='step-line done'; }
-    else if (i===step) { s.className='step active'; s.querySelector('.step-dot').textContent=i; if(l) l.className='step-line'; }
-    else { s.className='step'; s.querySelector('.step-dot').textContent=i; if(l) l.className='step-line'; }
+  for(let i=1;i<=4;i++){
+    const s=document.getElementById('s'+i),l=document.getElementById('l'+i);
+    if(i<step){s.className='step done';s.querySelector('.step-dot').textContent='✓';if(l)l.className='step-line done';}
+    else if(i===step){s.className='step active';s.querySelector('.step-dot').textContent=i;if(l)l.className='step-line';}
+    else{s.className='step';s.querySelector('.step-dot').textContent=i;if(l)l.className='step-line';}
   }
   window.scrollTo(0,0);
 }
 
-// ─── Step 1 Validation ────────────────────────────────────────────────────────
-function validateStep1() {
-  let ok = true;
-  const fn = document.getElementById('firstName').value.trim();
-  const ln = document.getElementById('lastName').value.trim();
-  const dob = document.getElementById('dob').value;
-  const mob = document.getElementById('mobile').value.trim();
-  if (!fn) { markErr('fld-firstName','First name is required'); ok=false; } else clearErr('fld-firstName');
-  if (!ln) { markErr('fld-lastName','Last name is required'); ok=false; } else clearErr('fld-lastName');
-  if (!dob) { markErr('fld-dob','Date of birth is required'); ok=false; }
-  else {
-    // Parse DD-MM-YYYY
-    const parts = dob.split('-');
-    const birthDate = (parts.length === 3) ? new Date(parts[2], parts[1]-1, parts[0]) : new Date(dob);
-    
-    if (isNaN(birthDate.getTime())) {
-      markErr('fld-dob','Invalid date format (use DD-MM-YYYY)');
-      ok = false;
-    } else {
-      const age = (new Date() - birthDate) / (1000*60*60*24*365.25);
-      if (age < 18) { markErr('fld-dob','Must be at least 18 years old'); ok=false; } else clearErr('fld-dob');
+function validateStep1(){
+  let ok=true;
+  const fn=document.getElementById('firstName').value.trim();
+  const ln=document.getElementById('lastName').value.trim();
+  const dob=document.getElementById('dob').value;
+  const mob=document.getElementById('mobile').value.trim();
+  if(!fn){markErr('fld-firstName','First name is required');ok=false;}else clearErr('fld-firstName');
+  if(!ln){markErr('fld-lastName','Last name is required');ok=false;}else clearErr('fld-lastName');
+  if(!dob){markErr('fld-dob','Date of birth is required');ok=false;}
+  else{
+    const parts=dob.split('-');
+    const birthDate=(parts.length===3)?new Date(parts[2],parts[1]-1,parts[0]):new Date(dob);
+    if(isNaN(birthDate.getTime())){markErr('fld-dob','Invalid date format (use DD-MM-YYYY)');ok=false;}
+    else{
+      const age=(new Date()-birthDate)/(1000*60*60*24*365.25);
+      if(age<18){markErr('fld-dob','Must be at least 18 years old');ok=false;}else clearErr('fld-dob');
     }
   }
-  if (!mob) { markErr('fld-mobile','Mobile number is required'); ok=false; } else clearErr('fld-mobile');
-  if (ok) nextStep(2);
+  if(!mob){markErr('fld-mobile','Mobile number is required');ok=false;}else clearErr('fld-mobile');
+  if(ok)nextStep(2);
 }
 
-// ─── AI Verification (Tesseract OCR for browser-side "AI") ────────────────
-async function verifyWithAI(file, expectedType) {
-  if (!file.type.startsWith('image/')) {
-    // Non-image files (PDFs) — pass through with caution
-    return {
-      detected_type: expectedType,
-      is_correct_type: true,
-      is_authentic_looking: true,
-      rejection_reason: null,
-      verification_notes: "PDF file uploaded. Visual AI check skipped."
-    };
-  }
-
-  try {
-    // Initialize Tesseract worker
-    const worker = await Tesseract.createWorker('eng');
-    const { data: { text } } = await worker.recognize(file);
-    await worker.terminate();
-
-    const ocrText = text.toLowerCase();
-    
-    // Detection logic based on keywords
-    let detectedType = "Unknown Document";
-    
-    // Specific keywords for Indian Documents
-    const hasAadhar = ocrText.includes('aadhaar') || ocrText.includes('unique identification') || ocrText.includes('government of india');
-    const hasPan = ocrText.includes('income tax department') || ocrText.includes('permanent account number') || ocrText.includes('pan ');
-    const hasDL = ocrText.includes('driving licence') || ocrText.includes('license') || ocrText.includes('transport');
-    const hasRC = ocrText.includes('registration certificate') || ocrText.includes('form 23') || ocrText.includes('rc book');
-    const hasBank = ocrText.includes('bank') || ocrText.includes('passbook') || ocrText.includes('ifsc') || ocrText.includes('branch');
-
-    if (hasAadhar) detectedType = "Aadhaar Card";
-    else if (hasPan) detectedType = "PAN Card";
-    else if (hasDL) detectedType = "Driving Licence";
-    else if (hasRC) detectedType = "RC Book";
-    else if (hasBank) detectedType = "Bank Passbook";
-
-    // Compare with expected type
-    let isCorrect = (detectedType === expectedType);
-    let rejectionReason = null;
-
-    // GLOBAL NAME MATCHING (Applied to ALL documents: Aadhaar, PAN, DL, etc.)
-    const userFirstName = document.getElementById('firstName').value.trim().toLowerCase();
-    const userLastName = document.getElementById('lastName').value.trim().toLowerCase();
-    
-    // Check if name is provided in Step 1 first
-    if (!userFirstName && !userLastName) {
-      isCorrect = false;
-      rejectionReason = "Please fill in your name in Step 1 before uploading documents.";
-    } else {
-      const hasFirstName = userFirstName && ocrText.includes(userFirstName);
-      const hasLastName = userLastName && ocrText.includes(userLastName);
-      
-      // If neither first nor last name is found in the OCR text on ANY document
-      if (!hasFirstName && !hasLastName) {
-        isCorrect = false;
-        rejectionReason = `Name mismatch: Your name ("${userFirstName} ${userLastName}") was not detected on this ${detectedType || 'document'}.`;
-      }
-    }
-    
-    // If it's the wrong slot (only if it passed name check)
-    if (isCorrect && (detectedType !== expectedType)) {
-      isCorrect = false;
-      if (detectedType !== "Unknown Document") {
-        rejectionReason = `Wrong Slot: Detected ${detectedType} where ${expectedType} was expected.`;
-      } else {
-        rejectionReason = `This does not look like a clear ${expectedType}. Please re-upload.`;
-      }
-    }
-
-    return {
-      detected_type: detectedType,
-      is_correct_type: isCorrect,
-      is_authentic_looking: true,
-      rejection_reason: rejectionReason,
-      verification_notes: isCorrect ? "Type and Identity verified" : "Verification failed"
-    };
-  } catch (err) {
-    console.error("OCR Error:", err);
-    throw err;
-  }
+async function pdfToCanvas(file){
+  try{
+    const arrayBuffer=await file.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+    const page=await pdf.getPage(1);
+    const viewport=page.getViewport({scale:2.0});
+    const canvas=document.createElement('canvas');
+    const context=canvas.getContext('2d');
+    canvas.height=viewport.height;canvas.width=viewport.width;
+    await page.render({canvasContext:context,viewport:viewport}).promise;
+    return canvas;
+  }catch(e){throw new Error("Could not read PDF. Please use an image instead.");}
 }
 
-// ─── Handle Document Upload ───────────────────────────────────────────────────
-async function handleDocUpload(event, docId, expectedType) {
-  const file = event.target.files[0]; if (!file) return;
-  const card = document.getElementById(docId);
-  const statusEl = document.getElementById(docId+'-status');
-  const iconEl = document.getElementById(docId+'-icon');
-  const titleEl = document.getElementById(docId+'-title');
+async function verifyWithAI(file,expectedType){
+  let worker;
+  try{
+    let source=file;
+    if(file.type==='application/pdf'){source=await pdfToCanvas(file);}
+    else if(!file.type.startsWith('image/')){throw new Error("Unsupported file type. Please upload JPG, PNG or PDF.");}
+    worker=await Tesseract.createWorker('eng');
+    const{data:{text}}=await worker.recognize(source);
+    await worker.terminate();worker=null;
+    const ocrText=text.toLowerCase();
+    let detectedType="Unknown Document";
+    const hasPan=ocrText.includes('income tax')||ocrText.includes('permanent account')||ocrText.includes('incometax')||(ocrText.includes('pan')&&ocrText.includes('card'));
+    const bankKeywords=['passbook','pass book','ifsc','micr','a/c','account','saving','current account','branch','bank of','customer id','customerid'];
+    const hasBank=bankKeywords.some(k=>ocrText.includes(k))||(ocrText.includes('bank')&&(ocrText.includes('address')||ocrText.includes('name')));
+    const hasDL=ocrText.includes('driving')||ocrText.includes('licence')||ocrText.includes('license')||ocrText.includes('transport');
+    const hasRC=ocrText.includes('registration')||ocrText.includes('form 23')||ocrText.includes('rc book')||ocrText.includes('pc book')||ocrText.includes('chassis')||ocrText.includes('engine no');
+    const hasInsurance=ocrText.includes('insurance')||ocrText.includes('policy')||ocrText.includes('validity')||ocrText.includes('premium')||ocrText.includes('insurer')||ocrText.includes('period of insurance');
+    const aadharPattern=/\d{4}[\s-]?\d{4}[\s-]?\d{4}/;
+    const hasAadhar=(ocrText.includes('aadhaar')||ocrText.includes('aadhar')||ocrText.includes('unique identification')||ocrText.includes('uida')||aadharPattern.test(ocrText))&&!hasPan&&!hasBank;
+    if(hasPan)detectedType="PAN Card";
+    else if(hasBank)detectedType="Bank Passbook";
+    else if(hasDL)detectedType="Driving Licence";
+    else if(hasRC)detectedType="RC Book";
+    else if(hasInsurance)detectedType="Insurance Copy";
+    else if(hasAadhar)detectedType="Aadhaar Card";
+    let isCorrect=(detectedType===expectedType);
+    let rejectionReason=null;
+    if(!isCorrect){
+      if(detectedType!=="Unknown Document"){rejectionReason=`❌ Wrong Document: You uploaded "${detectedType}" but we need "${expectedType}". Please upload the correct document.`;}
+      else{rejectionReason=`❌ Document Not Clear: This doesn't look like a valid "${expectedType}". Make sure:\n• Image is bright and clear\n• Text is readable\n• All text is visible\nPlease try again with a clearer image.`;}
+    }
+    if(isCorrect){
+      const userFirstName=document.getElementById('firstName').value.trim().toLowerCase();
+      const userLastName=document.getElementById('lastName').value.trim().toLowerCase();
+      if(!userFirstName||!userLastName){isCorrect=false;rejectionReason="❌ Name required: Please enter your full name in Step 1 first before uploading documents.";}
+      else{
+        const nameParts=ocrText.split(/[\s,\-\n\t]+/);
+        const hasFirstName=ocrText.includes(userFirstName)||nameParts.some(part=>part.toLowerCase()===userFirstName);
+        const hasLastName=ocrText.includes(userLastName)||nameParts.some(part=>part.toLowerCase()===userLastName);
+        if(!hasFirstName&&!hasLastName){isCorrect=false;rejectionReason=`❌ Name Not Found: Neither your first name "${userFirstName}" nor last name "${userLastName}" found in this document.`;}
+        else if(!hasFirstName){isCorrect=false;rejectionReason=`❌ First Name Missing: Your first name "${userFirstName}" was not detected in this document.`;}
+        else if(!hasLastName){isCorrect=false;rejectionReason=`❌ Last Name Missing: Your last name "${userLastName}" was not detected in this document.`;}
+      }
+    }
+    return{detected_type:detectedType,is_correct_type:isCorrect,is_authentic_looking:true,rejection_reason:rejectionReason,verification_notes:isCorrect?"Type and Identity verified":"Verification failed"};
+  }catch(err){console.error("OCR Error:",err);throw err;}
+}
 
+async function handleDocUpload(event,docId,expectedType){
+  const file=event.target.files[0];if(!file)return;
+  const card=document.getElementById(docId);
+  const statusEl=document.getElementById(docId+'-status');
+  const iconEl=document.getElementById(docId+'-icon');
+  const titleEl=document.getElementById(docId+'-title');
   card.classList.remove('uploaded','rejected','verifying');
-  docMeta[docId].verified = false; docMeta[docId].rejected = false;
-  delete aiResults[docId];
-  updateAIPanel(); updateDocProgress();
-
-  card.classList.add('verifying');
-  iconEl.textContent = '⏳';
-  statusEl.className = 'doc-status checking';
-  statusEl.innerHTML = '<span class="spin-sm"></span>AI verifying…';
-  titleEl.innerHTML = expectedType;
-
-  try {
-    const result = await verifyWithAI(file, expectedType);
-    aiResults[docId] = result;
-    card.classList.remove('verifying');
-
-    const passed = result.is_correct_type && result.is_authentic_looking;
-
-    if (passed) {
-      card.classList.add('uploaded');
-      docMeta[docId].verified = true; docMeta[docId].rejected = false;
-      iconEl.textContent = '✅';
-      statusEl.className = 'doc-status ok';
-      statusEl.textContent = '✓ Verified: ' + result.detected_type;
-    } else {
-      card.classList.add('rejected');
-      docMeta[docId].verified = false; docMeta[docId].rejected = true;
-      iconEl.textContent = '❌';
-      statusEl.className = 'doc-status err';
-      
-      // Prioritize the detailed rejection reason from the AI
-      statusEl.textContent = result.rejection_reason || 'Could not verify document';
+  docMeta[docId].verified=false;docMeta[docId].rejected=false;
+  delete aiResults[docId];updateAIPanel();updateDocProgress();
+  card.classList.add('verifying');iconEl.textContent='⏳';
+  statusEl.className='doc-status checking';
+  statusEl.innerHTML='<span class="spin-sm"></span>AI verifying…';
+  titleEl.innerHTML=expectedType;
+  try{
+    const result=await verifyWithAI(file,expectedType);
+    aiResults[docId]=result;card.classList.remove('verifying');
+    const passed=result.is_correct_type&&result.is_authentic_looking;
+    if(passed){
+      card.classList.add('uploaded');docMeta[docId].verified=true;docMeta[docId].rejected=false;
+      iconEl.textContent='✅';statusEl.className='doc-status ok';
+      statusEl.textContent='✓ Verified: '+result.detected_type;
+    }else{
+      card.classList.add('rejected');docMeta[docId].verified=false;docMeta[docId].rejected=true;
+      iconEl.textContent='❌';statusEl.className='doc-status err';
+      statusEl.textContent=result.rejection_reason||'Could not verify document';
     }
-
-    updateAIPanel();
-    updateDocProgress();
-
-  } catch(err) {
-    card.classList.remove('verifying');
-    card.classList.add('rejected');
-    iconEl.textContent = '⚠️';
-    statusEl.className = 'doc-status err';
-    statusEl.textContent = 'Verification failed — retry';
-    docMeta[docId].rejected = true;
-    updateDocProgress();
-    console.error('AI error:', err);
+    updateAIPanel();updateDocProgress();
+  }catch(err){
+    card.classList.remove('verifying');card.classList.add('rejected');
+    iconEl.textContent='⚠️';statusEl.className='doc-status err';
+    statusEl.textContent=err.message||'Verification failed — retry';
+    docMeta[docId].rejected=true;updateDocProgress();
   }
 }
 
-// ─── Doc Progress Counter ─────────────────────────────────────────────────────
-function updateDocProgress() {
-  const verifiedCount = Object.values(docMeta).filter(d => d.verified).length;
-  const total = Object.keys(docMeta).length;
-  const progressEl = document.getElementById('docProgress');
-  const labelEl = document.getElementById('docProgressLabel');
-  const fillEl = document.getElementById('docProgressFill');
-
-  if (verifiedCount > 0) {
+function updateDocProgress(){
+  const verifiedCount=Object.values(docMeta).filter(d=>d.verified).length;
+  const total=Object.keys(docMeta).length;
+  const progressEl=document.getElementById('docProgress');
+  const labelEl=document.getElementById('docProgressLabel');
+  const fillEl=document.getElementById('docProgressFill');
+  if(verifiedCount>0){
     progressEl.classList.add('show');
-    labelEl.textContent = `✅ ${verifiedCount} document${verifiedCount > 1 ? 's' : ''} verified — you can proceed`;
-    fillEl.style.width = Math.min((verifiedCount / total) * 100, 100) + '%';
-  } else {
-    progressEl.classList.remove('show');
-  }
+    labelEl.textContent=`✅ ${verifiedCount} document${verifiedCount>1?'s':''} verified — you can proceed`;
+    fillEl.style.width=Math.min((verifiedCount/total)*100,100)+'%';
+  }else{progressEl.classList.remove('show');}
 }
 
-// ─── Update AI Panel ──────────────────────────────────────────────────────────
-function updateAIPanel() {
-  const panel = document.getElementById('aiPanel');
-  const content = document.getElementById('aiPanelContent');
-  const keys = Object.keys(aiResults);
-  if (!keys.length) { panel.classList.remove('show'); return; }
+function updateAIPanel(){
+  const panel=document.getElementById('aiPanel');
+  const content=document.getElementById('aiPanelContent');
+  const keys=Object.keys(aiResults);
+  if(!keys.length){panel.classList.remove('show');return;}
   panel.classList.add('show');
-  let html = '';
-  keys.forEach(id => {
-    const r = aiResults[id], label = docMeta[id].label;
-    if (r.is_correct_type && r.is_authentic_looking) {
-      html += `<div class="ai-result-row"><span class="tag tag-ok">✓ OK</span><span><strong>${label}:</strong> ${r.verification_notes || 'Document type verified'}</span></div>`;
-    } else {
-      const reason = !r.is_correct_type
-        ? `Detected "${r.detected_type}" — expected "${label}"`
-        : (r.rejection_reason || 'Verification failed');
-      html += `<div class="ai-result-row"><span class="tag tag-err">✗ FAIL</span><span><strong>${label}:</strong> ${reason}</span></div>`;
+  let html='';
+  keys.forEach(id=>{
+    const r=aiResults[id],label=docMeta[id].label;
+    if(r.is_correct_type&&r.is_authentic_looking){
+      html+=`<div class="ai-result-row"><span class="tag tag-ok">✓ OK</span><span><strong>${label}:</strong> ${r.verification_notes||'Document type verified'}</span></div>`;
+    }else{
+      const reason=!r.is_correct_type?(r.rejection_reason||`Detected "${r.detected_type}" — expected "${label}"`):( r.rejection_reason||'Verification failed');
+      html+=`<div class="ai-result-row" style="flex-wrap:wrap;"><span class="tag tag-err">✗ FAIL</span><span style="width:100%;"><strong>${label}:</strong><br/>${reason}</span></div>`;
     }
   });
-  content.innerHTML = html;
+  content.innerHTML=html;
 }
 
-// ─── Validate Doc Step — only 1 verified doc needed ──────────────────────────
-function validateDocStep() {
-  const errBox = document.getElementById('docErrorBox');
-  errBox.innerHTML = '';
-
-  const verifiedCount = Object.values(docMeta).filter(d => d.verified).length;
-  if (verifiedCount === 0) {
-    errBox.innerHTML = '<div class="doc-error">⚠️ Please upload and verify <strong>at least 1 document</strong> to proceed.</div>';
-    errBox.scrollIntoView({behavior:'smooth', block:'nearest'});
-    return;
+function validateDocStep(){
+  const errBox=document.getElementById('docErrorBox');errBox.innerHTML='';
+  const verifiedCount=Object.values(docMeta).filter(d=>d.verified).length;
+  if(verifiedCount===0){
+    errBox.innerHTML='<div class="doc-error">⚠️ Please upload and verify <strong>at least 1 document</strong> to proceed.</div>';
+    errBox.scrollIntoView({behavior:'smooth',block:'nearest'});return;
   }
-
   nextStep(4);
 }
 
-// ─── Submit ───────────────────────────────────────────────────────────────────
-const getRadio = n => { const el=document.querySelector(`input[name="${n}"]:checked`); return el?el.value:''; };
-const getChecked = s => Array.from(document.querySelectorAll(s)).filter(c=>c.checked).map(c=>c.parentElement.textContent.trim()).join(', ');
+const getRadio=n=>{const el=document.querySelector(`input[name="${n}"]:checked`);return el?el.value:'';};
+const getChecked=s=>Array.from(document.querySelectorAll(s)).filter(c=>c.checked).map(c=>c.parentElement.textContent.trim()).join(', ');
 
-async function submitForm() {
-  if (!document.getElementById('agreeCheck').checked) {
+async function submitForm(){
+  if(!document.getElementById('agreeCheck').checked){
     document.getElementById('agreeCheck').style.outline='3px solid #ff5c5c';
     alert('Please agree to the Terms & Conditions before submitting.');
-    setTimeout(()=>document.getElementById('agreeCheck').style.outline='',2000);
-    return;
+    setTimeout(()=>document.getElementById('agreeCheck').style.outline='',2000);return;
   }
   const firstName=document.getElementById('firstName').value.trim();
   const lastName=document.getElementById('lastName').value.trim();
   const mobile=document.getElementById('mobile').value.trim();
-  if (!firstName||!lastName||!mobile) { alert('Please fill in First Name, Last Name, and Mobile Number.'); return; }
-
-  const data = {
-    first_name:firstName, last_name:lastName, dob:document.getElementById('dob').value,
-    gender:getRadio('gender'), mobile, alternate_mobile:document.getElementById('altMobile').value.trim(),
+  if(!firstName||!lastName||!mobile){alert('Please fill in First Name, Last Name, and Mobile Number.');return;}
+  const data={
+    first_name:firstName,last_name:lastName,dob:document.getElementById('dob').value,
+    gender:getRadio('gender'),mobile,alternate_mobile:document.getElementById('altMobile').value.trim(),
     email:document.getElementById('email').value.trim(),
     assigned_store_id:document.getElementById('assignedStore').value,
     address:document.getElementById('address').value.trim(),
-    city:document.getElementById('city').value.trim(), state:document.getElementById('state').value,
-    pincode:document.getElementById('pincode').value.trim(), landmark:document.getElementById('landmark').value.trim(),
-    vehicle_type:getRadio('vehicle'), vehicle_brand:document.getElementById('vehicleBrand').value.trim(),
+    city:document.getElementById('city').value.trim(),state:document.getElementById('state').value,
+    pincode:document.getElementById('pincode').value.trim(),landmark:document.getElementById('landmark').value.trim(),
+    vehicle_type:getRadio('vehicle'),vehicle_brand:document.getElementById('vehicleBrand').value.trim(),
     vehicle_model:document.getElementById('vehicleModel').value.trim(),
     registration_number:document.getElementById('regNumber').value.trim(),
     year_of_manufacture:document.getElementById('yearMfg').value,
     insurance_valid_until:document.getElementById('insuranceDate').value,
-    fuel_type:document.getElementById('fuelType').value, ownership:getRadio('own'),
-    work_type:getRadio('work'), experience:document.getElementById('experience').value,
+    fuel_type:document.getElementById('fuelType').value,ownership:getRadio('own'),
+    work_type:getRadio('work'),experience:document.getElementById('experience').value,
     delivery_zones:getChecked('.check-group input[type="checkbox"]'),
     time_slots:getChecked('.slot-grid input[type="checkbox"]'),
     expected_salary:document.getElementById('expectedSalary').value,
@@ -825,29 +1029,25 @@ async function submitForm() {
     upi_id:document.getElementById('upiId').value.trim(),
     payment_preference:getRadio('pay')
   };
-
   const btn=document.querySelector('.btn-submit');
-  btn.disabled=true; btn.textContent='Submitting…';
-
-  async function tryUrl(url) {
-    try { const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); return await r.json(); }
-    catch(e) { return null; }
+  btn.disabled=true;btn.textContent='Submitting…';
+  async function tryUrl(url){
+    try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});return await r.json();}
+    catch(e){return null;}
   }
-
   const urls=[
     globalApiBase?globalApiBase+'/api/register-delivery':'/api/register-delivery',
     'http://127.0.0.1:3000/api/register-delivery','http://localhost:3000/api/register-delivery'
   ];
   let result=null;
-  for (let u of urls) { result=await tryUrl(u); if(result) break; }
-
-  if (result&&result.success) {
+  for(let u of urls){result=await tryUrl(u);if(result)break;}
+  if(result&&result.success){
     document.getElementById('finalPartId').textContent='Partner ID: #DRP'+result.partnerId;
     document.getElementById('successOverlay').classList.add('show');
-    btn.textContent='✅ Registered!'; btn.style.background='#22d98a';
-  } else {
+    btn.textContent='✅ Registered!';btn.style.background='#22d98a';
+  }else{
     alert('Error: '+(result?result.message:'Connection Failed. Is node server.js running?'));
-    btn.textContent='Retry Submission →'; btn.disabled=false;
+    btn.textContent='Retry Submission →';btn.disabled=false;
   }
 }
 </script>
