@@ -344,6 +344,11 @@
     <span class="lock-badge" id="badge-reviews">🔒 LOCKED</span>
   </div>
 
+   <a href="db_explorer.html" class="nav-item">
+    <svg viewBox="0 0 24 24"><path d="M16 11v6M13 14h6"/><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4"/></svg>
+    db_explorer
+  </a>
+
   <a href="Delivery boy registation form.html" class="nav-item">
     <svg viewBox="0 0 24 24"><path d="M16 11v6M13 14h6"/><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4"/></svg>
     Add New Partner
@@ -850,7 +855,9 @@ async function clearAllPartners(){
   if(!confirm("⚠️ Are you sure you want to delete ALL registered partners?")) return;
   if(!confirm("FINAL CONFIRMATION: This will permanently wipe all partner data. Proceed?")) return;
   try{
-    const res=await fetch('/api/delete-all-delivery-boys',{method:'POST'});
+    const isLocal=!window.location.hostname||window.location.hostname==='127.0.0.1'||window.location.hostname==='localhost';
+    const base=isLocal?'http://127.0.0.1:3000':'';
+    const res=await fetch(`${base}/api/delete-all-delivery-boys`,{method:'POST'});
     const result=await res.json();
     if(result.success){ toast("All partners removed",'ok'); fetchData(); }
     else toast(result.error||"Failed to clear list",'err');
