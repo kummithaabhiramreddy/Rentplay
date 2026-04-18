@@ -374,6 +374,27 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
     }
 
+    .sidebar-profile-email {
+      font-size: 10px;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: lowercase;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      display: none;
+      opacity: 0.9;
+    }
+
+    .sidebar-profile-email.show {
+      display: block;
+    }
+
+    .sidebar-profile-phone {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -1551,7 +1572,7 @@
 
     .sidebar-profile-summary {
       padding: 16px 24px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       margin-bottom: 16px;
     }
 
@@ -1597,9 +1618,9 @@
     .edit-profile-field textarea {
       width: 100%;
       padding: 12px 14px;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 10px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255, 255, 255, 0.04);
       color: #fff;
       font-size: 15px;
     }
@@ -1631,12 +1652,111 @@
     }
 
     .edit-profile-actions .cancel-btn {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
     }
 
     .sidebar-close:hover {
       color: var(--accent);
+    }
+
+    /* SHARED DRAWER MODAL STYLES */
+    .notif-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid #111;
+      color: #fff;
+    }
+
+    .notif-label {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .notif-desc {
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      background: #333;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle-switch.active {
+      background: var(--accent);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(26px);
+    }
+
+    .lang-item {
+      display: flex;
+      align-items: left;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid #111;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .lang-item:active {
+      background: #f5faff;
+    }
+
+    .lang-label {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .lang-native {
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .lang-item:hover {
+      background: #111;
+    }
+
+    .lang-radio {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .lang-item.selected .lang-radio::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
     }
   </style>
 </head>
@@ -1659,9 +1779,12 @@
       <div class="sidebar-logo" onclick="openLanguage()" style="cursor: pointer;">RENT<span>PLAY</span></div>
     </div>
     <div class="sidebar-body" style="overflow-y: auto; flex: 1;">
-      <div class="sidebar-profile-summary" id="sidebarProfileSummary">
-        <div class="sidebar-profile-name" id="sidebarProfileName">Guest User</div>
+      <div class="sidebar-profile-summary" id="sidebarProfileSummary"
+        style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+        <div class="sidebar-profile-name" id="sidebarProfileName"
+          style="font-size: 1.1rem; font-weight: 800; color: var(--text);">Guest User</div>
         <div class="sidebar-profile-phone" id="sidebarProfilePhone">+91 00000 00000</div>
+        <div class="sidebar-profile-email" id="sidebarProfileEmail">user@gmail.com</div>
       </div>
       <a href="javascript:void(0)" class="sidebar-link" onclick="openProfile()" data-t="sidebar_profile">
         <i>👤</i> Profile
@@ -1673,7 +1796,7 @@
       <a href="javascript:void(0)" class="sidebar-link" onclick="openEditProfile()" data-t="sidebar_edit">
         <i>📝</i> Edit Profile
       </a>
-      <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_cards">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openCards()" data-t="sidebar_cards">
         <i>💳</i> Save Cards & Gifts
       </a>
       <a href="javascript:void(0)" class="sidebar-link" onclick="openSavedAddresses()" data-t="sidebar_address">
@@ -1685,11 +1808,14 @@
       <a href="javascript:void(0)" class="sidebar-link" onclick="openNotificationSettings()" data-t="sidebar_notif">
         <i>🔔</i> Notification Settings
       </a>
-      <a href="javascript:void(0)" class="sidebar-link" onclick="alert('Feature coming soon!')" data-t="sidebar_privacy">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openPrivacy()" data-t="sidebar_privacy">
         <i>🛡️</i> Privacy Center
       </a>
+      <a href="javascript:void(0)" class="sidebar-link" onclick="openSupport()" data-t="sidebar_support">
+        <i>❓</i> Help & Support
+      </a>
       <div style="height: 1px; background: var(--border); margin: 10px 24px; opacity: 0.5;"></div>
-      <a href="index.html" class="sidebar-link" onclick="handleLogOut()" style="color: #f87171;" data-t="sidebar_logout">
+      <a href="javascript:void(0)" class="sidebar-link" onclick="handleLogOut()" style="color: #f87171;" data-t="sidebar_logout">
         <i>🚪</i> Log Out
       </a>
     </div>
@@ -1703,10 +1829,9 @@
     <div class="modal"
       style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: var(--bg);">
       <div
-        style="padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--card); z-index: 10;">
+        style="padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; z-index: 10;">
         <h2 style="margin:0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px;">📦 My Orders & Bookings
         </h2>
-        <button class="modal-close" onclick="closeOrders()" style="position:static; font-size:24px;">✕</button>
       </div>
 
       <div id="ordersList" style="flex: 1; overflow-y: auto; padding: 24px;">
@@ -1722,8 +1847,10 @@
 
 
   <!-- LANGUAGE SELECTION (BLACK SCREEN LEFT DRAWER) -->
-  <div class="modal-overlay modal-overlay-left" id="langOverlay" onclick="if(event.target===this)closeLanguage()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
-    <div class="modal" id="langModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+  <div class="modal-overlay modal-overlay-left" id="langOverlay" onclick="if(event.target===this)closeLanguage()"
+    style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="langModal"
+      style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
       <div
         style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
         <button onclick="closeLanguage()"
@@ -1733,56 +1860,6 @@
 
       <div id="langList" style="flex: 1; overflow-y: auto;">
         <!-- Languages with dynamic styling -->
-        <style>
-          .lang-item {
-            display: flex;
-            align-items: left;
-            justify-content: space-between;
-            padding: 20px 24px;
-            border-bottom: 1px solid #111;
-            cursor: pointer;
-            color: #fff;
-          }
-
-          .lang-item:active {
-            background: #f5faff;
-          }
-
-          .lang-label {
-            font-size: 16px;
-            font-weight: 500;
-          }
-
-          .lang-native {
-            font-size: 13px;
-            color: #aaa;
-            margin-top: 2px;
-          }
-
-          .lang-item:hover {
-            background: #111;
-          }
-
-          .lang-radio {
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            position: relative;
-          }
-
-          .lang-item.selected .lang-radio::after {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-          }
-        </style>
-
         <div class="lang-item" onclick="changeLanguage('en')">
           <div>
             <div class="lang-label">English</div>
@@ -1830,8 +1907,11 @@
   </div>
 
   <!-- NOTIFICATION SETTINGS (BLACK SCREEN LEFT DRAWER) -->
-  <div class="modal-overlay modal-overlay-left" id="notifOverlay" onclick="if(event.target===this)closeNotificationSettings()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
-    <div class="modal" id="notifModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+  <div class="modal-overlay modal-overlay-left" id="notifOverlay"
+    onclick="if(event.target===this)closeNotificationSettings()"
+    style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="notifModal"
+      style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
       <div
         style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
         <button onclick="closeNotificationSettings()"
@@ -1840,58 +1920,6 @@
       </div>
 
       <div id="notifList" style="flex: 1; overflow-y: auto;">
-        <style>
-          .notif-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 24px;
-            border-bottom: 1px solid #111;
-            color: #fff;
-          }
-
-          .notif-label {
-            font-size: 16px;
-            font-weight: 500;
-          }
-
-          .notif-desc {
-            font-size: 13px;
-            color: #aaa;
-            margin-top: 2px;
-          }
-
-          .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 24px;
-            background: #333;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-          }
-
-          .toggle-switch.active {
-            background: var(--accent);
-          }
-
-          .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s;
-          }
-
-          .toggle-switch.active::after {
-            transform: translateX(26px);
-          }
-        </style>
-
         <div class="notif-item">
           <div>
             <div class="notif-label" data-t="notif_email">Email Notifications</div>
@@ -1925,8 +1953,11 @@
   </div>
 
   <!-- SAVED ADDRESSES (BLACK SCREEN LEFT DRAWER) -->
-  <div class="modal-overlay modal-overlay-left" id="addressOverlay" onclick="if(event.target===this)closeSavedAddresses()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
-    <div class="modal" id="addressModal" style="max-width: 360px; width: 300px; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #222;">
+  <div class="modal-overlay modal-overlay-left" id="addressOverlay"
+    onclick="if(event.target===this)closeSavedAddresses()"
+    style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="addressModal"
+      style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
       <div
         style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
         <button onclick="closeSavedAddresses()"
@@ -2002,7 +2033,7 @@
     </p>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search game items..." oninput="filterGames()"
+      <input type="text" id="searchInput" placeholder="Search games, kits, equipment..." oninput="filterGames()"
         autocomplete="off" />
       <div class="search-actions">
         <button class="search-btn" type="button" title="Use camera" onclick="startScanner()">📷</button>
@@ -2040,7 +2071,8 @@
     <div class="grid" id="newGrid"></div>
   </div>
   <div id="boardSection">
-    <div class="section-title"><span data-t="cat_board">🎲 Board & Table Games</span> <span id="boardCount"></span></div>
+    <div class="section-title"><span data-t="cat_board">🎲 Board & Table Games</span> <span id="boardCount"></span>
+    </div>
     <div class="grid" id="boardGrid"></div>
   </div>
   <div id="fitnessSection">
@@ -2149,7 +2181,8 @@
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <label data-t="lbl_address">Delivery Address *</label>
-            <button type="button" onclick="fetchLiveLocation()" class="btn-location" id="locBtn" data-t="lbl_live_loc">📍 Use Live Location</button>
+            <button type="button" onclick="fetchLiveLocation()" class="btn-location" id="locBtn"
+              data-t="lbl_live_loc">📍 Use Live Location</button>
           </div>
           <input type="text" id="mAddress" placeholder="Street, City, Pincode" />
         </div>
@@ -2209,8 +2242,10 @@
         </div>
 
         <div class="pay-tabs">
-          <button type="button" class="pay-tab active" id="tab-cod" onclick="setPayment('cod')" data-t="lbl_cod">💵 Cash</button>
-          <button type="button" class="pay-tab" id="tab-phonepay" onclick="setPayment('phonepay')" data-t="lbl_phonepe">📱 PhonePe</button>
+          <button type="button" class="pay-tab active" id="tab-cod" onclick="setPayment('cod')" data-t="lbl_cod">💵
+            Cash</button>
+          <button type="button" class="pay-tab" id="tab-phonepay" onclick="setPayment('phonepay')"
+            data-t="lbl_phonepe">📱 PhonePe</button>
         </div>
 
         <button type="submit" class="modal-confirm" data-t="btn_book">Book / Rent Now</button>
@@ -2265,7 +2300,8 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <h2 onclick="openLanguage()" style="cursor: pointer; color: #fff;">🎮 Rent<span style="color:var(--accent);">Play</span></h2>
+        <h2 onclick="openLanguage()" style="cursor: pointer; color: #fff;">🎮 Rent<span
+            style="color:var(--accent);">Play</span></h2>
         <p>India's largest game rental platform. Indoor, outdoor, board, fitness — every game at your doorstep. Serving
           Amaravathi & all major cities.</p>
       </div>
@@ -3597,6 +3633,14 @@
       document.getElementById('profEmailVal').textContent = data.email || 'Not Provided';
       document.getElementById('profPhoneVal').textContent = data.phone || 'Not Provided';
       document.getElementById('profAddressVal').textContent = data.address || 'Not Provided';
+
+      const gEmailModal = document.getElementById('profGoogleEmail');
+      if (data.email && (data.isGoogle || data.password === 'google_oauth_managed')) {
+        gEmailModal.textContent = data.email;
+        gEmailModal.style.display = 'block';
+      } else {
+        gEmailModal.style.display = 'none';
+      }
     }
 
     function openProfile() {
@@ -3946,11 +3990,25 @@
 
     function loadSidebarProfile() {
       const saved = localStorage.getItem('currentUser');
-      if (!saved) return;
+      const emailEl = document.getElementById('sidebarProfileEmail');
+      const nameEl = document.getElementById('sidebarProfileName');
+      const phoneEl = document.getElementById('sidebarProfilePhone');
+
+      if (!saved) {
+        if (emailEl) emailEl.classList.remove('show');
+        return;
+      }
       try {
         const user = JSON.parse(saved);
-        document.getElementById('sidebarProfileName').textContent = user.name || 'Guest User';
-        document.getElementById('sidebarProfilePhone').textContent = user.phone || '+91 00000 00000';
+        nameEl.textContent = user.name || 'Guest User';
+        phoneEl.textContent = user.phone || '+91 00000 00000';
+
+        if (user.email && (user.isGoogle || user.password === 'google_oauth_managed')) {
+          emailEl.textContent = user.email;
+          emailEl.classList.add('show');
+        } else {
+          emailEl.classList.remove('show');
+        }
       } catch (e) {
         console.warn('Failed to parse currentUser', e);
       }
@@ -4021,6 +4079,92 @@
     function closeOrders() {
       document.getElementById('ordersOverlay').classList.remove('show');
     }
+
+    // --- SIDEBAR "REAL WORKING" FUNCTIONS ---
+    function handleLogOut() {
+      if(!confirm("Are you sure you want to log out from RentPlay?")) return;
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('acctSession');
+      window.location.href = 'index.html';
+    }
+
+    function openCards() {
+      toggleSidebar();
+      const overlay = document.getElementById('cardsOverlay');
+      const modal = document.getElementById('cardsModal');
+      modal.style.transition = 'none';
+      modal.style.transform = 'translateX(-100%)';
+      overlay.classList.add('show');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modal.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+          modal.style.transform = 'translateX(0)';
+        });
+      });
+      renderPaymentCards();
+    }
+
+    function closeCards() {
+      const modal = document.getElementById('cardsModal');
+      const overlay = document.getElementById('cardsOverlay');
+      modal.style.transform = 'translateX(-100%)';
+      setTimeout(() => overlay.classList.remove('show'), 400);
+    }
+
+    function renderPaymentCards() {
+      const list = document.getElementById('cardsList');
+      const saved = JSON.parse(localStorage.getItem('rpCards') || '[]');
+      if(saved.length === 0) {
+        list.innerHTML = `<div style="padding:40px 24px; text-align:center; color:#888;"><div style="font-size:40px; margin-bottom:15px;">💳</div><p>No saved cards or gift vouchers found.</p><button onclick="addSimulatedCard()" style="margin-top:20px; background:var(--accent); color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">+ Add New Card</button></div>`;
+      } else {
+        list.innerHTML = saved.map((c, i) => `<div style="background:#111; border:1px solid #333; border-radius:12px; padding:15px; margin:0 24px 15px; display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="font-size:24px;">${c.type==='visa'?'💳':'🎁'}</div><div><div style="font-weight:600; color:#fff;">${c.number}</div><div style="font-size:11px; color:#666;">Expires: ${c.expiry}</div></div></div><button onclick="deleteCard(${i})" style="background:none; border:none; color:#f87171; cursor:pointer;">✕</button></div>`).join('') + `<div style="padding:10px 24px;"><button onclick="addSimulatedCard()" style="width:100%; height:50px; border:1px dashed #444; background:none; color:#aaa; border-radius:12px; cursor:pointer;">+ Add Another Card</button></div>`;
+      }
+    }
+
+    function addSimulatedCard() {
+      const saved = JSON.parse(localStorage.getItem('rpCards') || '[]');
+      saved.push({ type: 'visa', number: '**** **** **** ' + Math.floor(1000 + Math.random() * 9000), expiry: '12/28' });
+      localStorage.setItem('rpCards', JSON.stringify(saved));
+      renderPaymentCards();
+    }
+
+    function deleteCard(i) {
+      const saved = JSON.parse(localStorage.getItem('rpCards') || '[]');
+      saved.splice(i, 1);
+      localStorage.setItem('rpCards', JSON.stringify(saved));
+      renderPaymentCards();
+    }
+
+    function openPrivacy() {
+      toggleSidebar();
+      const overlay = document.getElementById('privacyOverlay');
+      const modal = document.getElementById('privacyModal');
+      modal.style.transition = 'none';
+      modal.style.transform = 'translateX(-100%)';
+      overlay.classList.add('show');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modal.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+          modal.style.transform = 'translateX(0)';
+        });
+      });
+    }
+
+    function closePrivacy() {
+      const modal = document.getElementById('privacyModal');
+      const overlay = document.getElementById('privacyOverlay');
+      modal.style.transform = 'translateX(-100%)';
+      setTimeout(() => overlay.classList.remove('show'), 400);
+    }
+
+    function openSupport() {
+      toggleSidebar();
+      document.getElementById('supportOverlay').classList.add('show');
+    }
+
+    function closeSupport() {
+      document.getElementById('supportOverlay').classList.remove('show');
+    }
   </script>
 
   <!-- PROFILE PAGE (FULL SCREEN OVERLAY) -->
@@ -4029,28 +4173,38 @@
       style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; color: #fff;">
       <div
         style="padding: 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10;">
-        <h2 style="margin:0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color: #fff;">👤 My Profile</h2>
-        <button class="modal-close" onclick="closeProfile()" style="position:static; font-size:24px; color:#fff;">✕</button>
+        <h2 style="margin:0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color: #fff;">👤 My Profile
+        </h2>
       </div>
 
       <div id="profileContent" style="flex: 1; overflow-y: auto; padding: 24px;">
         <div style="max-width: 600px; margin: 0 auto;">
           <div style="margin-bottom: 24px;">
-            <div style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;" id="profNameTitle">Set Your Name</div>
+            <div id="profGoogleEmail"
+              style="font-size: 11px; color: var(--accent); font-weight: 700; margin-bottom: 4px; display: none; text-transform: lowercase; letter-spacing: 0.5px;">
+              user@gmail.com</div>
+            <div style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;" id="profNameTitle">Set Your
+              Name</div>
             <div style="font-size: 14px; color: #bbb;" id="profPhoneSub">+91 00000 00000</div>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 18px;">
             <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
-              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Email Address</div>
+              <div
+                style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                Email Address</div>
               <div id="profEmailVal" style="font-size: 16px; color: #fff;">Not Provided</div>
             </div>
             <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
-              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Phone Number</div>
+              <div
+                style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                Phone Number</div>
               <div id="profPhoneVal" style="font-size: 16px; color: #fff;">Not Provided</div>
             </div>
             <div style="padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
-              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Address</div>
+              <div
+                style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                Address</div>
               <div id="profAddressVal" style="font-size: 16px; color: #fff; line-height: 1.6;">Not Provided</div>
             </div>
           </div>
@@ -4058,17 +4212,24 @@
       </div>
 
       <div style="padding: 16px; text-align: center; background: #000; border-top: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 12px; color: #888;">Account information is managed securely. <a href="mailto:support@rentplay.com" style="color:#fff; text-decoration:underline;">Contact Support</a> for changes.</p>
+        <p style="font-size: 12px; color: #888;">Account information is managed securely. <a
+            href="mailto:support@rentplay.com" style="color:#fff; text-decoration:underline;">Contact Support</a> for
+          changes.</p>
       </div>
     </div>
   </div>
 
   <!-- EDIT PROFILE OVERLAY -->
-  <div class="modal-overlay" id="editProfileOverlay" style="padding: 0; align-items: flex-start; background: rgba(0,0,0,0.85);">
-    <div class="modal" style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; color: #fff;">
-      <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10;">
-        <h2 style="margin: 0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color:#fff;">Edit Profile</h2>
-        <button class="modal-close" onclick="closeEditProfile()" style="position:static; font-size:24px; color:#fff;">✕</button>
+  <div class="modal-overlay" id="editProfileOverlay"
+    style="padding: 0; align-items: flex-start; background: rgba(0,0,0,0.85);">
+    <div class="modal"
+      style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; color: #fff;">
+      <div
+        style="padding: 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10;">
+        <h2 style="margin: 0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; color:#fff;">Edit Profile
+        </h2>
+        <button class="modal-close" onclick="closeEditProfile()"
+          style="position:static; font-size:24px; color:#fff;">✕</button>
       </div>
 
       <div style="flex: 1; overflow-y: auto; padding: 24px;">
@@ -4096,6 +4257,47 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARDS & GIFTS -->
+  <div class="modal-overlay modal-overlay-left" id="cardsOverlay" onclick="if(event.target===this)closeCards()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="cardsModal" style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+      <div style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
+        <button onclick="closeCards()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; margin-right:15px;">←</button>
+        <h2 style="margin:0; font-size:18px; font-weight:500;">Cards & Gifts</h2>
+      </div>
+      <div id="cardsList" style="flex: 1; overflow-y: auto; padding-top:20px;"></div>
+    </div>
+  </div>
+
+  <!-- PRIVACY CENTER -->
+  <div class="modal-overlay modal-overlay-left" id="privacyOverlay" onclick="if(event.target===this)closePrivacy()" style="padding: 0; align-items: flex-start; justify-content: flex-start; z-index: 9999; background: #000;">
+    <div class="modal" id="privacyModal" style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; background: #000; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+      <div style="padding: 16px; border-bottom: 1px solid #333; display: flex; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 100;">
+        <button onclick="closePrivacy()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer; margin-right:15px;">←</button>
+        <h2 style="margin:0; font-size:18px; font-weight:500;">Privacy Center</h2>
+      </div>
+      <div id="privacyContent" style="flex: 1; overflow-y: auto;">
+        <div class="notif-item"><div><div class="notif-label">Profile Visibility</div><div class="notif-desc">Allow others to see your public profile</div></div><div class="toggle-switch active"></div></div>
+        <div class="notif-item"><div><div class="notif-label">Data Deletion</div><div class="notif-desc">Request to delete all your account data</div></div><button style="background:none; border:1px solid #f87171; color:#f87171; padding:5px 10px; border-radius:5px; font-size:12px; cursor:pointer;">Request</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP & SUPPORT (FULL SCREEN OVERLAY) -->
+  <div class="modal-overlay" id="supportOverlay" style="padding:0; background: #000; z-index: 10000;">
+    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; background: #f4f6fb;">
+      <div style="padding: 16px 24px; background: #1a1a2e; color: #fff; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10010; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        <div style="display:flex; align-items:center; gap: 12px;">
+          <button onclick="closeSupport()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer;">←</button>
+          <h2 style="margin:0; font-family:'Barlow Condensed', sans-serif; letter-spacing:1px; font-size:1.4rem;">Support Center</h2>
+        </div>
+        <div style="font-size: 11px; padding: 4px 8px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; opacity: 0.8;">Live Help</div>
+      </div>
+      <div style="flex: 1; overflow: hidden; position: relative;">
+        <iframe src="Support.html" style="width: 100%; height: 100%; border: none;"></iframe>
       </div>
     </div>
   </div>
