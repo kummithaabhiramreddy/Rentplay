@@ -165,7 +165,7 @@
     <div class="badge">📋 New Application</div>
   </div>
 
-  <script>const globalApiBase = window.location.protocol==='file:' ? 'http://localhost:3000' : '';</script>
+  <script>const globalApiBase = window.location.protocol==='file:' ? 'http://localhost:3005' : '';</script>
 
   <div class="progress-wrap">
     <div class="progress-steps">
@@ -1037,7 +1037,7 @@ async function submitForm(){
   }
   const urls=[
     globalApiBase?globalApiBase+'/api/register-delivery':'/api/register-delivery',
-    'http://127.0.0.1:3000/api/register-delivery','http://localhost:3000/api/register-delivery'
+    'http://127.0.0.1:3005/api/register-delivery','http://localhost:3005/api/register-delivery'
   ];
   let result=null;
   for(let u of urls){result=await tryUrl(u);if(result)break;}
