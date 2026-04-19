@@ -419,10 +419,13 @@
         let currentTab = 'new';
         let pollInterval;
 
+        const isLocalHTML = !window.location.hostname || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+        const apiBase = isLocalHTML ? 'http://localhost:3005' : '';
+
         // Auto-fetch delivery boys for demo login
         async function fetchPartners() {
             try {
-                const res = await fetch('/api/delivery-boys');
+                const res = await fetch(`${apiBase}/api/delivery-boys`);
                 const boys = await res.json();
                 const select = document.getElementById('partnerSelect');
                 if (boys.length === 0) {
@@ -476,8 +479,8 @@
         async function pollOrders() {
             try {
                 const endpoint = currentTab === 'new' 
-                    ? `/api/delivery-requests?storeId=${currentPartner.storeId || ''}` 
-                    : `/api/my-trips?partnerId=${currentPartner.id}`;
+                    ? `${apiBase}/api/delivery-requests?storeId=${currentPartner.storeId || ''}` 
+                    : `${apiBase}/api/my-trips?partnerId=${currentPartner.id}`;
                 
                 const res = await fetch(endpoint);
                 const orders = await res.json();
@@ -565,7 +568,7 @@
                 // Instantly show processing
                 showToast("Accepting...");
                 
-                const res = await fetch(`/api/accept-delivery/${id}`, {
+                const res = await fetch(`${apiBase}/api/accept-delivery/${id}`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -616,7 +619,7 @@
 
         async function updateTracking(id, status) {
             try {
-                const res = await fetch(`/api/update-tracking/${id}`, {
+                const res = await fetch(`${apiBase}/api/update-tracking/${id}`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ status })
