@@ -3330,7 +3330,7 @@
 
       try {
         const isLocalHTML = !window.location.hostname || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-        const apiBase = isLocalHTML ? 'http://localhost:3000' : '';
+        const apiBase = isLocalHTML ? 'http://localhost:3005' : '';
         const res = await fetch(`${apiBase}/book`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3338,46 +3338,41 @@
         });
 
         const result = await res.json();
+        const bookingId = result.bookingId;
 
         // SAVE LOCALLY ON SUCCESS
-        saveLocalBooking(data, result.bookingId);
+        saveLocalBooking(data, bookingId);
 
-        const smsStatus = result.smsSuccess
-          ? "✅ SMS Alert Sent"
-          : "";
+        const smsStatus = result.smsSuccess ? "✅ SMS Alert Sent" : "";
 
-        // ── EMAILJS CONNECTION & SENDING ──
-        if (data.userEmail) {
-          try {
-            console.log("Preparing email for:", data.userEmail);
+        msg.innerHTML = `✅ ID #${bookingId} Created.<br>⏳ Broadcasting to delivery partners (15-20km)...`;
+        
+        // Real-time polling logic
+        let assigned = false;
+        let pollCount = 0;
+        const pollInterval = setInterval(async () => {
+             try {
+                pollCount++;
+                const statusRes = await fetch(`${apiBase}/api/booking-status/${bookingId}`);
+                if (statusRes.ok) {
+                    const statusData = await statusRes.json();
+                    
+                    if (statusData.status === 'assigned') {
+                        assigned = true;
+                        clearInterval(pollInterval);
+                        msg.innerHTML = `🎉 ITEM BOOKING SUCCESSFULLY COMPLETED!<br>✅ Delivery Locked by: <b>${statusData.delivery_boy_name}</b> (${statusData.delivery_boy_phone})<br>Confirmation email dispatched.`;
+                        setTimeout(closeModal, 6000);
+                    } else if (pollCount > 60) { // Timeout after 3 minutes
+                        clearInterval(pollInterval);
+                        msg.innerHTML = `⚠️ Request timed out. No partners available nearby. We will process it shortly.`;
+                        setTimeout(closeModal, 6000);
+                    }
+                }
+             } catch(e) {
+                console.error("Polling error", e);
+             }
+        }, 3000);
 
-            // Generate QR Code via reliable External API (GoQR)
-            const bookingId = result.bookingId || "B" + Date.now();
-            const qrInfo = `ID: ${bookingId} | User: ${data.userName} | Item: ${data.itemName}`;
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrInfo)}`;
-
-            // Send Email via EmailJS
-            const templateParams = {
-              to_email: data.userEmail,
-              user_name: data.userName,
-              item_name: data.itemName,
-              booking_id: bookingId,
-              total_price: data.total,
-              qr_code: qrUrl // Pass the image URL directly
-            };
-
-            await emailjs.send("service_og80dtw", "template_4lh203y", templateParams);
-
-            msg.innerHTML = `✅ ID #${bookingId} Created.<br>${smsStatus}<br>📧 QR Code Emailed.`;
-          } catch (emailErr) {
-            console.error("FAILED TO SEND EMAIL:", emailErr);
-            msg.innerHTML = `✅ ID #${result.bookingId} Saved.<br>${smsStatus}<br>⚠️ Email Failed.`;
-          }
-        } else {
-          msg.innerHTML = `✅ ID #${result.bookingId} Saved.<br>${smsStatus}`;
-        }
-
-        setTimeout(closeModal, 5000);
       } catch (err) {
         console.error("Booking submission error:", err);
         const demoId = "D" + Date.now();
@@ -3388,7 +3383,6 @@
         // Fallback demo send
         if (data.userEmail) {
           try {
-            const demoId = "D" + Date.now();
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DEMO_BOOKING`;
             await emailjs.send("service_og80dtw", "template_4lh203y", {
               to_email: data.userEmail,
