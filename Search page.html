@@ -2070,52 +2070,87 @@
     <div class="store-wrap">
       <select id="storeSelector" onchange="updateStoreDisplay(); fetchGames(true)">
         <option value="">-- Select Your Store Hub --</option>
-        <option value="all" style="font-weight: bold; color: var(--primary);">🌍 All Hubs (India - Browse Everything)</option>
-        
+        <option value="all" style="font-weight: bold; color: var(--primary);">🌍 All Hubs (India - Browse Everything)
+        </option>
+
         <optgroup label="Individual Store Locations">
           <!-- West Godavari Region -->
-          <option value="1" data-lat="16.5449" data-lng="81.5212" data-loc="J P Road, Bhimavaram">Bhimavaram Central-Zone (HQ)</option>
-          <option value="2" data-lat="16.5186" data-lng="81.7231" data-loc="Main Road, Palakollu">Palakollu South-East Hub</option>
+          <option value="1" data-lat="16.5449" data-lng="81.5212" data-loc="J P Road, Bhimavaram">Bhimavaram
+            Central-Zone (HQ)</option>
+          <option value="2" data-lat="16.5186" data-lng="81.7231" data-loc="Main Road, Palakollu">Palakollu South-East
+            Hub</option>
           <option value="3" data-lat="16.7570" data-lng="81.6967" data-loc="Old Town, Tanuku">Tanuku North Hub</option>
-          <option value="4" data-lat="16.6025" data-lng="81.3789" data-loc="Station Road, Akividu">Akividu West Store</option>
-          <option value="5" data-lat="16.5910" data-lng="81.4649" data-loc="Undi Junction, Undi">Undi Service Point</option>
-          
+          <option value="4" data-lat="16.6025" data-lng="81.3789" data-loc="Station Road, Akividu">Akividu West Store
+          </option>
+          <option value="5" data-lat="16.5910" data-lng="81.4649" data-loc="Undi Junction, Undi">Undi Service Point
+          </option>
+
           <!-- Vijayawada Region -->
-          <option value="6" data-lat="16.5074" data-lng="80.6475" data-loc="MG Road, Vijayawada">Benz Circle Hub</option>
-          <option value="7" data-lat="16.5141" data-lng="80.6300" data-loc="Eluru Road, Vijayawada">Governorpet Central Hub</option>
-          <option value="8" data-lat="16.5050" data-lng="80.6150" data-loc="Bandar Road (NH-16), Vijayawada">One Town Hub</option>
-          <option value="9" data-lat="16.5130" data-lng="80.6280" data-loc="Besant Road, Vijayawada">Besant Road Hub</option>
-          <option value="10" data-lat="16.5100" data-lng="80.6350" data-loc="Suryaraopet Main Road, Vijayawada">Suryaraopet Hub</option>
-          <option value="11" data-lat="16.5040" data-lng="80.6500" data-loc="Labbipet Main Road, Vijayawada">Labbipet Hub</option>
-          <option value="12" data-lat="16.5020" data-lng="80.6420" data-loc="Moghalrajpuram Main Road, Vijayawada">Moghalrajpuram Hub</option>
-          <option value="13" data-lat="16.4950" data-lng="80.6650" data-loc="Patamata Main Road, Vijayawada">Patamata Hub</option>
-          <option value="14" data-lat="16.4900" data-lng="80.6750" data-loc="Ring Road, Vijayawada">Siddhartha Nagar Hub</option>
-          <option value="15" data-lat="16.4850" data-lng="80.6850" data-loc="Auto Nagar Main Road, Vijayawada">Auto Nagar Hub</option>
-          
+          <option value="6" data-lat="16.5074" data-lng="80.6475" data-loc="MG Road, Vijayawada">Benz Circle Hub
+          </option>
+          <option value="7" data-lat="16.5141" data-lng="80.6300" data-loc="Eluru Road, Vijayawada">Governorpet Central
+            Hub</option>
+          <option value="8" data-lat="16.5050" data-lng="80.6150" data-loc="Bandar Road (NH-16), Vijayawada">One Town
+            Hub</option>
+          <option value="9" data-lat="16.5130" data-lng="80.6280" data-loc="Besant Road, Vijayawada">Besant Road Hub
+          </option>
+          <option value="10" data-lat="16.5100" data-lng="80.6350" data-loc="Suryaraopet Main Road, Vijayawada">
+            Suryaraopet Hub</option>
+          <option value="11" data-lat="16.5040" data-lng="80.6500" data-loc="Labbipet Main Road, Vijayawada">Labbipet
+            Hub</option>
+          <option value="12" data-lat="16.5020" data-lng="80.6420" data-loc="Moghalrajpuram Main Road, Vijayawada">
+            Moghalrajpuram Hub</option>
+          <option value="13" data-lat="16.4950" data-lng="80.6650" data-loc="Patamata Main Road, Vijayawada">Patamata
+            Hub</option>
+          <option value="14" data-lat="16.4900" data-lng="80.6750" data-loc="Ring Road, Vijayawada">Siddhartha Nagar Hub
+          </option>
+          <option value="15" data-lat="16.4850" data-lng="80.6850" data-loc="Auto Nagar Main Road, Vijayawada">Auto
+            Nagar Hub</option>
+
           <!-- Hyderabad Region -->
-          <option value="16" data-lat="17.3916" data-lng="78.4735" data-loc="Abids Main Road, Hyderabad">Abids Hub</option>
-          <option value="17" data-lat="17.3920" data-lng="78.4680" data-loc="Nampally Station Road, Hyderabad">Nampally Hub</option>
-          <option value="18" data-lat="17.3820" data-lng="78.4850" data-loc="Koti Main Road, Hyderabad">Koti Hub</option>
-          <option value="19" data-lat="17.3616" data-lng="78.4747" data-loc="Charminar Road, Hyderabad">Charminar Hub</option>
-          <option value="20" data-lat="17.3750" data-lng="78.5000" data-loc="Malakpet Main Road, Hyderabad">Malakpet Hub</option>
-          <option value="21" data-lat="17.4250" data-lng="78.4550" data-loc="Somajiguda Circle, Hyderabad">Somajiguda Hub</option>
-          <option value="22" data-lat="17.4260" data-lng="78.4520" data-loc="Panjagutta Junction, Hyderabad">Panjagutta Hub</option>
-          <option value="23" data-lat="17.4375" data-lng="78.4482" data-loc="Ameerpet Junction, Hyderabad">Ameerpet Hub</option>
-          <option value="24" data-lat="17.4420" data-lng="78.4400" data-loc="SR Nagar Main Road, Hyderabad">SR Nagar Hub</option>
-          <option value="25" data-lat="17.4440" data-lng="78.4650" data-loc="Begumpet Main Road, Hyderabad">Begumpet Hub</option>
-          <option value="26" data-lat="17.4399" data-lng="78.4983" data-loc="MG Road, Secunderabad">Secunderabad Hub</option>
-          <option value="27" data-lat="17.4120" data-lng="78.4420" data-loc="Road No.12, Banjara Hills, Hyderabad">Banjara Hills Hub</option>
-          <option value="28" data-lat="17.4290" data-lng="78.4070" data-loc="Road No.36, Jubilee Hills, Hyderabad">Jubilee Hills Hub</option>
-          <option value="29" data-lat="17.3960" data-lng="78.4350" data-loc="Mehdipatnam Main Road, Hyderabad">Mehdipatnam Hub</option>
-          <option value="30" data-lat="17.4483" data-lng="78.3915" data-loc="Hitech City Main Road, Hyderabad">Hitech City Hub</option>
-          <option value="31" data-lat="17.4400" data-lng="78.3480" data-loc="Gachibowli Junction, Hyderabad">Gachibowli Hub</option>
-          
+          <option value="16" data-lat="17.3916" data-lng="78.4735" data-loc="Abids Main Road, Hyderabad">Abids Hub
+          </option>
+          <option value="17" data-lat="17.3920" data-lng="78.4680" data-loc="Nampally Station Road, Hyderabad">Nampally
+            Hub</option>
+          <option value="18" data-lat="17.3820" data-lng="78.4850" data-loc="Koti Main Road, Hyderabad">Koti Hub
+          </option>
+          <option value="19" data-lat="17.3616" data-lng="78.4747" data-loc="Charminar Road, Hyderabad">Charminar Hub
+          </option>
+          <option value="20" data-lat="17.3750" data-lng="78.5000" data-loc="Malakpet Main Road, Hyderabad">Malakpet Hub
+          </option>
+          <option value="21" data-lat="17.4250" data-lng="78.4550" data-loc="Somajiguda Circle, Hyderabad">Somajiguda
+            Hub</option>
+          <option value="22" data-lat="17.4260" data-lng="78.4520" data-loc="Panjagutta Junction, Hyderabad">Panjagutta
+            Hub</option>
+          <option value="23" data-lat="17.4375" data-lng="78.4482" data-loc="Ameerpet Junction, Hyderabad">Ameerpet Hub
+          </option>
+          <option value="24" data-lat="17.4420" data-lng="78.4400" data-loc="SR Nagar Main Road, Hyderabad">SR Nagar Hub
+          </option>
+          <option value="25" data-lat="17.4440" data-lng="78.4650" data-loc="Begumpet Main Road, Hyderabad">Begumpet Hub
+          </option>
+          <option value="26" data-lat="17.4399" data-lng="78.4983" data-loc="MG Road, Secunderabad">Secunderabad Hub
+          </option>
+          <option value="27" data-lat="17.4120" data-lng="78.4420" data-loc="Road No.12, Banjara Hills, Hyderabad">
+            Banjara Hills Hub</option>
+          <option value="28" data-lat="17.4290" data-lng="78.4070" data-loc="Road No.36, Jubilee Hills, Hyderabad">
+            Jubilee Hills Hub</option>
+          <option value="29" data-lat="17.3960" data-lng="78.4350" data-loc="Mehdipatnam Main Road, Hyderabad">
+            Mehdipatnam Hub</option>
+          <option value="30" data-lat="17.4483" data-lng="78.3915" data-loc="Hitech City Main Road, Hyderabad">Hitech
+            City Hub</option>
+          <option value="31" data-lat="17.4400" data-lng="78.3480" data-loc="Gachibowli Junction, Hyderabad">Gachibowli
+            Hub</option>
+
           <!-- Additional Satellites -->
-          <option value="32" data-lat="16.5449" data-lng="81.5212" data-loc="J P Road, Bhimavaram">Bhimavaram Central Hub</option>
-          <option value="33" data-lat="16.5186" data-lng="81.7231" data-loc="Main Road, Palakollu">Palakollu South-East Hub</option>
+          <option value="32" data-lat="16.5449" data-lng="81.5212" data-loc="J P Road, Bhimavaram">Bhimavaram Central
+            Hub</option>
+          <option value="33" data-lat="16.5186" data-lng="81.7231" data-loc="Main Road, Palakollu">Palakollu South-East
+            Hub</option>
           <option value="34" data-lat="16.7570" data-lng="81.6967" data-loc="Old Town, Tanuku">Tanuku North Hub</option>
-          <option value="35" data-lat="16.6025" data-lng="81.3789" data-loc="Station Road, Akividu">Akividu West Store</option>
-          <option value="36" data-lat="16.5910" data-lng="81.4649" data-loc="Undi Service Point">Undi Service Point</option>
+          <option value="35" data-lat="16.6025" data-lng="81.3789" data-loc="Station Road, Akividu">Akividu West Store
+          </option>
+          <option value="36" data-lat="16.5910" data-lng="81.4649" data-loc="Undi Service Point">Undi Service Point
+          </option>
         </optgroup>
       </select>
       <button class="btn-location" onclick="useLiveLocation()" id="locBtnTop">📍 Near Me</button>
@@ -2123,7 +2158,7 @@
     <div id="currentStoreName"></div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search equipment..." oninput="filterGames()"
+      <input type="text" id="searchInput" placeholder="Search Rent equipment..." oninput="filterGames()"
         autocomplete="off" />
       <div class="search-actions">
         <button class="search-btn" type="button" title="Use camera" onclick="startScanner()">📷</button>
@@ -2138,13 +2173,7 @@
 
   <div class="filters">
     <button class="filter-btn active" onclick="setFilter('all',this)" data-t="cat_all">All Games</button>
-    <button class="filter-btn" onclick="setFilter('indoor',this)" data-t="cat_indoor">🏠 Indoor</button>
-    <button class="filter-btn" onclick="setFilter('outdoor',this)" data-t="cat_outdoor">🌳 Outdoor</button>
-    <button class="filter-btn" onclick="setFilter('new',this)" data-t="cat_new">🆕 New</button>
-    <button class="filter-btn" onclick="setFilter('board',this)" data-t="cat_board">🎲 Board</button>
-    <button class="filter-btn" onclick="setFilter('fitness',this)" data-t="cat_fit">💪 Fitness</button>
-    <button class="filter-btn" onclick="setFilter('water',this)" data-t="cat_water">🌊 Water</button>
-    <button class="filter-btn" onclick="setFilter('kids',this)" data-t="cat_kids">👶 Kids</button>
+
     <button class="filter-btn" onclick="setFilter('kit',this)">📦 Kits</button>
     <button class="filter-btn" onclick="setFilter('single',this)">🎯 Single</button>
   </div>
@@ -2157,54 +2186,10 @@
     </div>
   </div>
 
-  <div id="indoorSection">
-    <div class="section-title"><span data-t="cat_indoor">🏠 Indoor Games</span> <span id="indoorCount"></span></div>
-    <div class="grid" id="indoorGrid"></div>
-  </div>
-  <div id="outdoorSection">
-    <div class="section-title"><span data-t="cat_outdoor">🌳 Outdoor Games</span> <span id="outdoorCount"></span></div>
-    <div class="grid" id="outdoorGrid"></div>
-  </div>
-  <div id="newSection">
-    <div class="section-title"><span data-t="cat_new">🆕 New & Trending</span> <span id="newCount"></span></div>
-    <div class="grid" id="newGrid"></div>
-  </div>
-  <div id="boardSection">
-    <div class="section-title"><span data-t="cat_board">🎲 Board & Table Games</span> <span id="boardCount"></span>
-    </div>
-    <div class="grid" id="boardGrid"></div>
-  </div>
-  <div id="fitnessSection">
-    <div class="section-title"><span data-t="cat_fit">💪 Fitness & Sports</span> <span id="fitnessCount"></span></div>
-    <div class="grid" id="fitnessGrid"></div>
-  </div>
-  <div id="waterSection">
-    <div class="section-title"><span data-t="cat_water">🌊 Water Sports</span> <span id="waterCount"></span></div>
-    <div class="grid" id="waterGrid"></div>
-  </div>
-  <div id="proSection">
-    <div class="section-title"><span>🧑‍🍳 Professional & Workwear</span> <span id="proCount"></span></div>
-    <div class="grid" id="proGrid"></div>
-  </div>
-  <div id="adventureSection">
-    <div class="section-title"><span>⛺ Adventure & Camping</span> <span id="adventureCount"></span></div>
-    <div class="grid" id="adventureGrid"></div>
-  </div>
-  <div id="eventSection">
-    <div class="section-title"><span>🎉 Party & Event Gear</span> <span id="eventCount"></span></div>
-    <div class="grid" id="eventGrid"></div>
-  </div>
-  <div id="electronicsSection">
-    <div class="section-title"><span>📸 Electronics & Media</span> <span id="electronicsCount"></span></div>
-    <div class="grid" id="electronicsGrid"></div>
-  </div>
-  <div id="utilitySection">
-    <div class="section-title"><span>🛠️ Home Utility</span> <span id="utilityCount"></span></div>
-    <div class="grid" id="utilityGrid"></div>
-  </div>
-  <div id="kidsSection">
-    <div class="section-title"><span data-t="cat_kids">👶 Kids Games</span> <span id="kidsCount"></span></div>
-    <div class="grid" id="kidsGrid"></div>
+
+  <div id="studentSection">
+    <div class="section-title"><span>🎓 Student Essentials</span> <span id="studentCount"></span></div>
+    <div class="grid" id="studentGrid"></div>
   </div>
 
   <!-- DETAIL MODAL -->
@@ -2361,11 +2346,13 @@
         </div>
 
         <div class="pay-tabs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-          <button type="button" class="pay-tab active" id="tab-cod" onclick="setPayment('cod')" data-t="lbl_cod">💵 Cash</button>
+          <button type="button" class="pay-tab active" id="tab-cod" onclick="setPayment('cod')" data-t="lbl_cod">💵
+            Cash</button>
           <button type="button" class="pay-tab" id="tab-gpay" onclick="setPayment('gpay')">🔹 Google Pay</button>
           <button type="button" class="pay-tab" id="tab-phonepe" onclick="setPayment('phonepe')">🟣 PhonePe</button>
           <button type="button" class="pay-tab" id="tab-paytm" onclick="setPayment('paytm')">🔵 Paytm</button>
-          <button type="button" class="pay-tab" id="tab-upi" onclick="setPayment('upi')" style="grid-column: span 2;">📲 UPI / Other App</button>
+          <button type="button" class="pay-tab" id="tab-upi" onclick="setPayment('upi')" style="grid-column: span 2;">📲
+            UPI / Other App</button>
         </div>
 
         <div
@@ -2436,7 +2423,7 @@
           <div class="form-group">
             <label>Item Category *</label>
             <select id="listCat" required>
-              <option value="games">🎮 Games & Consoles</option>
+              <option value="games">🎮 Games, & Consoles</option>
               <option value="fitness">💪 Fitness Gear</option>
               <option value="electronics">🔌 Electronics / Gadgets</option>
               <option value="activity">🧗 Activity / Sport Gear</option>
@@ -2495,17 +2482,6 @@
           Amaravathi & all major cities.</p>
       </div>
       <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#">Indoor Games</a></li>
-          <li><a href="#">Outdoor Games</a></li>
-          <li><a href="#">Board Games</a></li>
-          <li><a href="#">Kids Games</a></li>
-          <li><a href="#">Fitness Gear</a></li>
-          <li><a href="#">Water Sports</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
         <h4>Support</h4>
         <ul>
           <li><a href="#">FAQs</a></li>
@@ -2543,59 +2519,52 @@
     // ════════════════════════════════════════
     // DATABASE-FREE INVENTORY SYSTEM
     // ════════════════════════════════════════
-    const LOCAL_INVENTORY = [
-      // HUB 1
-      { id: 1, name: "White Professional Apron", cat: "pro", type: "utility", price: 60,  storeId: "1", image: "https://tse3.mm.bing.net/th/id/OIP.fTl49dJnJVkoBYwIYKruSwHaF8?pid=ImgDet&w=181&h=145&c=7&dpr=2&o=7&rm=3", emoji: "🥼", desc: "Premium white apron for workwear." },
-      { id: 102, name: "Cricket Kit Full", cat: "outdoor", type: "kit", price: 350, storeId: "1", image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=500", emoji: "🏏", desc: "Complete cricket gear for matches." },
-      
-      // HUB 2
-      { id: 2, name: "4-Person Camping Tent", cat: "adventure", type: "kit", price: 450, storeId: "2", image: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=500", emoji: "⛺", desc: "Waterproof adventure tent." },
-      
-      // HUB 3
-      { id: 3, name: "Professional DSLR Camera", cat: "electronics", type: "single", price: 950, storeId: "3", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500", emoji: "📷", desc: "High resolution photography." },
-      
-      // HUB 4
-      { id: 4, name: "Heavy Duty Steam Cleaner", cat: "utility", type: "single", price: 250, storeId: "4", image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=500", emoji: "🧹", desc: "Deep cleaning for home floors." },
-      
-      // HUB 5
-      { id: 5, name: "PlayStation 5 Console", cat: "indoor", type: "single", price: 1200, storeId: "5", image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=500", emoji: "🎮", desc: "Next-gen gaming experience." },
+    const LOCAL_INVENTORY = [];
 
-       // HUB 6
-       { id: 6, name: "Boxing Gloves (Pro)", cat: "fitness", type: "single", price: 120, storeId: "6", image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?w=500", emoji: "🥊", desc: "Heavy duty boxing protection." },
-       
-      // HUB 01 - 36 (Fillers to ensure all stores work)
-      { id: 6, name: "Boxing Gloves (Pro)", cat: "fitness", type: "single", price: 120, storeId: "6", image: "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?w=500", emoji: "🥊", desc: "Heavy duty boxing protection." },
-      { id: 7, name: "Yoga Mat Premium", cat: "fitness", type: "single", price: 40, storeId: "7", image: "https://images.unsplash.com/photo-1592432676556-2683e18cfab2?w=500", emoji: "🧘", desc: "Non-slip eco-friendly mat." },
-      { id: 8, name: "Electric Guitar Set", cat: "electronics", type: "kit", price: 600, storeId: "8", image: "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?w=500", emoji: "🎸", desc: "Amp and guitar for events." },
-      { id: 9, name: "Karaoke Speaker", cat: "event", type: "single", price: 500, storeId: "9", image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500", emoji: "🎤", desc: "Bluetooth speaker with mic." },
-      { id: 10, name: "Folding Picnic Table", cat: "adventure", type: "single", price: 150, storeId: "10", image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500", emoji: "🧺", desc: "Portable outdoor dining." },
-      { id: 11, name: "Air Purifier Pro", cat: "utility", type: "single", price: 400, storeId: "11", image: "https://images.unsplash.com/photo-1585771724684-2626fc486374?w=500", emoji: "🌀", desc: "HEPA filter for large rooms." },
-      { id: 12, name: "Nintendo Switch Kit", cat: "indoor", type: "kit", price: 700, storeId: "12", image: "https://images.unsplash.com/photo-1578303321116-fce1587a8b66?w=500", emoji: "🕹️", desc: "Console with 4 controllers." },
-      { id: 13, name: "Foosball Table", cat: "indoor", type: "single", price: 800, storeId: "13", image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=500", emoji: "⚽", desc: "Full size soccer table." },
-      { id: 14, name: "Table Tennis Set", cat: "indoor", type: "kit", price: 200, storeId: "14", image: "https://images.unsplash.com/photo-1534158914592-062992fbe900?w=500", emoji: "🏓", desc: "Rackets, balls and net." },
-      { id: 15, name: "High-Viz Safety Vest", cat: "pro", type: "utility", price: 30, storeId: "15", image: "https://images.unsplash.com/photo-1590402444527-313626786c87?w=500", emoji: "🦺", desc: "Safety gear for sites." },
-      { id: 16, name: "Chef's Jacket", cat: "pro", type: "utility", price: 100, storeId: "16", image: "https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=500", emoji: "👨‍🍳", desc: "Double breasted white jacket." },
-      { id: 17, name: "Camping Gas Stove", cat: "adventure", type: "single", price: 120, storeId: "17", image: "https://images.unsplash.com/photo-1526491109672-7474bd61c41f?w=500", emoji: "🔥", desc: "Single burner portable stove." },
-      { id: 18, name: "Projector & Screen", cat: "electronics", type: "kit", price: 900, storeId: "18", image: "https://images.unsplash.com/photo-1535016120720-40c646bebbdc?w=500", emoji: "📽️", desc: "Movie night complete set." },
-      { id: 19, name: "Fog Machine", cat: "event", type: "single", price: 250, storeId: "19", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500", emoji: "💨", desc: "Party smoke effects." },
-      { id: 20, name: "Megaphone (Pro)", cat: "event", type: "single", price: 80, storeId: "20", image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500", emoji: "📢", desc: "High volume PA speaker." },
-      { id: 21, name: "Pressure Washer", cat: "utility", type: "single", price: 350, storeId: "21", image: "https://images.unsplash.com/photo-1558403194-611308249627?w=500", emoji: "🚿", desc: "High power car wash jet." },
-      { id: 22, name: "Inflatable Kayak", cat: "water", type: "kit", price: 600, storeId: "22", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500", emoji: "🚣", desc: "Two person rowing kit." },
-      { id: 23, name: "Life Jacket Adult", cat: "water", type: "single", price: 70, storeId: "23", image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500", emoji: "🦺", desc: "Safety vest for swimming." },
-      { id: 24, name: "Soft Play Kit", cat: "kids", type: "kit", price: 400, storeId: "24", image: "https://images.unsplash.com/photo-1566454544259-f4b94c3d758c?w=500", emoji: "🧸", desc: "Safe foam blocks for kids." },
-      { id: 25, name: "Ride-on Toy Car", cat: "kids", type: "single", price: 300, storeId: "25", image: "https://images.unsplash.com/photo-1532330393533-443990a51d10?w=500", emoji: "🚗", desc: "Battery powered car." },
-      { id: 26, name: "Archery Set", cat: "outdoor", type: "kit", price: 450, storeId: "26", image: "https://images.unsplash.com/photo-1511018556340-d16986a1c194?w=500", emoji: "🏹", desc: "Bow and 10 safety arrows." },
-      { id: 27, name: "Chef's Uniform Set", cat: "pro", type: "kit", price: 180, storeId: "27", image: "https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?w=500", emoji: "👨‍🍳", desc: "Full professional chef attire." },
-      { id: 28, name: "Carrom Board Pro", cat: "indoor", type: "single", price: 100, storeId: "28", image: "https://images.unsplash.com/photo-1611891487122-207579d67d98?w=500", emoji: "⬛", desc: "Large wooden board." },
-      { id: 29, name: "Chess Grandmaster Set", cat: "indoor", type: "single", price: 150, storeId: "29", image: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=500", emoji: "♟️", desc: "Heavy wooden pieces." },
-      { id: 30, name: "Monopoly Deluxe", cat: "board", type: "single", price: 60, storeId: "30", image: "https://images.unsplash.com/photo-1589149098258-3e9102ca63d3?w=500", emoji: "🏢", desc: "Classic business game." },
-      { id: 31, name: "Scrabble Board", cat: "board", type: "single", price: 50, storeId: "31", image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=500", emoji: "🔠", desc: "Word building game." },
-      { id: 32, name: "Giant Ludo Mat", cat: "kids", type: "single", price: 80, storeId: "32", image: "https://images.unsplash.com/photo-1611891487122-207579d67d98?w=500", emoji: "🎲", desc: "Floor size Ludo game." },
-      { id: 33, name: "Skipping Rope Pro", cat: "fitness", type: "single", price: 30, storeId: "33", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500", emoji: "➰", desc: "Weighted speed rope." },
-      { id: 34, name: "Basketball Pro", cat: "outdoor", type: "single", price: 90, storeId: "34", image: "https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500", emoji: "🏀", desc: "Official size basketball." },
-      { id: 35, name: "Swimming Goggles", cat: "water", type: "single", price: 50, storeId: "35", image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500", emoji: "🥽", desc: "Anti-fog professional mask." },
-      { id: 36, name: "Hiking Poles", cat: "adventure", type: "kit", price: 150, storeId: "36", image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500", emoji: "🦯", desc: "Lightweight carbon poles." }
+    // --- DYNAMICALLY ADD STUDENT ITEMS TO ALL 36 HUBS ---
+    const studentTemplates = [
+      { name: "Scientific Calculator", type: "single", price: 50, emoji: "🖩", desc: "Advanced engineering calculator.", image: "https://laz-img-sg.alicdn.com/p/8bd51e27fc9b2b69540bf27556ebeb4d.jpg" },
+      { name: "White Lab Apron", type: "single", price: 30, emoji: "🥼", desc: "Cotton lab coat for practicals.", image: "https://th.bing.com/th/id/OIP.JCwaMwsuJtmWNHfED7D1QwHaHa?w=179&h=200&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Khaki Uniform Pant", type: "single", price: 40, emoji: "👖", desc: "Standard student uniform trousers.", image: "https://th.bing.com/th/id/OIP.PMBvUHmVnIYwv0rMp0rCSgHaHa?w=202&h=202&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "School Shoes for men(Black)", type: "pair", price: 60, emoji: "👞", desc: "Formal black leather shoes.", image: "data:image/webp;base64,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" },
+      { name: "Exam Study Pad", type: "single", price: 15, emoji: "📋", desc: "Hardboard exam writing pad.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
+      { name: "Mini Drafter", type: "single", price: 45, emoji: "📐", desc: "Engineering drawing drafter.", image: "https://th.bing.com/th?q=Mini+Drafter+in+Board&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Geometry Box", type: "kit", price: 35, emoji: "✏️", desc: "Pencils, erasers, protractor , 3-sets , etc", image: "https://th.bing.com/th?q=Most+Expensive+Geometry+Box&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Engineering Drawing Kit", type: "kit", price: 25, emoji: "📐", desc: "Geometry Box , MINI Drafter", image: "https://th.bing.com/th?q=Technical+Drawing+Set+Mini+Drafter&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Canvas Board Set", type: "kit", price: 40, emoji: "🖼️", desc: "3 cotton canvas boards paintings.", image: "https://th.bing.com/th/id/OIP.7FSmrVkRX6B_mcmhIg5rKgHaHa?w=203&h=203&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Water Colors Set", type: "kit", price: 30, emoji: "🎨", desc: "24-color artist palette.", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500" },
+      { name: "Mini engineering Drawing Board", type: "single", price: 50, emoji: "📋", desc: "Mini wooden Engineering drawing board.", image: "https://th.bing.com/th?q=Drafting+Machine&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Lab Eye spects", type: "single", price: 15, emoji: "🥽", desc: "Protective eyewear for chemistry.", image: "https://th.bing.com/th?q=Lab+Safety+Glasses+Goggles&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { id: 413, name: "stainless steel Dissection Kit", cat: "student", type: "kit", price: 45, emoji: "✂️", desc: "Biology lab instruments.", image: "https://th.bing.com/th?q=Stainless+Steel+Dissection+Kit&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Molecular Model Kit", type: "kit", price: 40, emoji: "⚛️", desc: "Chemistry structure builder.", image: "https://th.bing.com/th?q=Molecular+Model+Kit+Chair+Structure&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Basic Calculator", type: "single", price: 20, emoji: "🖩", desc: "Standard 12-digit calculator.", image: "https://th.bing.com/th?q=What+Is+a+Basic+Calculator&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "White Uniform Shirt", type: "single", price: 35, emoji: "👕", desc: "Half-sleeve school shirt.", image: "https://th.bing.com/th/id/OIP.HKC65RoDYzghuZphtXapXAHaJD?w=156&h=190&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Canvas Shoes (White)", type: "single", price: 40, emoji: "👟", desc: "White sports shoes for PE.", image: "https://th.bing.com/th/id/OIP.muef-wNt03n3i47viQrNuwHaJQ?w=135&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Large Set Squares", type: "kit", price: 15, emoji: "📐", desc: "Pair of acrylic set squares.", image: "https://th.bing.com/th/id/OIP.C4R7S-HxEd-EOlQ4dYuLeQHaHa?w=160&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Square Ruler", type: "single", price: 25, emoji: "📏", desc: "steel square for drafting.", image: "https://th.bing.com/th?q=L+Square+Ruler+for+Sewing&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "steel scale 12 inch ", type: "single", price: 15, emoji: "📏", desc: "steel scale for drafting.", image: "https://th.bing.com/th/id/OIP.A_1TcoU642h1DIK8ytyrJgHaHa?w=159&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Safety Gloves Lab (  No need to submit only this item )", type: "kit", price: 15, emoji: "🧤", desc: "Nitrile disposable gloves. ", image: "https://th.bing.com/th/id/OIP.GOheei689NgDNBw7cA7MqAHaHa?w=181&h=184&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Graphic Tablet Basic", type: "single", price: 80, emoji: "✍️", desc: "USB drawing pen tablet.", image: "https://th.bing.com/th/id/OIP.9xzOeBGmlSVWVU8XywYBqQHaHa?w=191&h=191&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Engineering Scale 30cm", type: "single", price: 8, emoji: "📏", desc: "Triangular architect scale.", image: "https://th.bing.com/th/id/OIP.uU4pS7DPPJdLzTDGsDPt_AHaE8?w=280&h=187&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Wooden Exam Clipboard", type: "single", price: 10, emoji: "📋", desc: "Classic writing board.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
+      { name: "Engineering Scale 15cm", type: "single", price: 5, emoji: "📏", desc: "Triangular architect scale.", image: "https://th.bing.com/th/id/OIP.MyZnYNOs7QPel2xVBB1aYQHaHa?w=150&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Small Whiteboard", type: "single", price: 25, emoji: "📝", desc: "Dry erase practice board.", image: "https://th.bing.com/th/id/OIP.i53FRVv_NlXq1tD5u7ScBgHaHa?w=203&h=202&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Desk Organizer", type: "single", price: 20, emoji: "🗃️", desc: "Pen and stationery holder.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
+      { name: "Student Backpack", type: "single", price: 45, emoji: "🎒", desc: "Spacious multi-compartment bag.", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500" },
+      { name: "Study Lamp (LED)", type: "single", price: 35, emoji: "💡", desc: "Adjustable desk light.", image: "https://th.bing.com/th/id/OIP.2gE9fi4I91qyoCe2Y3DsAgHaHa?w=166&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" }
     ];
+
+    for (let h = 1; h <= 36; h++) {
+      studentTemplates.forEach((t, i) => {
+        LOCAL_INVENTORY.push({
+          id: 10000 + (h * 100) + i,
+          ...t,
+          storeId: h.toString(),
+          cat: 'student'
+        });
+      });
+    }
+
 
     function fetchGames(isManual = false) {
       const selectedHub = document.getElementById('storeSelector').value;
@@ -2634,7 +2603,7 @@
       console.log("🏪 Populating Stores Map from HTML...");
       const selector = document.getElementById('storeSelector');
       const options = selector.querySelectorAll('option[data-lat]');
-      
+
       options.forEach(opt => {
         const id = opt.value;
         STORES_MAP[id] = {
@@ -3183,18 +3152,7 @@
     let currentItemName = '';
 
     const SECTIONS = [
-      { id: 'indoor', label: 'Indoor', sectionId: 'indoorSection', gridId: 'indoorGrid', countId: 'indoorCount' },
-      { id: 'outdoor', label: 'Outdoor', sectionId: 'outdoorSection', gridId: 'outdoorGrid', countId: 'outdoorCount' },
-      { id: 'new', label: 'New', sectionId: 'newSection', gridId: 'newGrid', countId: 'newCount' },
-      { id: 'board', label: 'Board', sectionId: 'boardSection', gridId: 'boardGrid', countId: 'boardCount' },
-      { id: 'fitness', label: 'Fitness', sectionId: 'fitnessSection', gridId: 'fitnessGrid', countId: 'fitnessCount' },
-      { id: 'water', label: 'Water', sectionId: 'waterSection', gridId: 'waterGrid', countId: 'waterCount' },
-      { id: 'pro', label: 'Professional', sectionId: 'proSection', gridId: 'proGrid', countId: 'proCount' },
-      { id: 'adventure', label: 'Adventure', sectionId: 'adventureSection', gridId: 'adventureGrid', countId: 'adventureCount' },
-      { id: 'event', label: 'Event', sectionId: 'eventSection', gridId: 'eventGrid', countId: 'eventCount' },
-      { id: 'electronics', label: 'Electronics', sectionId: 'electronicsSection', gridId: 'electronicsGrid', countId: 'electronicsCount' },
-      { id: 'utility', label: 'Utility', sectionId: 'utilitySection', gridId: 'utilityGrid', countId: 'utilityCount' },
-      { id: 'kids', label: 'Kids', sectionId: 'kidsSection', gridId: 'kidsGrid', countId: 'kidsCount' },
+      { id: 'student', label: 'Student Essentials', sectionId: 'studentSection', gridId: 'studentGrid', countId: 'studentCount' },
     ];
 
     function starsHtml(r, size = 11) {
@@ -4018,7 +3976,7 @@
 
     function setPayment(method) {
       currentPayment = method;
-      
+
       // Update UI tabs
       document.querySelectorAll('.pay-tab').forEach(tab => tab.classList.remove('active'));
       const activeTab = document.getElementById('tab-' + (method === 'phonepay' ? 'phonepe' : method));
@@ -4032,7 +3990,7 @@
       // Clean the price string: remove ₹, commas, and whitespace
       const amountStr = document.getElementById('totalPrice').textContent.replace(/[₹,]/g, '').trim();
       const amount = parseFloat(amountStr);
-      
+
       if (isNaN(amount) || amount <= 0) {
         showToast("⚠️ Please select duration to calculate amount first.", "warn");
         return;
@@ -4041,15 +3999,15 @@
       // Format amount to 2 decimal places for UPI consistency
       const formattedAmount = amount.toFixed(2);
 
-      const vpa = "7093910280@ybl"; 
+      const vpa = "7093910280@ybl";
       const merchantName = "RentPlay";
       const transactionNote = "Item Rental";
-      
+
       // Minimal UPI URL for maximum compatibility with personal accounts
       const upiUrl = `upi://pay?pa=${vpa}&pn=${encodeURIComponent(merchantName)}&am=${formattedAmount}&tn=${encodeURIComponent(transactionNote)}`;
 
       console.log(`Dynamic Redirect: ${upiUrl}`);
-      
+
       // Immediate Assignment
       window.location.assign(upiUrl);
 
