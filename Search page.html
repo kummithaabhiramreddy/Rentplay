@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>GameRent — Rent Any Game, Anytime</title>
+  <title>RentPlay — Rent Any Item, Anytime</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=Dancing+Script:wght@600&display=swap"
     rel="stylesheet" />
@@ -2064,8 +2064,9 @@
 
   <div class="hero">
     <div class="hero-badge" data-t="hero_badge">🎮 Premium Game Rentals</div>
-    <h1 data-t="hero_title">RENT ANY GAME<br>ANYTIME</h1>
-    <p data-t="hero_sub">Indoor & outdoor games for every occasion — single pieces or full kits delivered to your door.
+    <h1 data-t="hero_title">RENT ANY Item<br>ANYTIME</h1>
+    <p data-t="hero_sub">Student Equipment , Indoor & outdoor , Electronic games for every occasion — single pieces or
+      full kits delivered to your door.
     </p>
     <div class="store-wrap">
       <select id="storeSelector" onchange="updateStoreDisplay(); fetchGames(true)">
@@ -2158,7 +2159,7 @@
     <div id="currentStoreName"></div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search Rent equipment..." oninput="filterGames()"
+      <input type="text" id="searchInput" placeholder="Search student equipment, kits, gear..." oninput="filterGames()"
         autocomplete="off" />
       <div class="search-actions">
         <button class="search-btn" type="button" title="Use camera" onclick="startScanner()">📷</button>
@@ -2172,10 +2173,9 @@
 
 
   <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('all',this)" data-t="cat_all">All Games</button>
-
-    <button class="filter-btn" onclick="setFilter('kit',this)">📦 Kits</button>
-    <button class="filter-btn" onclick="setFilter('single',this)">🎯 Single</button>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('student',this)">🎓 Student Equipment</button>
+    <button class="filter-btn" onclick="setFilter('general',this)">⚽ Sports, Games & Electronics</button>
   </div>
 
   <div id="hubSelectionMessage" style="display: none;">
@@ -2188,8 +2188,12 @@
 
 
   <div id="studentSection">
-    <div class="section-title"><span>🎓 Student Essentials</span> <span id="studentCount"></span></div>
+    <div class="section-title"><span>🎓 Student Equipment</span> <span id="studentCount"></span></div>
     <div class="grid" id="studentGrid"></div>
+  </div>
+  <div id="generalSection">
+    <div class="section-title"><span>⚽ Sports, Games, Fitness & Electronics</span> <span id="generalCount"></span></div>
+    <div class="grid" id="generalGrid"></div>
   </div>
 
   <!-- DETAIL MODAL -->
@@ -2423,12 +2427,9 @@
           <div class="form-group">
             <label>Item Category *</label>
             <select id="listCat" required>
-              <option value="games">🎮 Games, & Consoles</option>
-              <option value="fitness">💪 Fitness Gear</option>
-              <option value="electronics">🔌 Electronics / Gadgets</option>
-              <option value="activity">🧗 Activity / Sport Gear</option>
-              <option value="scrap">📦 General Scrap / Waste</option>
-              <option value="other">❓ Other</option>
+              <option value="games">Sports, Games & Electronics</option>
+              <option value="fitness">Student Equipment</option>
+              <option value="other">Other</option>
             </select>
           </div>
           <div class="form-group">
@@ -2478,8 +2479,19 @@
       <div class="footer-brand">
         <h2 onclick="openLanguage()" style="cursor: pointer; color: #fff;">🎮 Rent<span
             style="color:var(--accent);">Play</span></h2>
-        <p>India's largest game rental platform. Indoor, outdoor, board, fitness — every game at your doorstep. Serving
-          Amaravathi & all major cities.</p>
+        <p>India's largest rental platform. Get all your study and practical gear at your doorstep.
+          Serving Amaravathi & all major cities.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Calculators & Tech</a></li>
+          <li><a href="#">Lab Equipment</a></li>
+          <li><a href="#">Engineering Kits</a></li>
+          <li><a href="#">Drawing Materials</a></li>
+          <li><a href="#">Uniforms & Apparel</a></li>
+          <li><a href="#">Study Aids</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <h4>Support</h4>
@@ -2503,7 +2515,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 RentPlay. All rights reserved. | Delivering joy, one game at a time.</p>
+      <p>© 2026 RentPlay. All rights reserved. | Delivering essentials, one student at a time.</p>
     </div>
   </footer>
 
@@ -2540,18 +2552,19 @@
       { name: "Basic Calculator", type: "single", price: 20, emoji: "🖩", desc: "Standard 12-digit calculator.", image: "https://th.bing.com/th?q=What+Is+a+Basic+Calculator&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
       { name: "White Uniform Shirt", type: "single", price: 35, emoji: "👕", desc: "Half-sleeve school shirt.", image: "https://th.bing.com/th/id/OIP.HKC65RoDYzghuZphtXapXAHaJD?w=156&h=190&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
       { name: "Canvas Shoes (White)", type: "single", price: 40, emoji: "👟", desc: "White sports shoes for PE.", image: "https://th.bing.com/th/id/OIP.muef-wNt03n3i47viQrNuwHaJQ?w=135&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
-      { name: "Large Set Squares", type: "kit", price: 15, emoji: "📐", desc: "Pair of acrylic set squares.", image: "https://th.bing.com/th/id/OIP.C4R7S-HxEd-EOlQ4dYuLeQHaHa?w=160&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Large Set Squares", type: "kit", price: 20, emoji: "📐", desc: "Pair of acrylic set squares.", image: "https://th.bing.com/th/id/OIP.C4R7S-HxEd-EOlQ4dYuLeQHaHa?w=160&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
       { name: "Square Ruler", type: "single", price: 25, emoji: "📏", desc: "steel square for drafting.", image: "https://th.bing.com/th?q=L+Square+Ruler+for+Sewing&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
-      { name: "steel scale 12 inch ", type: "single", price: 15, emoji: "📏", desc: "steel scale for drafting.", image: "https://th.bing.com/th/id/OIP.A_1TcoU642h1DIK8ytyrJgHaHa?w=159&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "steel scale 12 inch ", type: "single", price: 25, emoji: "📏", desc: "steel scale for drafting.", image: "https://th.bing.com/th/id/OIP.A_1TcoU642h1DIK8ytyrJgHaHa?w=159&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
       { name: "Safety Gloves Lab (  No need to submit only this item )", type: "kit", price: 15, emoji: "🧤", desc: "Nitrile disposable gloves. ", image: "https://th.bing.com/th/id/OIP.GOheei689NgDNBw7cA7MqAHaHa?w=181&h=184&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
-      { name: "Graphic Tablet Basic", type: "single", price: 80, emoji: "✍️", desc: "USB drawing pen tablet.", image: "https://th.bing.com/th/id/OIP.9xzOeBGmlSVWVU8XywYBqQHaHa?w=191&h=191&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
-      { name: "Engineering Scale 30cm", type: "single", price: 8, emoji: "📏", desc: "Triangular architect scale.", image: "https://th.bing.com/th/id/OIP.uU4pS7DPPJdLzTDGsDPt_AHaE8?w=280&h=187&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Graphic Tablet Basic", type: "single", price: 80, emoji: "✍️", desc: "USB drawing pen tablet.", image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500" },
+      { name: "Engineering Scale", type: "single", price: 15, emoji: "📏", desc: "Triangular architect scale.", image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=500" },
       { name: "Wooden Exam Clipboard", type: "single", price: 10, emoji: "📋", desc: "Classic writing board.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
-      { name: "Engineering Scale 15cm", type: "single", price: 5, emoji: "📏", desc: "Triangular architect scale.", image: "https://th.bing.com/th/id/OIP.MyZnYNOs7QPel2xVBB1aYQHaHa?w=150&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
-      { name: "Small Whiteboard", type: "single", price: 25, emoji: "📝", desc: "Dry erase practice board.", image: "https://th.bing.com/th/id/OIP.i53FRVv_NlXq1tD5u7ScBgHaHa?w=203&h=202&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Binder Notebook", type: "single", price: 20, emoji: "📓", desc: "Refillable ring binder.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
+      { name: "Small Whiteboard", type: "single", price: 25, emoji: "📝", desc: "Dry erase practice board.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
+      { name: "Dry Erase Markers", type: "kit", price: 15, emoji: "🖍️", desc: "Pack of 4 colors.", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500" },
       { name: "Desk Organizer", type: "single", price: 20, emoji: "🗃️", desc: "Pen and stationery holder.", image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500" },
       { name: "Student Backpack", type: "single", price: 45, emoji: "🎒", desc: "Spacious multi-compartment bag.", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500" },
-      { name: "Study Lamp (LED)", type: "single", price: 35, emoji: "💡", desc: "Adjustable desk light.", image: "https://th.bing.com/th/id/OIP.2gE9fi4I91qyoCe2Y3DsAgHaHa?w=166&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" }
+      { name: "Study Lamp (LED)", type: "single", price: 35, emoji: "💡", desc: "Adjustable desk light.", image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500" }
     ];
 
     for (let h = 1; h <= 36; h++) {
@@ -2561,6 +2574,37 @@
           ...t,
           storeId: h.toString(),
           cat: 'student'
+        });
+      });
+    }
+
+    // --- DYNAMICALLY ADD GENERAL ITEMS TO ALL 36 HUBS ---
+    const generalTemplates = [
+      { name: "Chess Grandmaster Set", type: "single", price: 20, emoji: "♟️", desc: "Heavy wooden pieces for indoor play.", image: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=500" },
+      { name: "Table Tennis", type: "pair", price: 25, emoji: "🏓", desc: "Rackets, balls and net.", image: "https://th.bing.com/th/id/OIP.b6Ri-Fu48XNeRtdy4VQvCAHaHB?w=187&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Basketball", type: "single", price: 20, emoji: "🏀", desc: "Official size basketball.", image: "https://th.bing.com/th/id/OIP.rOUnadgzR1kw-E7PUtBw_wHaHa?w=127&h=150&c=6&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Cricket Kit Full", type: "kit", price: 30, emoji: "🏏", desc: "Complete cricket gear for matches.", image: "https://th.bing.com/th/id/OIP.EuDBuX2JDEm-Kl7s5EYTTAHaHa?w=190&h=190&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Yoga Mat Premium", type: "single", price: 20, emoji: "🧘", desc: "Non-slip eco-friendly mat.", image: "https://th.bing.com/th/id/OIP.8ggYRWyQkBE8XRMfVZ0U0AHaHa?w=170&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Skipping Rope Pro", type: "single", price: 10, emoji: "➰", desc: "Weighted speed rope.", image: "data:image/webp;base64,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" },
+      { name: "Hand Grip Strengthener", type: "single", price: 10, emoji: "💪", desc: "Adjustable resistance for hand grip.", image: "https://th.bing.com/th/id/OIP.Ro0oRV8PZX6BUYf4PHY3bAHaJa?w=151&h=192&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Bluetooth Speaker", type: "single", price: 17, emoji: "🔊", desc: "Portable waterproof speaker.", image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500" },
+      { name: "VR Headset Kit", type: "kit", price: 25, emoji: "🥽", desc: "Immersive virtual reality experience.", image: "https://th.bing.com/th/id/OIP.7egDFHY45OmybXv0C31iKQAAAA?w=136&h=181&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "4-Person Camping Tent", type: "kit", price: 20, emoji: "⛺", desc: "Waterproof adventure tent.", image: "https://th.bing.com/th/id/OIP.n4pwV4l7wahXxynanEbjRAHaJ3?w=129&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Archery Set", type: "kit", price: 22, emoji: "🏹", desc: "Bow and 10 safety arrows.", image: "https://th.bing.com/th?q=Pink+Light-Up+Archery+Set&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Monopoly Deluxe", type: "single", price: 10, emoji: "🏢", desc: "Classic business game.", image: "https://th.bing.com/th/id/OIP.ZIrDrkq4dj5bdmWXbze6lAHaGy?w=165&h=180&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Settlers of Catan", type: "single", price: 10, emoji: "🎲", desc: "Classic strategy board game.", image: "https://th.bing.com/th?q=Settlers+of+Catan+Wood+Board&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" },
+      { name: "Xbox Series X Console", type: "single", price: 40, emoji: "🎮", desc: "4K gaming console with 1TB SSD.", image: "https://th.bing.com/th/id/OIP.893H0qJlrMy5GcS1-9XcdgHaIw?w=155&h=184&c=7&r=0&o=7&dpr=2&pid=1.7&rm=3" },
+      { name: "Nintendo Switch OLED", type: "single", price: 60, emoji: "🕹️", desc: "Handheld gaming with vibrant OLED screen.", image: "https://th.bing.com/th/id/OIP.llouDhxJ8Y8iAUY7cw87oAHaE8?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
+      { name: "RGB Mechanical Keyboard Kit", type: "kit", price: 40, emoji: "⌨️", desc: "Blue switch keyboard + RGB mouse + pad.", image: "https://th.bing.com/th?q=Strafe+Gaming+Mechanical+Keyboard+RGB&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=2&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" }
+    ];
+
+    for (let h = 1; h <= 36; h++) {
+      generalTemplates.forEach((t, i) => {
+        LOCAL_INVENTORY.push({
+          id: 20000 + (h * 100) + i,
+          ...t,
+          storeId: h.toString(),
+          cat: 'general'
         });
       });
     }
@@ -3152,7 +3196,8 @@
     let currentItemName = '';
 
     const SECTIONS = [
-      { id: 'student', label: 'Student Essentials', sectionId: 'studentSection', gridId: 'studentGrid', countId: 'studentCount' },
+      { id: 'student', label: 'Student Equipment', sectionId: 'studentSection', gridId: 'studentGrid', countId: 'studentCount' },
+      { id: 'general', label: 'Sports, Games, Fitness & Electronics', sectionId: 'generalSection', gridId: 'generalGrid', countId: 'generalCount' },
     ];
 
     function starsHtml(r, size = 11) {
