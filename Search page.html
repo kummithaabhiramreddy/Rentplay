@@ -4013,7 +4013,8 @@
     }
 
     function triggerUPIPayment(method) {
-      const amountStr = document.getElementById('totalPrice').textContent.replace('₹', '').trim();
+      // Clean the price string: remove ₹, commas, and whitespace
+      const amountStr = document.getElementById('totalPrice').textContent.replace(/[₹,]/g, '').trim();
       const amount = parseFloat(amountStr);
       
       if (isNaN(amount) || amount <= 0) {
@@ -4021,11 +4022,16 @@
         return;
       }
 
+      // Format amount to 2 decimal places for UPI consistency
+      const formattedAmount = amount.toFixed(2);
+
       const vpa = "7093910280@upi"; 
-      const merchantName = "RentPlay Gaming Hub";
+      const merchantName = "RentPlay";
       const itemName = document.getElementById('itemName').value || "Game Rental";
       const transactionNote = `Rent: ${itemName}`;
-      const upiUrl = `upi://pay?pa=${vpa}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+      
+      // Standard UPI URL construction
+      const upiUrl = `upi://pay?pa=${vpa}&pn=${encodeURIComponent(merchantName)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
 
       console.log(`Dynamic Redirect: ${upiUrl}`);
       
