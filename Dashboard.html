@@ -888,7 +888,7 @@ async function clearAllPartners(){
     return;
   }
   try{
-    const base='http://127.0.0.1:3000';
+    const base='http://127.0.0.1:3005';
     const res=await fetch(`${base}/api/delete-all-delivery-boys`,{method:'POST'});
     const result=await res.json();
     if(result.success){ toast("All partners removed",'ok'); fetchData(); }
@@ -914,7 +914,7 @@ async function deletePartner(id){
     return;
   }
   try{
-    const base='http://127.0.0.1:3000';
+    const base='http://127.0.0.1:3005';
     const path=contextTargetType==='review'?`/api/reviews/${id}`:`/api/delete-delivery-boy`;
     const res=await fetch(`${base}${path}`,{
       method:contextTargetType==='review'?'DELETE':'POST',
@@ -1022,7 +1022,7 @@ async function fetchData(){
       allPartners = loadLocalDashboardData(DASHBOARD_PARTNER_KEY, SAMPLE_DASHBOARD_PARTNERS);
       allReviews = loadLocalDashboardData(DASHBOARD_REVIEW_KEY, SAMPLE_DASHBOARD_REVIEWS);
     } else {
-      const api = 'http://127.0.0.1:3000';
+      const api = 'http://127.0.0.1:3005';
       const [bR,pR,revR] = await Promise.all([fetch(api+'/api/view-bookings'),fetch(api+'/api/delivery-boys'),fetch(api+'/api/reviews')]);
       if(!bR.ok||!pR.ok) throw new Error('Sync failed');
       const bks = await bR.json();
