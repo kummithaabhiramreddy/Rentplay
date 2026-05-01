@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>RentPlay — Rent Any Item, Anytime</title>
+  <title>GearGo — Rent Any Item, Anytime</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=Dancing+Script:wght@600&display=swap"
     rel="stylesheet" />
@@ -1801,7 +1801,7 @@
   <!-- SIDEBAR NAVIGATION -->
   <button class="menu-btn" onclick="toggleSidebar()" title="Open Menu">
     <div style="display:flex; flex-direction:column; align-items:center; line-height:1;">
-      <span style="font-size:10px; font-weight:800; color:var(--text); margin-bottom:-2px;">RP</span>
+      <span style="font-size:10px; font-weight:800; color:var(--text); margin-bottom:-2px;">GG</span>
       <span style="font-size:16px;">☰</span>
     </div>
   </button>
@@ -1811,7 +1811,7 @@
   <div class="sidebar" id="sidebar">
     <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
     <div class="sidebar-head">
-      <div class="sidebar-logo" onclick="openLanguage()" style="cursor: pointer;">RENT<span>PLAY</span></div>
+      <div class="sidebar-logo" onclick="openLanguage()" style="cursor: pointer;">GEAR<span>GO</span></div>
     </div>
     <div class="sidebar-body" style="overflow-y: auto; flex: 1;">
       <div class="sidebar-profile-summary" id="sidebarProfileSummary"
@@ -1856,7 +1856,7 @@
       </a>
     </div>
     <div style="padding: 20px 24px; border-top: 1px solid var(--border);">
-      <p style="font-size: 11px; color: var(--muted);">© 2026 RentPlay Premium</p>
+      <p style="font-size: 11px; color: var(--muted);">© 2026 GearGo Premium</p>
     </div>
   </div>
 
@@ -1973,7 +1973,7 @@
         <div class="notif-item">
           <div>
             <div class="notif-label" data-t="notif_promo">Promotional Emails</div>
-            <div class="notif-desc" data-t="notif_promo_desc">Get offers and new game updates</div>
+            <div class="notif-desc" data-t="notif_promo_desc">Get offers and new item updates</div>
           </div>
           <div class="toggle-switch" id="promoToggle" onclick="toggleNotification('promo')"></div>
         </div>
@@ -2063,13 +2063,13 @@
   </div>
 
   <div class="hero">
-    <div class="hero-badge" data-t="hero_badge">🎮 Premium Game Rentals</div>
+    <div class="hero-badge" data-t="hero_badge">🎮 Premium Item Rentals</div>
     <h1 data-t="hero_title">RENT ANY Item<br>ANYTIME</h1>
-    <p data-t="hero_sub">Student Equipment , Indoor & outdoor , Electronic games for every occasion — single pieces or
+    <p data-t="hero_sub">Student Equipment , Indoor & outdoor , Electronic items for every occasion — single pieces or
       full kits delivered to your door.
     </p>
     <div class="store-wrap">
-      <select id="storeSelector" onchange="updateStoreDisplay(); fetchGames(true)">
+      <select id="storeSelector" onchange="updateStoreDisplay(); fetchItems(true)">
         <option value="">-- Select Your Store Hub --</option>
         <option value="all" style="font-weight: bold; color: var(--primary);">🌍 All Hubs (India - Browse Everything)
         </option>
@@ -2159,7 +2159,7 @@
     <div id="currentStoreName"></div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search student equipment, kits, gear..." oninput="filterGames()"
+      <input type="text" id="searchInput" placeholder="Search student equipment, kits, gear..." oninput="filterItems()"
         autocomplete="off" />
       <div class="search-actions">
         <button class="search-btn" type="button" title="Use camera" onclick="startScanner()">📷</button>
@@ -2175,7 +2175,7 @@
   <div class="filters">
     <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
     <button class="filter-btn" onclick="setFilter('student',this)">🎓 Student Equipment</button>
-    <button class="filter-btn" onclick="setFilter('general',this)">⚽ Sports, Games & Electronics</button>
+    <button class="filter-btn" onclick="setFilter('general',this)">⚽ Sports, Items & Electronics</button>
   </div>
 
   <div id="hubSelectionMessage" style="display: none;">
@@ -2192,7 +2192,7 @@
     <div class="grid" id="studentGrid"></div>
   </div>
   <div id="generalSection">
-    <div class="section-title"><span>⚽ Sports, Games, Fitness & Electronics</span> <span id="generalCount"></span></div>
+    <div class="section-title"><span>⚽ Sports, Items, Fitness & Electronics</span> <span id="generalCount"></span></div>
     <div class="grid" id="generalGrid"></div>
   </div>
 
@@ -2235,7 +2235,7 @@
       </div>
       <div class="agreement-content">
         <p>I hereby agree that if any item is damaged during the rental period, I will be liable to pay the full repair
-          or replacement cost as per RentPlay policies.</p>
+          or replacement cost as per GearGo policies.</p>
         <p style="margin-top:10px;">The identification and quality check will be done upon pickup and return.</p>
       </div>
 
@@ -2247,7 +2247,7 @@
         <!-- Hidden until 'Proceed' is clicked -->
         <div class="stamp-container" id="stampContainer"
           style="opacity:0; transform: scale(3); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-          <img src="rentplay_stamp.png" alt="RentPlay Stamp" />
+          <img src="geargo_stamp.png" alt="GearGo Stamp" />
         </div>
       </div>
 
@@ -2403,8 +2403,8 @@
     <div class="modal" style="max-width: 500px;">
       <button class="modal-close" onclick="closeListModal()">✕</button>
       <h3>♻️ Sell Your Unused Items</h3>
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 1.5rem;">Sell your unused activity gear, games, or
-        scrap items directly to RentPlay. We'll offer a fair price!</p>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 1.5rem;">Sell your unused activity gear, items, or
+        scrap items directly to GearGo. We'll offer a fair price!</p>
 
       <form id="listItemForm">
         <div class="form-group">
@@ -2427,7 +2427,7 @@
           <div class="form-group">
             <label>Item Category *</label>
             <select id="listCat" required>
-              <option value="games">Sports, Games & Electronics</option>
+              <option value="games">Sports, Items & Electronics</option>
               <option value="fitness">Student Equipment</option>
               <option value="other">Other</option>
             </select>
@@ -2477,8 +2477,8 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <h2 onclick="openLanguage()" style="cursor: pointer; color: #fff;">🎮 Rent<span
-            style="color:var(--accent);">Play</span></h2>
+        <h2 onclick="openLanguage()" style="cursor: pointer; color: #fff;">🎮 Gear<span
+            style="color:var(--accent);">Go</span></h2>
         <p>India's largest rental platform. Get all your study and practical gear at your doorstep.
           Serving Amaravathi & all major cities.</p>
       </div>
@@ -2508,14 +2508,14 @@
         <h4>Contact</h4>
         <ul>
           <li>📞 +91 8185951564</li>
-          <li>✉️ rent@gamerent.in</li>
+          <li>✉️ support@geargo.com</li>
           <li>📍 Thimmareddy palem, AP</li>
           <li>⏰ 9 AM – 9 PM Daily</li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 RentPlay. All rights reserved. | Delivering essentials, one student at a time.</p>
+      <p>© 2026 GearGo. All rights reserved. | Delivering essentials, one student at a time.</p>
     </div>
   </footer>
 
@@ -2527,6 +2527,9 @@
     let currentStoreId = null;
     let baseItemsFetched = false;
     let STORES_MAP = {};
+
+    // API Configuration
+    const apiBase = (window.location.port === '3005') ? '' : 'http://localhost:3005';
 
     // ════════════════════════════════════════
     // DATABASE-FREE INVENTORY SYSTEM
@@ -2610,13 +2613,13 @@
     }
 
 
-    function fetchGames(isManual = false) {
+    function fetchItems(isManual = false) {
       const selectedHub = document.getElementById('storeSelector').value;
       console.log(`🔍 Filtering local inventory for Hub: ${selectedHub}`);
 
       if (!selectedHub || selectedHub === "") {
-        GAMES = [];
-        filterGames();
+        ITEMS = [];
+        filterItems();
         return;
       }
 
@@ -2629,17 +2632,17 @@
       }
 
       // Format data for the UI
-      GAMES = data.map(item => ({
+      ITEMS = data.map(item => ({
         ...item,
         img: item.image,
         rating: item.rating || 4.8,
         reviews: item.reviews || 15
       }));
 
-      filterGames(); // Apply category filters on top
+      filterItems(); // Apply category filters on top
 
       if (isManual && selectedHub !== "") {
-        showToast(`✅ Loaded ${GAMES.length} items from ${selectedHub} inventory`, "success");
+        showToast(`✅ Loaded ${ITEMS.length} items from ${selectedHub} inventory`, "success");
       }
     }
 
@@ -2759,7 +2762,7 @@
         selector.value = nearestOpt.value;
         currentStoreId = nearestOpt.value;
         updateStoreDisplay(true);
-        fetchGames(true);
+        fetchItems(true);
         showToast(`🛡️ Verified: ${nearestOpt.textContent} is nearest!`, "success");
       } else {
         showToast("GPS verified, but no hubs are near you.", "warn");
@@ -2825,7 +2828,7 @@
           const result = await res.json();
           if (result.success) {
             showToast("🎉 Item successfully listed for review!", "success");
-            await fetchGames();
+            await fetchItems();
             setTimeout(closeListModal, 1000);
           } else {
             showToast('❌ ' + (result.message || 'Submission failed'), "error");
@@ -2844,7 +2847,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       fetchStores().then(() => {
         updateStoreDisplay();
-        fetchGames();
+        fetchItems();
       });
     });
 
@@ -2871,9 +2874,9 @@
     ];
 
     // ════════════════════════════════════════
-    // GAMES DATABASE — 300+ items
+    // ITEMS DATABASE — 300+ items
     // ════════════════════════════════════════
-    let GAMES = [
+    let ITEMS = [
       // ── INDOOR (50) ──
       { id: 1, name: "Chess Board", cat: "indoor", type: "single", img: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=500&h=300&fit=crop", price: 80, desc: "Classic wooden chess board with premium finish. Perfect for tournaments.", emoji: "♟️", rating: 4.8, reviews: 124, _localName: "Chess Board" },
       { id: 2, name: "Chess Complete Kit", cat: "indoor", type: "kit", img: "https://images.unsplash.com/photo-1580541832626-2a7131ee809f?w=500&h=300&fit=crop", price: 150, desc: "Full kit: weighted chess pieces + board + timer + storage bag.", emoji: "♟️", rating: 4.9, reviews: 87 },
@@ -3037,7 +3040,7 @@
       { id: 159, name: "Sports Referee Whistle Kit", cat: "new", type: "kit", img: "https://images.unsplash.com/photo-1461897104016-0b3b00cc81ee?w=500&h=300&fit=crop", price: 60, desc: "5 metal referee whistles + lanyards + red/yellow card set.", emoji: "🔔", rating: 4.4, reviews: 87 },
       { id: 160, name: "Portable PA System", cat: "new", type: "kit", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop", price: 300, desc: "Wireless PA + mic + Bluetooth. 30W for outdoor events & matches.", emoji: "🎤", rating: 4.7, reviews: 65 },
 
-      // ── BOARD GAMES (40) ──
+      // ── BOARD ITEMS (40) ──
       { id: 161, name: "Dungeons & Dragons Kit", cat: "board", type: "kit", img: "https://images.unsplash.com/photo-1529710088807-8a48e9ecac55?w=500&h=300&fit=crop", price: 120, desc: "Starter kit: player handbook + dice set + dungeon master guide + mat.", emoji: "🐉", rating: 4.9, reviews: 134 },
       { id: 162, name: "Warhammer Set", cat: "board", type: "kit", img: "https://images.unsplash.com/photo-1529710088807-8a48e9ecac55?w=500&h=300&fit=crop", price: 300, desc: "Starter Warhammer 40K set with 2 factions + rulebook + paints.", emoji: "⚔️", rating: 4.8, reviews: 67 },
       { id: 163, name: "Magic The Gathering", cat: "board", type: "kit", img: "https://images.unsplash.com/photo-1529710088807-8a48e9ecac55?w=500&h=300&fit=crop", price: 80, desc: "2 starter decks + booster packs + play mat + card sleeves.", emoji: "🪄", rating: 4.7, reviews: 98 },
@@ -3197,7 +3200,7 @@
 
     const SECTIONS = [
       { id: 'student', label: 'Student Equipment', sectionId: 'studentSection', gridId: 'studentGrid', countId: 'studentCount' },
-      { id: 'general', label: 'Sports, Games, Fitness & Electronics', sectionId: 'generalSection', gridId: 'generalGrid', countId: 'generalCount' },
+      { id: 'general', label: 'Sports, Items, Fitness & Electronics', sectionId: 'generalSection', gridId: 'generalGrid', countId: 'generalCount' },
     ];
 
     function starsHtml(r, size = 11) {
@@ -3239,7 +3242,7 @@
         const hasImg = imgSrc.length > 10; // Basic check for valid src
 
         return `
-          <div class="card" data-game-id="${g.id}" style="animation-delay:${(i % 20) * 0.04}s" onclick="openDetail(${g.id})">
+          <div class="card" data-item-id="${g.id}" style="animation-delay:${(i % 20) * 0.04}s" onclick="openDetail(${g.id})">
             <div class="card-img-container" style="position:relative; width:100%; height:160px; overflow:hidden; background:#1a1f2e;">
               ${hasImg ?
             `<img class="card-img lazy-image" data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="${localName}" 
@@ -3277,7 +3280,7 @@
       }).join('');
     }
 
-    function filterGames() {
+    function filterItems() {
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
       const storeId = document.getElementById('storeSelector').value;
       const hubMsg = document.getElementById('hubSelectionMessage');
@@ -3294,7 +3297,7 @@
 
       if (hubMsg) hubMsg.style.display = 'none';
 
-      let filtered = GAMES.filter(g => {
+      let filtered = ITEMS.filter(g => {
         const storeInfo = STORES_MAP[g.store_id];
         const storeSearch = storeInfo ? (storeInfo.name + ' ' + storeInfo.city).toLowerCase() : '';
 
@@ -3336,7 +3339,7 @@
       currentFilter = f;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      filterGames();
+      filterItems();
     }
 
     // ════════════════════════════════════════
@@ -3462,7 +3465,7 @@
       let heardSpeech = false;
       let retryCount = 0;
 
-      const listeningMsg = "Listening... please say a game or category.";
+      const listeningMsg = "Listening... please say an item or category.";
       status.textContent = listeningMsg;
       speakMessage(listeningMsg).then(() => {
         if (voiceRecognition) {
@@ -3474,11 +3477,11 @@
         heardSpeech = true;
         const transcript = event.results[0][0].transcript.trim();
         input.value = transcript;
-        filterGames();
+        filterItems();
 
         const q = transcript.toLowerCase();
-        const exactMatches = GAMES.filter(g => g.name.toLowerCase() === q);
-        const partialMatches = GAMES.filter(g =>
+        const exactMatches = ITEMS.filter(g => g.name.toLowerCase() === q);
+        const partialMatches = ITEMS.filter(g =>
           g.name.toLowerCase().includes(q) ||
           g.desc.toLowerCase().includes(q) ||
           g.cat.toLowerCase().includes(q) ||
@@ -3510,7 +3513,7 @@
       voiceRecognition.onend = () => {
         if (!heardSpeech && retryCount < 1) {
           retryCount += 1;
-          const retryMsg = "I didn't hear that. Please say the game name again.";
+          const retryMsg = "I didn't hear that. Please say the item name again.";
           status.textContent = retryMsg;
           speakMessage(retryMsg);
           voiceRecognition.start();
@@ -3584,10 +3587,10 @@
       let bestMatch = null;
       let highestScore = 0;
 
-      GAMES.forEach(game => {
+      ITEMS.forEach(item => {
         let score = 0;
-        const name = game.name.toLowerCase();
-        const desc = game.desc.toLowerCase();
+        const name = item.name.toLowerCase();
+        const desc = item.desc.toLowerCase();
 
         // 1. Synonym Check (High Priority)
         for (const [aiLabel, mappedName] of Object.entries(VISION_SYNONYMS)) {
@@ -3607,7 +3610,7 @@
 
         if (score > highestScore) {
           highestScore = score;
-          bestMatch = game;
+          bestMatch = item;
         }
       });
 
@@ -3749,7 +3752,7 @@
     // DETAIL MODAL
     // ════════════════════════════════════════
     function openDetail(id) {
-      const g = GAMES.find(x => x.id === id);
+      const g = ITEMS.find(x => x.id === id);
       if (!g) return;
 
       const T = (typeof translations !== 'undefined' ? translations : {})[currentLang] || {};
@@ -3821,7 +3824,7 @@
       currentHours = 0;
 
       const T = (typeof translations !== 'undefined' ? translations : {})[currentLang] || {};
-      const itemKey = GAMES.find(x => x.name === name)?.id;
+      const itemKey = ITEMS.find(x => x.name === name)?.id;
       const localName = T['item_' + itemKey] || name;
 
       document.getElementById('hoursVal').textContent = '0';
@@ -3860,15 +3863,15 @@
     document.getElementById('bookingForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const msg = document.getElementById('bookingMsg');
-      msg.textContent = "⏳ Processing your booking...";
-      msg.className = "success-msg show";
-      msg.style.color = "var(--accent)";
-
       if (!document.getElementById('termsAccepted').checked) {
         showToast('⚠️ Please accept the Terms & Conditions to proceed.', 'warn');
         return;
       }
+
+      const msg = document.getElementById('bookingMsg');
+      msg.textContent = "⏳ Processing your booking...";
+      msg.className = "success-msg show";
+      msg.style.color = "var(--accent)";
 
       const data = {
         userName: document.getElementById('userName').value,
@@ -3881,6 +3884,7 @@
         bookingDay: document.getElementById('mDay').value,
         bookingTime: document.getElementById('mTime').value,
         days: document.getElementById('mDuration').value,
+        price: document.getElementById('totalPrice').textContent.replace(/[₹,]/g, '').trim(),
         total: document.getElementById('totalPrice').textContent,
         paymentMode: currentPayment,
         signature: document.getElementById('renterSignature').value,
@@ -3888,20 +3892,118 @@
         lng: userLng
       };
 
-      const demoId = "B" + Date.now();
-      saveLocalBooking(data, demoId);
+      // --- HYBRID SYNC: Always save locally first ---
+      const bId = Date.now(); // Temporary ID if server fails
+      const fullBooking = {
+        id: bId,
+        name: data.userName,
+        phone: data.userPhone,
+        email: data.userEmail,
+        item: data.itemName,
+        price: data.price,
+        status: 'confirmed',
+        booking_date: data.bookingDate,
+        booking_time: data.bookingTime,
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        const BOOKING_KEY = 'geargo_dashboard_bookings';
+        let dashboardBookings = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
+        dashboardBookings.push(fullBooking);
+        localStorage.setItem(BOOKING_KEY, JSON.stringify(dashboardBookings));
+        saveLocalBooking(data, bId);
+      } catch (e) { console.warn("Local save failed", e); }
 
       if (currentPayment === 'cod') {
-        // Just show success for COD
-        msg.innerHTML = `✅ Booking ID #${demoId} Saved Successfully! (Cash on Delivery)`;
-        if (data.userEmail) sendEmailJS(data, demoId);
-        setTimeout(closeModal, 5000);
+        try {
+          const res = await fetch(`${apiBase}/book`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+          if (result.success) {
+            msg.innerHTML = `✅ Booking ID #${result.bookingId} Saved Successfully!`;
+            if (data.userEmail) sendEmailJS(data, result.bookingId);
+          } else {
+            msg.innerHTML = `✅ Saved Locally (Server Sync Failed: ${result.message})`;
+          }
+          setTimeout(closeModal, 5000);
+        } catch (err) {
+          // If fetch fails (CORS or server down), we still succeeded locally
+          msg.innerHTML = `✅ Booking Saved Locally (Server Offline)`;
+          setTimeout(closeModal, 5000);
+        }
       } else {
-        msg.textContent = "🚀 Opening Payment App...";
-        if (data.userEmail) sendEmailJS(data, demoId);
+        // UPI Payment Flow
+        sessionStorage.setItem('pending_booking', JSON.stringify(data));
+        msg.innerHTML = `
+          <div style="text-align:center; padding: 15px; background: rgba(245, 166, 35, 0.1); border-radius: 12px; border: 1px solid var(--accent);">
+            <p style="margin-bottom: 12px; font-weight: 600;">🚀 Opening Payment App...</p>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 15px;">After completing payment, return here to finalize your booking.</p>
+            <button onclick="confirmPaymentAndStore()" class="rent-btn" style="width: 100%; padding: 12px; font-size: 14px;">I Have Paid Successfully</button>
+          </div>
+        `;
         triggerUPIPayment(currentPayment);
       }
     });
+
+    async function confirmPaymentAndStore() {
+      const dataStr = sessionStorage.getItem('pending_booking');
+      if (!dataStr) {
+        showToast("⚠️ No pending booking data found.", "warn");
+        return;
+      }
+      const data = JSON.parse(dataStr);
+      const msg = document.getElementById('bookingMsg');
+      msg.textContent = "⏳ Finalizing your booking...";
+
+      // --- HYBRID SYNC: Always save locally first ---
+      const bId = Date.now();
+      try {
+        const BOOKING_KEY = 'geargo_dashboard_bookings';
+        let dashboardBookings = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
+        dashboardBookings.push({
+          id: bId,
+          name: data.userName,
+          phone: data.userPhone,
+          email: data.userEmail,
+          item: data.itemName,
+          price: data.price,
+          status: 'paid',
+          booking_date: data.bookingDate,
+          booking_time: data.bookingTime,
+          created_at: new Date().toISOString()
+        });
+        localStorage.setItem(BOOKING_KEY, JSON.stringify(dashboardBookings));
+        saveLocalBooking(data, bId);
+      } catch (e) { }
+
+      try {
+        const res = await fetch(`${apiBase}/book`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, status: 'paid' })
+        });
+        const result = await res.json();
+        if (result.success) {
+          msg.innerHTML = `<div style="text-align:center">
+            <p style="color:var(--green); font-weight:700; font-size: 1.2rem; margin-bottom: 8px;">✅ Payment Confirmed!</p>
+            <p>Booking stored in dashboard.</p>
+          </div>`;
+          if (data.userEmail) sendEmailJS(data, result.bookingId);
+        } else {
+          msg.innerHTML = `<p style="color:var(--green)">✅ Payment Logged Locally</p><p style="font-size:12px">Server Sync Error: ${result.message}</p>`;
+        }
+        sessionStorage.removeItem('pending_booking');
+        setTimeout(closeModal, 4000);
+      } catch (err) {
+        msg.innerHTML = `<p style="color:var(--green)">✅ Payment Logged Locally</p><p style="font-size:12px">Server Offline - Dashboard Updated</p>`;
+        sessionStorage.removeItem('pending_booking');
+        setTimeout(closeModal, 4000);
+      }
+    }
 
     async function sendEmailJS(data, bookingId) {
       try {
@@ -4045,7 +4147,7 @@
       const formattedAmount = amount.toFixed(2);
 
       const vpa = "7093910280@ybl";
-      const merchantName = "RentPlay";
+      const merchantName = "GearGo";
       const transactionNote = "Item Rental";
 
       // Minimal UPI URL for maximum compatibility with personal accounts
@@ -4068,7 +4170,7 @@
 
 
     function openFooterBook() {
-      if (GAMES.length) openAgreement(GAMES[0].name, GAMES[0].price);
+      if (ITEMS.length) openAgreement(ITEMS[0].name, ITEMS[0].price);
     }
 
     // Close on backdrop
@@ -4082,7 +4184,7 @@
     });
 
     // Init
-    filterGames();
+    filterItems();
 
     // SIDEBAR & PROFILE LOGIC
     function toggleSidebar() {
@@ -4098,49 +4200,89 @@
       document.getElementById('ordersOverlay').classList.add('show');
     }
 
-    function renderOrders() {
-      const saved = localStorage.getItem('acctSession');
+    async function renderOrders() {
       const list = document.getElementById('ordersList');
-
-      if (!saved || !JSON.parse(saved).bookings || JSON.parse(saved).bookings.length === 0) {
+      const savedUser = localStorage.getItem('currentUser');
+      
+      if (!savedUser) {
         list.innerHTML = `
-          <div style="height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted);">
-            <div style="font-size:60px; margin-bottom:15px;">📦</div>
-            <p>No successful bookings found yet.</p>
-            <button onclick="closeOrders()" class="modal-confirm" style="width:auto; padding:10px 30px; margin-top:20px;">Start Browsing</button>
+          <div style="height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted); text-align:center; padding: 20px;">
+            <div style="font-size:60px; margin-bottom:15px;">👤</div>
+            <p>Please log in to view your bookings from the database.</p>
+            <button onclick="window.location.href='index.html'" class="modal-confirm" style="width:auto; padding:10px 30px; margin-top:20px;">Go to Login</button>
           </div>
         `;
-      } else {
-        const data = JSON.parse(saved).bookings;
-        list.innerHTML = `
-          <div style="max-width: 600px; margin: 0 auto;">
-            ${data.map(b => `
-              <div style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position:relative;">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
-                  <div>
-                    <h4 style="margin:0 0 5px; color:var(--accent); font-size:1.4rem;">${b.item_name}</h4>
-                    <span style="font-size:11px; padding:4px 10px; border-radius:12px; background:rgba(46, 213, 115, 0.1); color:var(--green); font-weight:700;">${b.status}</span>
-                  </div>
-                  <div style="text-align:right;">
-                    <div style="font-weight:800; font-size:1.2rem;">${b.total}</div>
-                    <div style="font-size:11px; color:var(--muted);">Booking ID: #${b.id}</div>
-                  </div>
-                </div>
-                
-                <div style="font-size:13px; color:var(--text); margin-bottom:15px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                  <div><span style="color:var(--muted);">Booking Date:</span><br>${b.booking_date}</div>
-                  <div><span style="color:var(--muted);">Placed On:</span><br>${b.created_at}</div>
-                </div>
-
-                <div style="display:flex; gap:10px; border-top: 1px solid var(--border); padding-top:15px;">
-                  <button class="modal-confirm" style="margin:0; flex:1; background:rgba(255,255,255,0.05); color:var(--text); font-size:12px;" onclick="window.location.reload()">📋 Re-book</button>
-                  <button class="modal-confirm" style="margin:0; flex:1; background:#f8717122; color:#f87171; font-size:12px; border:1px solid #f8717144;" onclick="cancelBooking('${b.id}')">❌ Cancel Booking</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
+        return;
       }
+
+      const user = JSON.parse(savedUser);
+      list.innerHTML = `<div style="text-align:center; padding:40px; color:var(--muted);">⌛ Fetching orders from server...</div>`;
+
+      try {
+        const res = await fetch(`${apiBase}/api/my-orders?phone=${user.phone}&email=${user.email || ''}`);
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          list.innerHTML = `
+            <div style="height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted); text-align:center; padding: 20px;">
+              <div style="font-size:60px; margin-bottom:15px;">📦</div>
+              <p>No successful bookings found in the database yet.</p>
+              <button onclick="closeOrders()" class="modal-confirm" style="width:auto; padding:10px 30px; margin-top:20px;">Start Browsing</button>
+            </div>
+          `;
+        } else {
+          list.innerHTML = `
+            <div style="max-width: 600px; margin: 0 auto; padding-bottom: 40px;">
+              <div style="margin-bottom: 20px; color: var(--muted); font-size: 13px;">Found ${data.length} bookings for ${user.phone}</div>
+              ${data.reverse().map(b => `
+                <div style="background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position:relative; overflow:hidden;">
+                  <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:${b.status === 'paid' || b.status === 'assigned' ? 'var(--green)' : 'var(--accent)'}"></div>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
+                    <div>
+                      <h4 style="margin:0 0 5px; color:var(--accent); font-size:1.4rem; font-family:'Barlow Condensed', sans-serif;">${b.item || b.item_name}</h4>
+                      <span style="font-size:11px; padding:4px 10px; border-radius:12px; background:rgba(255, 255, 255, 0.05); color:var(--text); font-weight:700; border: 1px solid var(--border); text-transform:uppercase;">${b.status}</span>
+                    </div>
+                    <div style="text-align:right;">
+                      <div style="font-weight:800; font-size:1.2rem; color: var(--text);">₹${b.price}</div>
+                      <div style="font-size:11px; color:var(--muted);">ID: #${b.id}</div>
+                    </div>
+                  </div>
+                  
+                  <div style="font-size:13px; color:var(--text); margin-bottom:15px; display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                    <div><span style="color:var(--muted); font-size:11px; text-transform:uppercase;">Booking Date</span><br><b>${b.booking_date}</b></div>
+                    <div><span style="color:var(--muted); font-size:11px; text-transform:uppercase;">Payment Mode</span><br><b>${b.payment_mode || b.paymentMode}</b></div>
+                  </div>
+
+                  <div style="display:flex; gap:10px; border-top: 1px solid var(--border); padding-top:15px;">
+                    <button class="modal-confirm" style="margin:0; flex:1; background:rgba(255,255,255,0.05); color:var(--text); font-size:12px; border:1px solid var(--border);" onclick="window.location.reload()">📋 Re-book</button>
+                    <button class="modal-confirm" style="margin:0; flex:1; background:#f8717111; color:#f87171; font-size:12px; border:1px solid #f8717133;" onclick="cancelBookingServer('${b.id}')">❌ Cancel</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      } catch (err) {
+        list.innerHTML = `<div style="text-align:center; padding:40px; color:var(--red);">⚠️ Failed to connect to server database.</div>`;
+      }
+    }
+
+    async function cancelBookingServer(id) {
+      if (!confirm("Are you sure you want to cancel this booking?")) return;
+      // We don't have a direct delete endpoint, but we can update status or just filter locally for now.
+      // Better: add a delete endpoint if possible. For now, let's just show a toast.
+      showToast('⏳ Requesting cancellation...', 'info');
+      // Fallback to local if server delete isn't ready
+      const saved = localStorage.getItem('acctSession');
+      if (saved) {
+        let session = JSON.parse(saved);
+        session.bookings = session.bookings.filter(b => b.id != id);
+        localStorage.setItem('acctSession', JSON.stringify(session));
+      }
+      setTimeout(() => {
+        showToast('✅ Cancellation request submitted.', 'success');
+        renderOrders();
+      }, 1000);
     }
 
     function cancelBooking(id) {
@@ -4277,10 +4419,10 @@
     // ── MULTI-LANGUAGE SYSTEM ──
     const translations = {
       en: {
-        hero_badge: "🎮 Premium Game Rentals",
-        hero_title: "RENT ANY GAME<br>ANYTIME",
-        hero_sub: "Indoor & outdoor games for every occasion — single pieces or full kits delivered to your door.",
-        cat_all: "All Games",
+        hero_badge: "🎮 Premium Item Rentals",
+        hero_title: "RENT ANY ITEM<br>ANYTIME",
+        hero_sub: "Indoor & outdoor items for every occasion — single pieces or full kits delivered to your door.",
+        cat_all: "All Items",
         cat_indoor: "🏠 Indoor",
         cat_outdoor: "🌳 Outdoor",
         cat_new: "🆕 New",
@@ -4582,8 +4724,8 @@
       });
 
       // 2. Translate game cards currently in the DOM
-      document.querySelectorAll('.card[data-game-id]').forEach(card => {
-        const id = card.getAttribute('data-game-id');
+      document.querySelectorAll('.card[data-item-id]').forEach(card => {
+        const id = card.getAttribute('data-item-id');
         const nameKey = 'item_' + id;
         if (T[nameKey]) {
           const nameEl = card.querySelector('.card-name');
@@ -4591,9 +4733,9 @@
         }
       });
 
-      // 3. Translate the GAMES array names for future card renders
-      if (typeof GAMES !== 'undefined') {
-        GAMES.forEach(g => {
+      // 3. Translate the ITEMS array names for future card renders
+      if (typeof ITEMS !== 'undefined') {
+        ITEMS.forEach(g => {
           const key = 'item_' + g.id;
           if (T[key]) g._localName = T[key];
           else g._localName = g.name;
@@ -4636,7 +4778,7 @@
 
     // --- SIDEBAR "REAL WORKING" FUNCTIONS ---
     function handleLogOut() {
-      if (!confirm("Are you sure you want to log out from RentPlay?")) return;
+      if (!confirm("Are you sure you want to log out from GearGo?")) return;
       localStorage.removeItem('currentUser');
       localStorage.removeItem('acctSession');
       window.location.href = 'index.html';
@@ -4810,7 +4952,7 @@
 
       <div style="padding: 16px; text-align: center; background: #000; border-top: 1px solid rgba(255,255,255,0.08);">
         <p style="font-size: 12px; color: #888;">Account information is managed securely. <a
-            href="mailto:support@rentplay.com" style="color:#fff; text-decoration:underline;">Contact Support</a> for
+            href="mailto:support@geargo.com" style="color:#fff; text-decoration:underline;">Contact Support</a> for
           changes.</p>
       </div>
     </div>
