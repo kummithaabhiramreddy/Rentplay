@@ -1355,6 +1355,7 @@
     // AI SCREENSHOT DETECTION (OCR)
     // ════════════════════════════════════════
     async function scanPaymentScreenshot(file) {
+      if (!file) return;
       const msg = document.getElementById('bookingMsg');
       const amountToMatch = parseFloat(document.getElementById('totalPrice').textContent.replace(/[₹,]/g,'').trim());
       
@@ -1369,17 +1370,17 @@
       `;
 
       try {
-        const worker = await Tesseract.createWorker('eng', 1, {
+        const { data: { text } } = await Tesseract.recognize(file, 'eng', {
           logger: m => {
             if (m.status === 'recognizing text') {
-              document.getElementById('ocrProgress').style.width = (m.progress * 100) + '%';
-              document.getElementById('ocrStatus').textContent = `Identifying text... ${Math.round(m.progress * 100)}%`;
+              const progress = Math.round(m.progress * 100);
+              const pBar = document.getElementById('ocrProgress');
+              const pStatus = document.getElementById('ocrStatus');
+              if(pBar) pBar.style.width = progress + '%';
+              if(pStatus) pStatus.textContent = `Identifying text... ${progress}%`;
             }
           }
         });
-
-        const { data: { text } } = await worker.recognize(file);
-        await worker.terminate();
 
         const cleanText = text.toLowerCase();
         console.log("OCR Result:", cleanText);
@@ -1408,7 +1409,7 @@
               <div style="font-size:40px; margin-bottom:10px;">❌</div>
               <p style="font-weight:800; font-size:16px; color:#fff; margin-bottom:4px;">Detection Failed</p>
               <p style="font-size:12px; color:var(--muted);">Could not verify "Success" or "₹${amountToMatch}" in screenshot.</p>
-              <button onclick="triggerUPIPayment('${currentPayment}')" class="rent-btn" style="margin-top:12px; background:#ef4444; color:#fff; font-size:12px;">Try Again</button>
+              <button onclick="triggerUPIPayment('${currentPayment}')" class="rent-btn" style="margin-top:12px; background:var(--accent); color:#000; font-size:12px;">Try Again</button>
             </div>
           `;
           showToast("⚠️ Could not verify payment details from image.", "error");
@@ -1459,82 +1460,6 @@
       setTimeout(closeModal, 3000);
     }
 
-    // ════════════════════════════════════════
-    // AUTOMATIC PAYMENT DETECTION
-    // ════════════════════════════════════════
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && isAwaitingPayment) {
-        autoVerifyPayment();
-      }
-    });
-
-    function autoVerifyPayment() {
-      if (!isAwaitingPayment) return;
-      isAwaitingPayment = false;
-      
-      const msg = document.getElementById('bookingMsg');
-      msg.innerHTML = `
-        <div style="text-align:center; padding:25px; background:rgba(16, 185, 129, 0.05); border-radius:16px; border:1px solid #10b981; animation: fadeIn 0.5s ease;">
-          <div class="loader-circle" style="width:50px; height:50px; border:4px solid rgba(16, 185, 129, 0.2); border-top-color:#10b981; border-radius:50%; animation: spin 1s linear infinite; margin:0 auto 15px;"></div>
-          <p style="font-weight:800; font-size:18px; color:#fff; margin-bottom:6px;">Detecting Payment...</p>
-          <p style="font-size:13px; color:var(--muted);">Syncing with your bank via UPI network</p>
-        </div>
-        <style>
-          @keyframes spin { 100% { transform:rotate(360deg); } }
-          @keyframes fadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
-        </style>
-      `;
-
-      // Simulate network delay for verification
-      setTimeout(async () => {
-        msg.innerHTML = `
-          <div style="text-align:center; padding:25px; background:rgba(16, 185, 129, 0.1); border-radius:16px; border:1px solid #10b981;">
-            <div style="font-size:40px; margin-bottom:10px;">✅</div>
-            <p style="font-weight:800; font-size:18px; color:#fff; margin-bottom:6px;">Payment Detected!</p>
-            <p style="font-size:13px; color:var(--muted);">Transaction verified successfully. Finalizing your booking...</p>
-          </div>
-        `;
-        
-        // Finalize booking automatically
-        const dataStr = sessionStorage.getItem('pending_booking');
-        if (dataStr) {
-          const data = JSON.parse(dataStr);
-          data.payment_status = 'verified_auto';
-          
-          const bId = Date.now();
-          // Save locally
-          const BOOKING_KEY = 'geargo_dashboard_bookings';
-          let db = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
-          db.push({ 
-            id: bId, 
-            name: data.userName, 
-            phone: data.userPhone, 
-            email: data.userEmail, 
-            item: data.itemName, 
-            price: data.price, 
-            status: 'paid', 
-            booking_date: data.bookingDate, 
-            booking_time: data.bookingTime, 
-            created_at: new Date().toISOString() 
-          });
-          localStorage.setItem(BOOKING_KEY, JSON.stringify(db));
-          saveLocalBooking(data, bId);
-
-          try {
-            await fetch(`${apiBase}/book`, { 
-              method: 'POST', 
-              headers: { 'Content-Type': 'application/json' }, 
-              body: JSON.stringify({ ...data, status: 'paid', automated: true }) 
-            });
-            if (data.userEmail) sendEmailJS(data, bId);
-          } catch(e) {}
-          
-          showToast("🎉 Payment Success! Booking Confirmed.", "success");
-          sessionStorage.removeItem('pending_booking');
-          setTimeout(closeModal, 3000);
-        }
-      }, 3500);
-    }
 
     function triggerUPIPayment(method) {
       const amount = parseFloat(document.getElementById('totalPrice').textContent.replace(/[₹,]/g,'').trim());
@@ -1587,12 +1512,13 @@
 
           <div style="border-top:1px solid var(--border); padding-top:15px; text-align:left;">
             <p style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">✅ Final Step: Verify Payment</p>
-            <p style="font-size:11px; color:var(--muted); margin-bottom:12px;">Take a screenshot of the "Success" screen and upload it below.</p>
+            <p style="font-size:11px; color:var(--muted); margin-bottom:12px;">Take a screenshot of the "Success" screen and upload it below. Our AI will verify it instantly.</p>
             
-            <label class="gallery-btn" style="width:100%; margin:0; cursor:pointer; background:var(--accent); color:#000; border:none; padding:15px; display:flex; justify-content:center; align-items:center; gap:8px; font-weight:800;">
+            <label class="gallery-btn" id="screenshotBtn" style="width:100%; margin:0; cursor:pointer; background:var(--accent); color:#000; border:none; padding:15px; display:flex; justify-content:center; align-items:center; gap:8px; font-weight:800;">
               <span>📁</span> UPLOAD SUCCESS SCREENSHOT
               <input type="file" accept="image/*" style="display:none" onchange="scanPaymentScreenshot(this.files[0])">
             </label>
+            <div id="ocrStatus" style="margin-top:10px; font-size:11px; font-weight:600; color:var(--accent); text-align:center; display:none;">⏳ AI Scanning Screenshot...</div>
           </div>
         </div>
       `;
