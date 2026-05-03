@@ -1563,9 +1563,10 @@
       
       const UPI_ID = '7093910280@ybl';
       const UPI_NAME = 'GearGo';
-      const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&cu=INR&am=${amount.toFixed(2)}&tn=${encodeURIComponent('GearGo Rental ' + Date.now())}`;
-      const upiUrl = `upi://pay?${upiParams}`;
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
+      const upiParamsFull = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&cu=INR&am=${amount.toFixed(2)}&tn=${encodeURIComponent('GearGo Rental ' + Date.now())}`;
+      const upiParamsSimple = `pa=${UPI_ID}&am=${amount.toFixed(2)}&cu=INR`;
+      const upiUrl = `upi://pay?${upiParamsSimple}`; // Safer for buttons
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`upi://pay?${upiParamsFull}`)}`;
 
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const msg = document.getElementById('bookingMsg');
@@ -1596,9 +1597,9 @@
         let appName = method === 'phonepe' ? 'PhonePe' : method === 'gpay' ? 'Google Pay' : 'UPI App';
         let appColor = method === 'phonepe' ? '#5f259f' : method === 'gpay' ? '#4285f4' : 'var(--accent)';
         
-        if (method === 'phonepe') appLink = `phonepe://pay?${upiParams}`;
-        else if (method === 'gpay') appLink = `tez://pay?${upiParams}`;
-        else if (method === 'paytm') appLink = `paytmmp://pay?${upiParams}`;
+        if (method === 'phonepe') appLink = `phonepe://pay?${upiParamsSimple}`;
+        else if (method === 'gpay') appLink = `tez://pay?${upiParamsSimple}`;
+        else if (method === 'paytm') appLink = `paytmmp://pay?${upiParamsSimple}`;
 
         appButtonHtml = `
           <a href="${appLink}" style="display:flex; align-items:center; justify-content:center; gap:10px; background:${appColor}; color:#fff; text-decoration:none; padding:15px; border-radius:12px; font-weight:700; margin-bottom:15px;">
