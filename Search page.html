@@ -1253,64 +1253,43 @@
         signature: document.getElementById('renterSignature').value,
       };
       const bId = Date.now();
-      try {
-        const BOOKING_KEY = 'geargo_dashboard_bookings';
-        let dashboardBookings = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
-        dashboardBookings.push({ id: bId, name: data.userName, phone: data.userPhone, email: data.userEmail, item: data.itemName, price: data.price, status: 'confirmed', booking_date: data.bookingDate, booking_time: data.bookingTime, created_at: new Date().toISOString() });
-        localStorage.setItem(BOOKING_KEY, JSON.stringify(dashboardBookings));
-        saveLocalBooking(data, bId);
-      } catch(e) {}
 
       if (currentPayment === 'cod') {
         try {
-          const res = await fetch(`${apiBase}/book`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+          const BOOKING_KEY = 'geargo_dashboard_bookings';
+          let dashboardBookings = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
+          dashboardBookings.push({ 
+            id: bId, 
+            name: data.userName, 
+            phone: data.userPhone, 
+            email: data.userEmail, 
+            item: data.itemName, 
+            price: data.price, 
+            status: 'confirmed', 
+            booking_date: data.bookingDate, 
+            booking_time: data.bookingTime, 
+            created_at: new Date().toISOString() 
+          });
+          localStorage.setItem(BOOKING_KEY, JSON.stringify(dashboardBookings));
+          saveLocalBooking(data, bId);
+
+          const res = await fetch(`${apiBase}/book`, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(data) 
+          });
           const result = await res.json();
           msg.innerHTML = result.success ? `✅ Booking #${result.bookingId} Confirmed!` : `✅ Saved Locally`;
           if (data.userEmail) sendEmailJS(data, result.bookingId || bId);
         } catch(err) { msg.innerHTML = `✅ Booking Saved Locally`; }
         setTimeout(closeModal, 4000);
       } else {
+        // ONLINE PAYMENT: Store pending and trigger gateway
         sessionStorage.setItem('pending_booking', JSON.stringify(data));
-        msg.innerHTML = `<div style="text-align:center; padding:15px; background:rgba(245,166,35,0.1); border-radius:12px; border:1px solid var(--accent);"><p style="margin-bottom:12px; font-weight:600;">🚀 Opening Payment App...</p><button onclick="confirmPaymentAndStore()" class="rent-btn" style="width:100%; padding:12px; font-size:14px;">I Have Paid Successfully</button></div>`;
         triggerUPIPayment(currentPayment);
       }
     });
 
-    async function confirmPaymentAndStore() {
-      const utrInput = document.getElementById('utrInput');
-      if (utrInput) {
-        const utrVal = utrInput.value.trim();
-        const utrRegex = /^\d{12}$/;
-        if (!utrRegex.test(utrVal)) {
-          showToast("⚠️ Invalid UTR detected! Please enter exactly 12 digits from your receipt.", "error");
-          return;
-        }
-      }
-
-      const dataStr = sessionStorage.getItem('pending_booking');
-      if (!dataStr) { showToast("⚠️ No pending booking found.", "warn"); return; }
-      const data = JSON.parse(dataStr);
-      if (utrInput) data.utr = utrInput.value.trim();
-
-      const msg = document.getElementById('bookingMsg');
-      msg.textContent = "⏳ Finalizing Payment...";
-      const bId = Date.now();
-      try {
-        const BOOKING_KEY = 'geargo_dashboard_bookings';
-        let db = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
-        db.push({ id: bId, name: data.userName, phone: data.userPhone, email: data.userEmail, item: data.itemName, price: data.price, status: 'paid', booking_date: data.bookingDate, booking_time: data.bookingTime, created_at: new Date().toISOString() });
-        localStorage.setItem(BOOKING_KEY, JSON.stringify(db));
-        saveLocalBooking(data, bId);
-      } catch(e) {}
-      try {
-        const res = await fetch(`${apiBase}/book`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, status: 'paid' }) });
-        const result = await res.json();
-        msg.innerHTML = `<p style="color:var(--green); font-weight:700;">✅ Payment Confirmed!</p>`;
-        if (data.userEmail) sendEmailJS(data, result.bookingId || bId);
-      } catch(err) { msg.innerHTML = `<p style="color:var(--green)">✅ Payment Logged Locally</p>`; }
-      sessionStorage.removeItem('pending_booking');
-      setTimeout(closeModal, 3000);
-    }
 
     async function sendEmailJS(data, bookingId) {
       try {
