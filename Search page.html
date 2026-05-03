@@ -1562,16 +1562,15 @@
       if (isNaN(amount) || amount <= 0) { showToast("⚠️ Set duration first.", "warn"); return; }
       
       const UPI_ID = '7093910280@ybl';
-      const UPI_NAME = 'GearGo';
-      const upiParamsFull = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&cu=INR&am=${amount.toFixed(2)}&tn=${encodeURIComponent('GearGo Rental ' + Date.now())}`;
-      const upiParamsSimple = `pa=${UPI_ID}&am=${amount.toFixed(2)}&cu=INR`;
-      const upiUrl = `upi://pay?${upiParamsSimple}`; // Safer for buttons
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`upi://pay?${upiParamsFull}`)}`;
+      const tr = 'GG' + Date.now();
+      const upiParams = `pa=${UPI_ID}&pn=GearGo&am=${amount.toFixed(2)}&cu=INR&tn=Rental+${tr}`;
+      const upiUrl = `upi://pay?${upiParams}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
 
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const msg = document.getElementById('bookingMsg');
       
-      // Store pending data for auto-recovery
+      // Store pending data
       const data = {
         userName: document.getElementById('userName').value,
         userPhone: document.getElementById('userPhone').value,
@@ -1589,7 +1588,6 @@
       };
       sessionStorage.setItem('pending_booking', JSON.stringify(data));
       isAwaitingPayment = true;
-      console.log("Payment flow initiated:", currentPayment);
 
       let appButtonHtml = '';
       if (isMobile) {
@@ -1597,44 +1595,61 @@
         let appName = method === 'phonepe' ? 'PhonePe' : method === 'gpay' ? 'Google Pay' : 'UPI App';
         let appColor = method === 'phonepe' ? '#5f259f' : method === 'gpay' ? '#4285f4' : 'var(--accent)';
         
-        if (method === 'phonepe') appLink = `phonepe://pay?${upiParamsSimple}`;
-        else if (method === 'gpay') appLink = `tez://pay?${upiParamsSimple}`;
-        else if (method === 'paytm') appLink = `paytmmp://pay?${upiParamsSimple}`;
+        // Advanced Intent for Android bypass
+        if (method === 'phonepe') appLink = `intent://pay?${upiParams}#Intent;scheme=upi;package=com.phonepe.app;end`;
+        else if (method === 'gpay') appLink = `intent://pay?${upiParams}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+        else if (method === 'paytm') appLink = `paytmmp://pay?${upiParams}`;
 
         appButtonHtml = `
-          <a href="${appLink}" style="display:flex; align-items:center; justify-content:center; gap:10px; background:${appColor}; color:#fff; text-decoration:none; padding:15px; border-radius:12px; font-weight:700; margin-bottom:15px;">
-             <span>📱 Open ${appName}</span>
+          <a href="${appLink}" style="display:flex; align-items:center; justify-content:center; gap:10px; background:${appColor}; color:#fff; text-decoration:none; padding:15px; border-radius:12px; font-weight:700; margin-bottom:15px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+             <span>🚀 Open ${appName} to Pay</span>
           </a>
         `;
       }
 
       msg.innerHTML = `
-        <div style="text-align:center; padding:18px; background:rgba(255,255,255,0.03); border-radius:16px; border:1px solid var(--border);">
-          <p style="font-weight:800; font-size:16px; margin-bottom:12px; color:#fff;">🛡️ AI Payment Verification</p>
-          
-          ${appButtonHtml}
-
-          <img src="${qrUrl}" alt="UPI QR" style="width:140px; height:140px; background:#fff; padding:6px; border-radius:12px; margin:0 auto 15px; display:block;">
-
-          <div style="background:#0d0f14; border-radius:10px; padding:10px 14px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
-            <div style="text-align:left;">
-              <div style="font-size:10px; color:var(--muted);">Payable Amount</div>
-              <div style="font-weight:800; color:var(--accent); font-size:1.2rem;">₹${amount.toFixed(2)}</div>
-            </div>
-            <div style="font-size:20px;">💰</div>
+        <div style="text-align:center; padding:18px; background:rgba(0,0,0,0.3); border-radius:16px; border:1px solid var(--border);">
+          <div style="background:rgba(239, 68, 68, 0.15); border:1px solid #ef4444; color:#ef4444; padding:8px; border-radius:8px; font-size:10px; margin-bottom:12px; font-weight:700;">
+            ⚠️ MANDATORY: You MUST upload a screenshot after paying to confirm.
           </div>
 
-          <div style="border-top:1px solid var(--border); padding-top:15px; text-align:left;">
-            <p style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;">✅ Step 2: Upload Success Screenshot</p>
-            <p style="font-size:11px; color:var(--muted); margin-bottom:12px;">Our AI will scan the screenshot to verify "Success" and amount.</p>
-            
-            <label class="gallery-btn" style="width:100%; margin:0; cursor:pointer; background:var(--accent); color:#000; border:none;">
-              <span>📁</span> Select Screenshot
+          ${appButtonHtml}
+
+          <div style="background:#fff; padding:8px; border-radius:12px; width:fit-content; margin:0 auto 15px;">
+            <img src="${qrUrl}" alt="Scan QR" style="width:140px; height:140px; display:block;">
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#0d0f14; padding:10px; border-radius:10px; margin-bottom:15px;">
+            <div style="text-align:left;">
+              <div style="font-size:9px; color:var(--muted);">Amount to Pay</div>
+              <div style="font-weight:800; color:var(--accent); font-size:1.1rem;">₹${amount.toFixed(2)}</div>
+            </div>
+            <button onclick="copyUPI('${UPI_ID}')" style="background:var(--accent); border:none; color:#000; padding:4px 8px; border-radius:4px; font-size:9px; font-weight:800;">COPY UPI</button>
+          </div>
+
+          <div style="border-top:1px solid var(--border); padding-top:12px; text-align:left;">
+            <p style="font-size:12px; font-weight:700; color:#fff; margin-bottom:6px;">✅ Final Step: Verify Payment</p>
+            <label class="gallery-btn" style="width:100%; margin:0; cursor:pointer; background:var(--accent); color:#000; border:none; padding:12px; display:flex; justify-content:center; align-items:center; gap:6px; font-size:12px;">
+              <span>📁</span> UPLOAD SUCCESS SCREENSHOT
               <input type="file" accept="image/*" style="display:none" onchange="scanPaymentScreenshot(this.files[0])">
             </label>
           </div>
         </div>
       `;
+
+      // Auto-trigger on mobile if they click book
+      if (isMobile && method !== 'upi') {
+          setTimeout(() => {
+              // We don't force auto-redirect as it's annoying, 
+              // but the button is prominently displayed.
+          }, 500);
+      }
+    }
+
+    function copyUPI(id) {
+      navigator.clipboard.writeText(id).then(() => {
+        showToast("✅ UPI ID Copied! Paste in your app.", "success");
+      });
     }
 
     // ════════════════════════════════════════
