@@ -1523,37 +1523,42 @@
         window.location.href = targetUrl;
       }
 
+      window.copyAndOpen = function(num, url) {
+        navigator.clipboard.writeText(num);
+        showToast("📋 Number Copied! Paste in App.", "success");
+        setTimeout(() => window.location.href = url, 800);
+      };
+
       msg.innerHTML = `
-        <div style="text-align:center; padding:20px; background:rgba(0,0,0,0.7); border-radius:24px; border:1px solid var(--accent); backdrop-filter: blur(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.5);">
-          <div style="background:var(--accent); color:#000; padding:12px; border-radius:12px; font-size:12px; margin-bottom:18px; font-weight:800; letter-spacing:0.5px;">
-            🚀 OPENING ${method.toUpperCase()} INSTANTLY...
+        <div style="text-align:center; padding:20px; background:rgba(0,0,0,0.8); border-radius:24px; border:1px solid var(--accent); backdrop-filter: blur(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.5);">
+          <div style="background:var(--accent); color:#000; padding:10px; border-radius:12px; font-size:11px; margin-bottom:15px; font-weight:800;">
+            🛡️ BANK-VERIFIED PAYMENT GATEWAY
           </div>
 
-          <div style="font-size:14px; color:#fff; font-weight:700; margin-bottom:20px; line-height:1.5;">
-            Total Amount: <span style="color:var(--accent); font-size:20px;">₹${amount.toFixed(2)}</span><br>
-            <span style="font-size:11px; font-weight:400; color:var(--muted);">UPI ID: ${UPI_ID}</span>
+          <div style="font-size:14px; color:#fff; font-weight:700; margin-bottom:15px;">
+            Total: <span style="color:var(--accent); font-size:20px;">₹${amount.toFixed(2)}</span>
           </div>
 
-          ${isMobile ? `
-            <button onclick="window.location.href='${targetUrl}'" style="width:100%; padding:18px; background:#fff; color:#000; border:none; border-radius:14px; font-weight:900; font-size:16px; margin-bottom:20px; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow: 0 5px 20px rgba(255,255,255,0.2);">
-               ${method === 'phonepe' ? '🟣' : '🔹'} OPEN ${method.toUpperCase()} AGAIN
-            </button>
-          ` : ''}
-
-          <div style="background:#fff; padding:15px; border-radius:20px; width:fit-content; margin:0 auto 20px; border: 4px solid var(--accent); cursor: pointer;" 
-               title="Double-tap to pay instantly"
-               ondblclick="window.location.href='${targetUrl}'"
-               ontouchend="handleQrTouch(event, '${targetUrl}')">
-            <img src="${qrUrl}" alt="Scan to Pay" style="width:170px; height:170px; display:block; pointer-events: none;">
-            <p style="color:#000; font-size:10px; font-weight:900; margin-top:8px; letter-spacing:1px;">DBL-TAP TO PAY INSTANTLY</p>
-          </div>
-
-          <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; text-align:left;">
-            <p style="font-size:13px; font-weight:800; color:var(--accent); margin-bottom:8px;">⚠️ FINAL STEP: CONFIRM BOOKING</p>
-            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">After completing payment in ${method.toUpperCase()}, please <b>upload the success screenshot</b> here to confirm your order.</p>
+          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:15px; padding:15px; margin-bottom:20px;">
+            <p style="font-size:10px; color:#aaa; margin-bottom:10px; text-transform:uppercase;">As per Bank Risk Policy, please use:</p>
             
-            <label class="gallery-btn" id="screenshotBtn" style="width:100%; margin:0; cursor:pointer; background:var(--accent); color:#000; border:none; padding:16px; display:flex; justify-content:center; align-items:center; gap:10px; font-weight:900; border-radius:12px;">
-              <span>📸</span> VERIFY PAYMENT SCREENSHOT
+            <button onclick="copyAndOpen('7093910280', '${targetUrl}')" style="width:100%; padding:14px; background:var(--accent); color:#000; border:none; border-radius:10px; font-weight:900; font-size:14px; margin-bottom:10px; cursor:pointer;">
+              📱 PAY VIA MOBILE NUMBER
+            </button>
+            <p style="font-size:9px; color:var(--accent); font-weight:700;">(One-tap: Copies number & opens app)</p>
+          </div>
+
+          <div style="background:#fff; padding:12px; border-radius:18px; width:fit-content; margin:0 auto 15px; border: 3px solid var(--accent); cursor:pointer;" onclick="window.location.href='${targetUrl}'">
+            <img src="${qrUrl}" alt="Scan to Pay" style="width:150px; height:150px; display:block;">
+            <p style="color:#000; font-size:9px; font-weight:900; margin-top:5px;">TAP OR SCAN QR</p>
+          </div>
+
+          <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:15px; text-align:left;">
+            <p style="font-size:12px; font-weight:800; color:var(--accent); margin-bottom:5px;">⚠️ FINAL STEP: CONFIRM</p>
+            <p style="font-size:10px; color:#ccc; margin-bottom:12px;">Pay ₹${amount.toFixed(2)} and upload the <b>Success Screenshot</b> below.</p>
+            
+            <label class="gallery-btn" id="screenshotBtn" style="width:100%; margin:0; cursor:pointer; background:#fff; color:#000; border:none; padding:14px; display:flex; justify-content:center; align-items:center; gap:8px; font-weight:900; border-radius:10px;">
+              <span>📸</span> VERIFY & CONFIRM
               <input type="file" accept="image/*" style="display:none" onchange="scanPaymentScreenshot(this.files[0])">
             </label>
           </div>
