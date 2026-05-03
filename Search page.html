@@ -166,7 +166,7 @@
     .detail-book-btn:hover { background: #ffbe45; }
 
     /* BOOKING MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, .8); z-index: 1000; align-items: flex-start; justify-content: center; padding: 1.5rem; overflow-y: auto; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, .8); z-index: 3000; align-items: flex-start; justify-content: center; padding: 1.5rem; overflow-y: auto; }
     .modal-overlay.show { display: flex; }
 
     /* AGREEMENT MODAL */
@@ -1113,18 +1113,45 @@
     function finalizeAgreement() {
       const stamp = document.getElementById('stampContainer');
       const btn = document.getElementById('proceedToBookBtn');
+      
+      console.log("Finalizing agreement...");
+      
+      // 1. Show Stamp
       stamp.style.opacity = '1';
       stamp.style.transform = 'scale(1)';
-      btn.innerHTML = "<span>Stamping...</span>";
+      btn.innerHTML = "<span>✅ Stamped!</span>";
       btn.disabled = true;
+      
+      // 2. Transition to Booking Form
       setTimeout(() => {
-        document.getElementById('agreementOverlay').classList.remove('show');
-        openModal(pendingItemName, pendingItemPrice);
-        btn.innerHTML = "<span>Proceed to Booking</span>";
-        btn.disabled = false;
-        stamp.style.opacity = '0';
-        stamp.style.transform = 'scale(3)';
-      }, 1000);
+        console.log("Hiding Agreement Overlay...");
+        const agreement = document.getElementById('agreementOverlay');
+        
+        // Use both class and direct style for safety
+        agreement.classList.remove('show');
+        agreement.style.display = 'none'; 
+        
+        setTimeout(() => {
+          console.log("Opening Booking Modal for:", pendingItemName);
+          try {
+            openModal(pendingItemName, pendingItemPrice);
+          } catch (err) {
+            console.error("Failed to open modal:", err);
+            // Fallback: try to show it manually if function fails
+            const modal = document.getElementById('modalOverlay');
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+            }
+          }
+          
+          // Reset Agreement UI for next time
+          btn.innerHTML = "<span>Proceed to Booking</span>";
+          btn.disabled = false;
+          stamp.style.opacity = '0';
+          stamp.style.transform = 'scale(3)';
+        }, 100);
+      }, 800);
     }
 
     // ════════════════════════════════════════
@@ -1338,6 +1365,13 @@
       document.getElementById('priceBreakdown').textContent = breakdown;
     }
 
+    function setPayment(method) {
+      currentPayment = method;
+      document.querySelectorAll('.pay-tab').forEach(tab => tab.classList.remove('active'));
+      const t = document.getElementById('tab-' + (method === 'phonepay' ? 'phonepe' : method));
+      if (t) t.classList.add('active');
+    }
+
     // ════════════════════════════════════════
     // AI SCREENSHOT DETECTION (OCR)
     // ════════════════════════════════════════
@@ -1529,7 +1563,7 @@
       
       const UPI_ID = '7093910280@ybl';
       const UPI_NAME = 'GearGo';
-      const upiParams = `pa=${UPI_ID}&pn=${UPI_NAME}&cu=INR&am=${amount.toFixed(2)}&tn=GearGo+Rental+${Date.now()}`;
+      const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&cu=INR&am=${amount.toFixed(2)}&tn=${encodeURIComponent('GearGo Rental ' + Date.now())}`;
       const upiUrl = `upi://pay?${upiParams}`;
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
 
@@ -1553,6 +1587,8 @@
         signature: document.getElementById('renterSignature').value,
       };
       sessionStorage.setItem('pending_booking', JSON.stringify(data));
+      isAwaitingPayment = true;
+      console.log("Payment flow initiated:", currentPayment);
 
       let appButtonHtml = '';
       if (isMobile) {
